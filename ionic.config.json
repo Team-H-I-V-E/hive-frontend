@@ -1,0 +1,7 @@
+{
+  "name": "hive-frontend",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

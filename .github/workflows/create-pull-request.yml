@@ -1,4 +1,4 @@
-name: 풀리퀘스트 생성
+name: 풀리퀘스트 생성 및 프로젝트 빌드
 
 on:
   pull_request:
@@ -16,6 +16,14 @@ jobs:
       - name: Create Pull Request
         run: echo "Creating a pull request..."
 
+      # - name: Set up GitHub CLI
+      #   run: |
+      #     sudo apt-get install gh
+
+      # - name: Create Pull Request
+      #   run: |
+      #     gh pr create --base develop --head ${{ github.head_ref }} --title "New Pull Request" --body "This is an automated pull request."
+
   build:
     runs-on: ubuntu-latest
 
@@ -23,8 +31,18 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v2
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '22.14.0'
+
+      - name: Install Dependencies
+        run: |
+          npm install    
+
       - name: Run Build
-        run: echo "Building the project..."
+        run: |
+          npm run build
       
       - name: Pull Request Labeling
         uses: actions/labeler@v5

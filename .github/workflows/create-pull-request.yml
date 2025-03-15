@@ -1,0 +1,22 @@
+name: 풀리퀘스트 생성
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  create-pull-request:
+    permissions: write-all
+
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: Run Build
+        run: echo "Building the project..."
+      
+      - name: Pull Request Labeling
+        uses: actions/labeler@v5

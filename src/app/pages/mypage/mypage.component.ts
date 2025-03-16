@@ -2,13 +2,13 @@ import { Component } from '@angular/core';
 import { HeaderComponent } from 'src/app/layouts/header/header.component';
 
 @Component({
-  selector: 'app-article',
-  templateUrl: 'article-list.component.html',
-  styleUrls: ['article-list.component.scss'],
+  selector: 'app-mypage',
+  templateUrl: 'mypage.component.html',
+  styleUrls: ['mypage.component.scss'],
   standalone: true,
   imports: [HeaderComponent]
 })
-export class ArticleComponent {
+export class MyPageComponent {
 
   constructor() {}
 

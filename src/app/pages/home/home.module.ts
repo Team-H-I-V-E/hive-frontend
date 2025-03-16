@@ -3,7 +3,8 @@ import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
 import { HomeComponent } from './home.component';
-import { HomePageRoutingModule } from './home-routing.module';
+import { HomeComponentRoutingModule } from './home-routing.module';
+import { HeaderComponent } from 'src/app/layouts/header/header.component';
 
 
 @NgModule({
@@ -11,8 +12,9 @@ import { HomePageRoutingModule } from './home-routing.module';
     CommonModule,
     FormsModule,
     IonicModule,
-    HomePageRoutingModule
+    HomeComponentRoutingModule,
+    HomeComponent,
+    HeaderComponent,
   ],
-  declarations: [HomeComponent]
 })
 export class HomeComponentModule {}

@@ -5,11 +5,8 @@ import { HeaderComponent } from 'src/app/layouts/header/header.component';
   selector: 'app-arexplore',
   templateUrl: 'arexplore.component.html',
   styleUrls: ['arexplore.component.scss'],
-  standalone: true,
-  imports: [HeaderComponent]
+  standalone: false,
 })
 export class ARExploreComponent {
-
   constructor() {}
-
 }

@@ -4,17 +4,19 @@ import { IonicModule } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
 import { PanoramaComponent } from './panorama.component';
 import { PanoramaComponentRoutingModule } from './panorama-routing.module';
-import { HeaderComponent } from 'src/app/layouts/header/header.component';
-
+import { LayoutModule } from 'src/app/layouts/layouts.module';
 
 @NgModule({
+  declarations: [
+    PanoramaComponent,
+  ],
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
     PanoramaComponentRoutingModule,
-    PanoramaComponent,
-    HeaderComponent,
+    LayoutModule,
   ],
+  exports: [PanoramaComponent],
 })
 export class PanoramaComponentModule {}

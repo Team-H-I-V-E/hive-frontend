@@ -5,11 +5,8 @@ import { HeaderComponent } from 'src/app/layouts/header/header.component';
   selector: 'app-article',
   templateUrl: 'article-list.component.html',
   styleUrls: ['article-list.component.scss'],
-  standalone: true,
-  imports: [HeaderComponent]
+  standalone: false,
 })
 export class ArticleComponent {
-
   constructor() {}
-
 }

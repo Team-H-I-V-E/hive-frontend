@@ -1,22 +1,25 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { NgModule } from "@angular/core";
+import { HeritageComponent } from "./heritage.component";
+import { HeritageRoutingModule } from "./heritage-routing.module";
 import { HeritageListComponent } from './heritage-list/heritage-list.component';
 import { HeritageDetailComponent } from './heritage-detail/heritage-detail.component';
-import { IonicModule } from '@ionic/angular';
-import { FormsModule } from '@angular/forms';
-import { HeritageRoutingModule } from './heritage-routing.module';
+import { CommonModule } from "@angular/common";
+import { FormsModule } from "@angular/forms";
+import { IonicModule } from "@ionic/angular";
+import { LayoutModule } from "src/app/layouts/layouts.module";
 
 @NgModule({
     declarations: [
+        HeritageComponent, 
         HeritageListComponent,
         HeritageDetailComponent,
     ],
     imports: [
         CommonModule,
-        IonicModule,
         FormsModule,
+        IonicModule,
         HeritageRoutingModule,
-
+        LayoutModule, 
     ]
 })
 export class HeritageComponentModule { }

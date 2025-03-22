@@ -1,0 +1,16 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title (click)="goToHeritageList()">Heritage</ion-title>
+      <ion-title>{{ heritage?.heritageName }}</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  
+  <ion-content class="heritage-detail-content">
+    <div *ngIf="heritage">
+      <h2 class="heritage-title">{{ heritage.heritageName }}</h2>
+      <p class="heritage-description">{{ heritage.heritageDescription }}</p>
+      <p class="heritage-location"><strong>Location:</strong> {{ heritage.heritageLocation }}</p>
+      <div id="map" class="heritage-map"></div>
+    </div>
+  </ion-content>
+  

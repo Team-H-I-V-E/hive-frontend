@@ -1,6 +1,8 @@
 import { NgModule } from "@angular/core";
 import { HeritageComponent } from "./heritage.component";
 import { HeritageRoutingModule } from "./heritage-routing.module";
+import { HeritageListComponent } from './heritage-list/heritage-list.component';
+import { HeritageDetailComponent } from './heritage-detail/heritage-detail.component';
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { IonicModule } from "@ionic/angular";
@@ -8,15 +10,16 @@ import { LayoutModule } from "src/app/layouts/layouts.module";
 
 @NgModule({
     declarations: [
-        HeritageComponent,
+        HeritageComponent, 
+        HeritageListComponent,
+        HeritageDetailComponent,
     ],
     imports: [
         CommonModule,
         FormsModule,
         IonicModule,
         HeritageRoutingModule,
-        LayoutModule,
-    ],
-    exports: [HeritageComponent]
+        LayoutModule, 
+    ]
 })
-export class HeritageComponentModule {}
+export class HeritageComponentModule { }

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { PanoramaViewers, PanoramaViewerService } from 'src/app/services/panorama/panorama.service';
+import { PanoramaViewer, PanoramaViewerService } from 'src/app/services/panorama/panorama.service';
 
 @Component({
   selector: 'app-panorama',
@@ -9,7 +9,7 @@ import { PanoramaViewers, PanoramaViewerService } from 'src/app/services/panoram
   standalone: false,
 })
 export class PanoramaComponent implements OnInit {
-  panoramaViewers: PanoramaViewers[] = [];
+  panoramaViewers: PanoramaViewer[] = [];
 
   constructor(private panoramaViewerService: PanoramaViewerService, private router: Router) {}
 

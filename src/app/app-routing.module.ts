@@ -1,12 +1,14 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { HeritageListComponent } from './pages/heritage/heritage-list/heritage-list.component';
+import { HomeComponent } from './pages/home/home.component';
 
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'home',
-    pathMatch: 'full'
+    component: HomeComponent,
   },
+
   {
     path: 'home',
     loadChildren: () => import('./pages/home/home.module').then( m => m.HomeComponentModule)
@@ -31,6 +33,9 @@ const routes: Routes = [
     path: 'mypage',
     loadChildren: () => import('./pages/mypage/mypage.module').then( m => m.MyPageComponentModule)
   },
+  { 
+    path: 'heritage/heritageList', component: HeritageListComponent 
+  }, 
 
 ];
 

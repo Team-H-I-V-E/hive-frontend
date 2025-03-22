@@ -10,7 +10,6 @@ import { environment } from 'src/environments/environment';
 export class AppComponent implements OnInit {
   ngOnInit(): void {
     const script = document.createElement('script');
-    script.src = `https://dapi.kakao.com/v2/maps/sdk.js?appkey=${environment.kakaoMapApiKey}&libraries=services,clusterer`;
     document.head.appendChild(script);
   }
 }

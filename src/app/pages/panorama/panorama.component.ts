@@ -25,4 +25,9 @@ export class PanoramaComponent implements OnInit {
       console.error('Fetch error : ', error);
     }
   }
+
+  getPanoramaViewerDetail(panoramaViewerID: number) {
+    this.router.navigate([`detail/${panoramaViewerID}`]);
+  }
+
 }

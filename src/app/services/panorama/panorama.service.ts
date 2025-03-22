@@ -3,6 +3,7 @@ import { Injectable } from "@angular/core";
 export interface PanoramaViewers {
     panoramaViewerID: number;
     ruinsName: string;
+    ruinsAge: string;
     ruinsLocation: string;
     ruinsInformation: string;
     panoramaViewerImage: string;

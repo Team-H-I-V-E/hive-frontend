@@ -2,7 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { HeritageService } from "src/app/services/heritage/heritage.service";
 import { GetHeritagesByIdResponseData } from "src/app/models/heritage/heritage-getheritagesbyid-response-data.interface";
-import { environment } from "src/environments/environment";
+import { environment } from "src/environment/environment";
 
 declare var kakao: any;
 

@@ -1,4 +1,4 @@
-export interface GetHeritagesResponseData {
+export interface GetPanoramaBtIdResponseData {
   "heritageId": number;
   "heritageName": string;
   "heritageDescription": string;

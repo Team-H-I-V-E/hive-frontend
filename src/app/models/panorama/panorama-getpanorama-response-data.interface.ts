@@ -1,8 +1,5 @@
 export interface GetPanoramaResponseData {
-    "heritageId": number;
-    "heritageName": string;
-    "heritageDescription": string;
-    "heritageLocation": string;
-    "heritageLatitude": number;
-    "heritageLongitude": number;
+    "panoramaId": number;
+    "panoramaLatitude": number;
+    "panoramaLongitude": number;
 }

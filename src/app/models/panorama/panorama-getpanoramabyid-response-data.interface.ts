@@ -1,8 +1,10 @@
-export interface GetPanoramaBtIdResponseData {
-  "heritageId": number;
-  "heritageName": string;
-  "heritageDescription": string;
-  "heritageLocation": string;
-  "heritageLatitude": number;
-  "heritageLongitude": number;
+export interface GetPanoramaByIdResponseData {
+  "panoramaId": number;
+  "ruinsName": string;
+  "ruinsAge": string;
+  "ruinsLocation": string;
+  "ruinsInformation": string;
+  "panoramaImage": string;
+  "panoramaLatitude": number;
+  "panoramaLongitude": number;
 }

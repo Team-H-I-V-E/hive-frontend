@@ -6,8 +6,6 @@ import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { IonicModule } from "@ionic/angular";
 import { LayoutModule } from "src/app/layouts/layouts.module";
-import { HttpClientModule } from "@angular/common/http";
-
 @NgModule({
     declarations: [
         HeritageListComponent,
@@ -18,7 +16,7 @@ import { HttpClientModule } from "@angular/common/http";
         FormsModule,
         IonicModule,
         HeritageRoutingModule,
-        LayoutModule, 
+        LayoutModule,
     ]
 })
 export class HeritageComponentModule { }

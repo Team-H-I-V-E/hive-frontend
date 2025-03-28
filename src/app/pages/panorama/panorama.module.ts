@@ -5,10 +5,12 @@ import { FormsModule } from '@angular/forms';
 import { PanoramaComponent } from './panorama.component';
 import { PanoramaComponentRoutingModule } from './panorama-routing.module';
 import { LayoutModule } from 'src/app/layouts/layouts.module';
+import { PanoramaDetailComponent } from './panorama-detail/panorama-detail.component';
 
 @NgModule({
   declarations: [
     PanoramaComponent,
+    PanoramaDetailComponent,
   ],
   imports: [
     CommonModule,

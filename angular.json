@@ -31,8 +31,8 @@
                 "output": "./svg"
               }
             ],
-            "styles": ["src/global.scss", "src/theme/variables.scss"],
-            "scripts": []
+            "styles": ["src/global.scss", "src/theme/variables.scss", "node_modules/pannellum/build/pannellum.css"],
+            "scripts": ["node_modules/pannellum/build/pannellum.js"]
           },
           "configurations": {
             "production": {

@@ -21,13 +21,19 @@ export class PanoramaComponent implements OnInit {
 
   closeSidebar(): void {
     this.selectedPanorama = null;
+
+    // 사이드바 닫을 때 지도 다시 맞춤
+    setTimeout(() => {
+      this.map?.relayout();
+    }, 0);
   }
 
   markersData: {
     panoramaId: number;
     latitude: number;
-    longitude: number
-  } [] = [];
+    longitude: number;
+  }[] = [];
+
   private map: any;
 
   constructor(private panoramaService: PanoramaService) {}
@@ -123,21 +129,22 @@ export class PanoramaComponent implements OnInit {
         map: this.map,
       });
 
-      const infowindow = new kakao.maps.InfoWindow({
-        content: `<div style="padding:5px;font-size:12px;">ID: ${markerData.panoramaId}</div>`,
-      });
-
       kakao.maps.event.addListener(marker, "click", () => {
         this.panoramaService.getpanoramaById(markerData.panoramaId).subscribe({
           next: (data) => {
             this.selectedPanorama = data;
             console.log("선택된 파노라마 정보:", data);
+
+            // 사이드바가 열렸을 때 지도 재조정
+            setTimeout(() => {
+              this.map?.relayout();
+            }, 0);
           },
           error: (err) => {
             console.error("파노라마 상세 정보 요청 실패:", err);
           }
         });
-      });      
+      });
     });
   }
 }

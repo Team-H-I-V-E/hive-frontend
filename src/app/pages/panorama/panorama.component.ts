@@ -13,7 +13,6 @@ declare var kakao: any;
   standalone: false,
 })
 export class PanoramaComponent implements OnInit {
-
   selectedPanorama: GetPanoramaByIdResponseData | null = null;
   currentMarkers: any[] = [];
   allPanoramaData: GetPanoramaResponseData[] = [];
@@ -30,7 +29,7 @@ export class PanoramaComponent implements OnInit {
 
   private map: any;
 
-  constructor(private panoramaService: PanoramaService) { }
+  constructor(private panoramaService: PanoramaService) {}
 
   ngOnInit(): void {
     this.loadPanoramaLocations();
@@ -66,8 +65,6 @@ export class PanoramaComponent implements OnInit {
       ? this.allPanoramaData.filter(p => p.Panorama_ruinsAge?.trim() === this.selectedEra.trim())
       : this.allPanoramaData;
 
-    console.log('✅ 필터 결과:', filtered);
-
     this.markersData = filtered.map(item => ({
       panoramaId: item.Panorama_panoramaId,
       ruinsAge: item.Panorama_ruinsAge,
@@ -75,14 +72,14 @@ export class PanoramaComponent implements OnInit {
       longitude: Number(item.Panorama_panoramaLongitude),
     }));
 
-    if (this.markersData.length === 0) {
-      console.warn('⚠️ 필터링된 마커가 없습니다.');
-      this.initMap(36.621434, 127.286799); // 기본 위치로 리셋
-      return;
+    if (!this.map) {
+      // 최초 지도 생성
+      const center = this.getAverageCoordinate(this.markersData);
+      this.loadKakaoMap(center.latitude, center.longitude);
+    } else {
+      // 지도 유지한 채 마커만 다시 그림
+      this.renderMarkers();
     }
-
-    const center = this.getAverageCoordinate(this.markersData);
-    this.loadKakaoMap(center.latitude, center.longitude);
   }
 
   loadPanoramaLocations(): void {
@@ -92,7 +89,7 @@ export class PanoramaComponent implements OnInit {
         return;
       }
 
-      this.allPanoramaData = data; // ✅ 필터 기준 원본 저장
+      this.allPanoramaData = data;
 
       this.markersData = data.map(item => ({
         panoramaId: item.Panorama_panoramaId,
@@ -160,7 +157,11 @@ export class PanoramaComponent implements OnInit {
     };
 
     this.map = new kakao.maps.Map(container, options);
+    this.renderMarkers(); // ✅ 초기 마커 렌더링
+  }
 
+  renderMarkers(): void {
+    // 기존 마커 제거
     this.currentMarkers.forEach(marker => marker.setMap(null));
     this.currentMarkers = [];
 

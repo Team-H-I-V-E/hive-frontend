@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { GetPanoramaByIdResponseData } from 'src/app/models/panorama/panorama-getpanoramabyid-response-data.interface';
 import { PanoramaService } from 'src/app/services/panorama/panorama.service';
+import { GetPanoramaResponseData } from 'src/app/models/panorama/panorama-getpanorama-response-data.interface';
+import { GetPanoramaByIdResponseData } from 'src/app/models/panorama/panorama-getpanoramabyid-response-data.interface';
 import { environment } from "src/environment/environment";
 
 declare var kakao: any;
@@ -14,6 +15,26 @@ declare var kakao: any;
 export class PanoramaComponent implements OnInit {
 
   selectedPanorama: GetPanoramaByIdResponseData | null = null;
+  currentMarkers: any[] = [];
+  allPanoramaData: GetPanoramaResponseData[] = [];
+
+  markersData: {
+    panoramaId: number;
+    ruinsAge: string;
+    latitude: number;
+    longitude: number;
+  }[] = [];
+
+  eras: string[] = ['고조선', '백제', '신라', '고구려', '고려', '조선', '현대'];
+  selectedEra: string = '';
+
+  private map: any;
+
+  constructor(private panoramaService: PanoramaService) { }
+
+  ngOnInit(): void {
+    this.loadPanoramaLocations();
+  }
 
   getImageUrl(): string {
     return environment.apiBaseUrl + this.selectedPanorama?.Panorama_panoramaImage;
@@ -21,55 +42,70 @@ export class PanoramaComponent implements OnInit {
 
   closeSidebar(): void {
     this.selectedPanorama = null;
-  
-    // pannellum viewer DOM 제거
+
     const panoDiv = document.getElementById('pano_div');
-    if (panoDiv) {
-      panoDiv.innerHTML = ''; // canvas 제거
-    }
-  
-    // 지도 다시 맞춤
+    if (panoDiv) panoDiv.innerHTML = '';
+
     setTimeout(() => {
       this.map?.relayout();
     }, 0);
-  }  
-
-  markersData: {
-    panoramaId: number;
-    latitude: number;
-    longitude: number;
-  }[] = [];
-
-  private map: any;
-
-  constructor(private panoramaService: PanoramaService) {}
-
-  ngOnInit(): void {
-    this.loadPanoramaLocations();
   }
 
-  // 1. 데이터 로드 후 평균 좌표로 지도 초기화
-  loadPanoramaLocations() {
+  selectEra(era: string): void {
+    this.selectedEra = era;
+    this.applyFilters();
+  }
+
+  applyFilters(): void {
+    if (this.allPanoramaData.length === 0) {
+      console.warn('⛔ 데이터가 아직 로드되지 않았습니다.');
+      return;
+    }
+
+    const filtered = this.selectedEra
+      ? this.allPanoramaData.filter(p => p.Panorama_ruinsAge?.trim() === this.selectedEra.trim())
+      : this.allPanoramaData;
+
+    console.log('✅ 필터 결과:', filtered);
+
+    this.markersData = filtered.map(item => ({
+      panoramaId: item.Panorama_panoramaId,
+      ruinsAge: item.Panorama_ruinsAge,
+      latitude: Number(item.Panorama_panoramaLatitude),
+      longitude: Number(item.Panorama_panoramaLongitude),
+    }));
+
+    if (this.markersData.length === 0) {
+      console.warn('⚠️ 필터링된 마커가 없습니다.');
+      this.initMap(36.621434, 127.286799); // 기본 위치로 리셋
+      return;
+    }
+
+    const center = this.getAverageCoordinate(this.markersData);
+    this.loadKakaoMap(center.latitude, center.longitude);
+  }
+
+  loadPanoramaLocations(): void {
     this.panoramaService.getPanorama().subscribe((data) => {
       if (!data || data.length === 0) {
         console.warn('받아온 파노라마 데이터가 없습니다.');
         return;
       }
 
+      this.allPanoramaData = data; // ✅ 필터 기준 원본 저장
+
       this.markersData = data.map(item => ({
         panoramaId: item.Panorama_panoramaId,
+        ruinsAge: item.Panorama_ruinsAge,
         latitude: Number(item.Panorama_panoramaLatitude),
         longitude: Number(item.Panorama_panoramaLongitude),
       }));
-
-      console.log('마커 데이터:', this.markersData);
 
       const center = this.getAverageCoordinate(this.markersData);
       this.loadKakaoMap(center.latitude, center.longitude);
     });
   }
 
-  // 2. 평균 좌표 계산
   getAverageCoordinate(data: { latitude: number; longitude: number }[]): { latitude: number; longitude: number } {
     const latSum = data.reduce((sum, d) => sum + d.latitude, 0);
     const lngSum = data.reduce((sum, d) => sum + d.longitude, 0);
@@ -81,8 +117,7 @@ export class PanoramaComponent implements OnInit {
     };
   }
 
-  // 3. 카카오맵 로딩 처리
-  loadKakaoMap(latitude: number, longitude: number) {
+  loadKakaoMap(latitude: number, longitude: number): void {
     if (typeof kakao === "undefined" || !kakao.maps) {
       this.loadKakaoScript()
         .then(() => {
@@ -96,7 +131,6 @@ export class PanoramaComponent implements OnInit {
     }
   }
 
-  // 4. 카카오맵 스크립트 로딩
   loadKakaoScript(): Promise<void> {
     return new Promise((resolve, reject) => {
       if (document.getElementById("kakao-map-script")) {
@@ -113,8 +147,7 @@ export class PanoramaComponent implements OnInit {
     });
   }
 
-  // 5. 지도 초기화 및 마커 표시
-  initMap(latitude: number, longitude: number) {
+  initMap(latitude: number, longitude: number): void {
     const container = document.getElementById("map");
     if (!container) {
       console.error('지도를 그릴 #map 요소를 찾을 수 없습니다.');
@@ -123,12 +156,14 @@ export class PanoramaComponent implements OnInit {
 
     const options = {
       center: new kakao.maps.LatLng(latitude, longitude),
-      level: 6, // 세종시 전체를 볼 수 있도록 적당히 확대
+      level: 6,
     };
 
     this.map = new kakao.maps.Map(container, options);
 
-    // 마커들 렌더링
+    this.currentMarkers.forEach(marker => marker.setMap(null));
+    this.currentMarkers = [];
+
     this.markersData.forEach(markerData => {
       const marker = new kakao.maps.Marker({
         position: new kakao.maps.LatLng(markerData.latitude, markerData.longitude),
@@ -139,18 +174,13 @@ export class PanoramaComponent implements OnInit {
         this.panoramaService.getpanoramaById(markerData.panoramaId).subscribe({
           next: (data) => {
             this.selectedPanorama = data;
-            console.log("선택된 파노라마 정보:", data);
-
-            // 사이드바가 열렸을 때 지도 재조정
-            setTimeout(() => {
-              this.map?.relayout();
-            }, 0);
+            setTimeout(() => this.map?.relayout(), 0);
           },
-          error: (err) => {
-            console.error("파노라마 상세 정보 요청 실패:", err);
-          }
+          error: (err) => console.error("파노라마 상세 정보 요청 실패:", err),
         });
       });
+
+      this.currentMarkers.push(marker);
     });
   }
 }

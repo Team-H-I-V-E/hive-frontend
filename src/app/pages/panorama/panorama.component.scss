@@ -32,3 +32,41 @@ body {
   flex: 1;
   height: 100%;
 }
+
+.era-filter {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 1000;
+
+  &.right {
+    right: 20px; // 오른쪽에 고정
+  }
+
+  .filter-btn {
+    padding: 8px 12px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background-color: #f0f0f0;
+    }
+
+    &.active {
+      background-color: #007bff;
+      color: white;
+      border-color: #007bff;
+    }
+
+    &.clear {
+      font-weight: bold;
+    }
+  }
+}

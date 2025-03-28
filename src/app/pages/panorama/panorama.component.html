@@ -4,11 +4,18 @@
   <div class="panorama-container">
 
     <!-- 사이드바 분리 컴포넌트 -->
-    <app-panorama-detail
-      *ngIf="selectedPanorama"
-      [panorama]="selectedPanorama"
-      (close)="closeSidebar()">
+    <app-panorama-detail *ngIf="selectedPanorama" [panorama]="selectedPanorama" (close)="closeSidebar()">
     </app-panorama-detail>
+
+    <!-- 시대 필터 버튼 (지도 오른쪽 중앙에 고정) -->
+    <div class="era-filter right">
+      <button *ngFor="let era of eras" (click)="selectEra(era)" [class.active]="selectedEra === era" class="filter-btn">
+        {{ era }}
+      </button>
+      <button (click)="selectEra('')" [class.active]="selectedEra === ''" class="filter-btn clear">
+        전체
+      </button>
+    </div>
 
     <!-- 지도 -->
     <div id="map"></div>

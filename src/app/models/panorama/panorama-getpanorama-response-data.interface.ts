@@ -1,5 +1,5 @@
 export interface GetPanoramaResponseData {
-    "panoramaId": number;
-    "panoramaLatitude": number;
-    "panoramaLongitude": number;
+    "Panorama_panoramaId": number;
+    "Panorama_panoramaLatitude": number;
+    "Panorama_panoramaLongitude": number;
 }

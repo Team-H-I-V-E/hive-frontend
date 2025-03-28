@@ -1,7 +1,29 @@
 <app-header></app-header>
 
-<div>
-    <span>
+<!-- 헤더는 app 전체에서 이미 출력되는 걸로 가정 -->
+
+<!-- 페이지 전체 wrapper -->
+<div class="page-container">
+    <!-- 헤더 아래에 지도와 사이드바 -->
+    <div class="panorama-container">
+        <!-- 사이드바 -->
+        <div class="sidebar" *ngIf="selectedPanorama">
+            <div class="sidebar-header">
+                <button class="close-button" (click)="closeSidebar()">×</button>
+            </div>
+
+            <h2>{{ selectedPanorama.Panorama_ruinsName }}</h2>
+            <p><strong>시대:</strong> {{ selectedPanorama.Panorama_ruinsAge }}</p>
+            <p><strong>위치:</strong> {{ selectedPanorama.Panorama_ruinsLocation }}</p>
+            <p><strong>설명:</strong> {{ selectedPanorama.Panorama_ruinsInformation }}</p>
+
+            <img 
+            *ngIf="selectedPanorama" 
+            [src]="getImageUrl()" 
+            />
+        </div>
+
+        <!-- 지도 -->
         <div id="map"></div>
-    </span>
+    </div>
 </div>

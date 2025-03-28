@@ -1,13 +1,62 @@
-html,
-body {
+:host {
+    display: block;
+    height: 100%;
+  }
+  
+  html,
+  body,
+  app-panorama {
     margin: 0;
     padding: 0;
     width: 100%;
     height: 100%;
     overflow: hidden;
-}
-
-#map {
+  }
+  
+  /* ✅ 헤더 제외하고 지도+사이드바만 100vh 차지하도록 */
+  .page-container {
+    height: calc(100vh - 60px); // 🔁 헤더 높이에 맞게 조정 (60px 예시)
     width: 100vw;
-    height: 100vh;
-}
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .panorama-container {
+    display: flex;
+    height: 100%;
+    width: 100%;
+  }
+  
+  .sidebar {
+    width: 300px;
+    background-color: #f8f9fa;
+    padding: 1rem;
+    border-right: 1px solid #ccc;
+    box-sizing: border-box;
+    overflow-y: auto; // ✅ 내용 길어질 경우 스크롤
+  }
+  
+  .sidebar-header {
+    display: flex;
+    justify-content: flex-end;
+  }
+  
+  .close-button {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #333;
+  }
+  
+  .panorama-image {
+    width: 100%;
+    margin-top: 1rem;
+    border-radius: 8px;
+  }
+  
+  #map {
+    flex: 1;
+    height: 100%;
+  }
+  

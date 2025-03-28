@@ -1,10 +1,10 @@
 export interface GetPanoramaByIdResponseData {
-  "panoramaId": number;
-  "ruinsName": string;
-  "ruinsAge": string;
-  "ruinsLocation": string;
-  "ruinsInformation": string;
-  "panoramaImage": string;
-  "panoramaLatitude": number;
-  "panoramaLongitude": number;
+  "Panorama_panoramaId": number;
+  "Panorama_ruinsName": string;
+  "Panorama_ruinsAge": string;
+  "Panorama_ruinsLocation": string;
+  "Panorama_ruinsInformation": string;
+  "Panorama_panoramaImage": string;
+  "Panorama_panoramaLatitude": number;
+  "Panorama_panoramaLongitude": number;
 }

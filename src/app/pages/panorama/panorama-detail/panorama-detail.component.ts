@@ -21,14 +21,20 @@ import { Component, Input, Output, EventEmitter, AfterViewInit, OnChanges } from
     }
   
     loadPanorama(): void {
-      if (this.panorama?.Panorama_panoramaImage) {
-        pannellum.viewer('pano_div', {
-          type: 'equirectangular',
-          panorama: this.panorama.Panorama_panoramaImage,
-          autoLoad: true,
-        });
+        const panoDiv = document.getElementById('pano_div');
+        if (panoDiv) {
+          panoDiv.innerHTML = ''; // 이전 뷰어 제거
+        }
+      
+        if (this.panorama?.Panorama_panoramaImage) {
+          pannellum.viewer('pano_div', {
+            type: 'equirectangular',
+            panorama: this.panorama.Panorama_panoramaImage,
+            autoLoad: true,
+          });
+        }
       }
-    }
+      
   
     onClose(): void {
       this.close.emit(); // 부모에게 닫기 이벤트 전달

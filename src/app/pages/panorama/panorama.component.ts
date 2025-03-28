@@ -21,12 +21,18 @@ export class PanoramaComponent implements OnInit {
 
   closeSidebar(): void {
     this.selectedPanorama = null;
-
-    // 사이드바 닫을 때 지도 다시 맞춤
+  
+    // pannellum viewer DOM 제거
+    const panoDiv = document.getElementById('pano_div');
+    if (panoDiv) {
+      panoDiv.innerHTML = ''; // canvas 제거
+    }
+  
+    // 지도 다시 맞춤
     setTimeout(() => {
       this.map?.relayout();
     }, 0);
-  }
+  }  
 
   markersData: {
     panoramaId: number;

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
 import { PanoramaService } from 'src/app/services/panorama/panorama.service';
+import { GetPanoramaResponseData } from 'src/app/models/panorama/panorama-getpanorama-response-data.interface';
+import { GetPanoramaByIdResponseData } from 'src/app/models/panorama/panorama-getpanoramabyid-response-data.interface';
 import { environment } from "src/environment/environment";
 
 declare var kakao: any;
@@ -11,77 +12,119 @@ declare var kakao: any;
   styleUrls: ['panorama.component.scss'],
   standalone: false,
 })
-
 export class PanoramaComponent implements OnInit {
-  panorama = {
-    panoramaId: 0,
-    ruinsName: '',
-    ruinsAge: '',
-    ruinsLocation: '',
-    ruinsInformation: '',
-    panoramaImage: '',
-    panoramaLatitude: 0,
-    panoramaLongitude: 0,
-  };
+  selectedPanorama: GetPanoramaByIdResponseData | null = null;
+  currentMarkers: any[] = [];
+  allPanoramaData: GetPanoramaResponseData[] = [];
 
-  markersData = [
-    { name: "장소 1", latitude: 37.5665, longitude: 126.9780 },
-    { name: "장소 2", latitude: 37.5651, longitude: 126.9896 },
-    { name: "장소 3", latitude: 37.5702, longitude: 126.9823 }
-  ]; // 예제 데이터, 실제 데이터로 변경 가능
+  markersData: {
+    panoramaId: number;
+    ruinsAge: string;
+    latitude: number;
+    longitude: number;
+  }[] = [];
 
-  constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private panoramaService: PanoramaService
-  ) { }
+  eras: string[] = ['고조선', '백제', '신라', '고구려', '고려', '조선', '현대'];
+  selectedEra: string = '';
 
-  ngOnInit() {
-    const panoramaId = this.route.snapshot.paramMap.get("id");
-    if (panoramaId) {
-      this.loadPanoramaDetail(+panoramaId);
+  private map: any;
+
+  constructor(private panoramaService: PanoramaService) {}
+
+  ngOnInit(): void {
+    this.loadPanoramaLocations();
+  }
+
+  getImageUrl(): string {
+    return environment.apiBaseUrl + this.selectedPanorama?.Panorama_panoramaImage;
+  }
+
+  closeSidebar(): void {
+    this.selectedPanorama = null;
+
+    const panoDiv = document.getElementById('pano_div');
+    if (panoDiv) panoDiv.innerHTML = '';
+
+    setTimeout(() => {
+      this.map?.relayout();
+    }, 0);
+  }
+
+  selectEra(era: string): void {
+    this.selectedEra = era;
+    this.applyFilters();
+  }
+
+  applyFilters(): void {
+    if (this.allPanoramaData.length === 0) {
+      console.warn('⛔ 데이터가 아직 로드되지 않았습니다.');
+      return;
+    }
+
+    const filtered = this.selectedEra
+      ? this.allPanoramaData.filter(p => p.Panorama_ruinsAge?.trim() === this.selectedEra.trim())
+      : this.allPanoramaData;
+
+    this.markersData = filtered.map(item => ({
+      panoramaId: item.Panorama_panoramaId,
+      ruinsAge: item.Panorama_ruinsAge,
+      latitude: Number(item.Panorama_panoramaLatitude),
+      longitude: Number(item.Panorama_panoramaLongitude),
+    }));
+
+    if (!this.map) {
+      // 최초 지도 생성
+      const center = this.getAverageCoordinate(this.markersData);
+      this.loadKakaoMap(center.latitude, center.longitude);
     } else {
-      this.loadUserLocation(); // 데이터가 없으면 현재 위치 기반 지도 로드
+      // 지도 유지한 채 마커만 다시 그림
+      this.renderMarkers();
     }
   }
 
-  loadPanoramaDetail(id: number) {
-    this.panoramaService.getpanoramaById(id).subscribe((data) => {
-      if (!data) return;
+  loadPanoramaLocations(): void {
+    this.panoramaService.getPanorama().subscribe((data) => {
+      if (!data || data.length === 0) {
+        console.warn('받아온 파노라마 데이터가 없습니다.');
+        return;
+      }
 
-      this.panorama = data;
-      this.loadKakaoMap(data.panoramaLatitude, data.panoramaLongitude);
+      this.allPanoramaData = data;
+
+      this.markersData = data.map(item => ({
+        panoramaId: item.Panorama_panoramaId,
+        ruinsAge: item.Panorama_ruinsAge,
+        latitude: Number(item.Panorama_panoramaLatitude),
+        longitude: Number(item.Panorama_panoramaLongitude),
+      }));
+
+      const center = this.getAverageCoordinate(this.markersData);
+      this.loadKakaoMap(center.latitude, center.longitude);
     });
   }
 
-  loadUserLocation() {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const latitude = position.coords.latitude;
-          const longitude = position.coords.longitude;
-          this.loadKakaoMap(latitude, longitude);
-        },
-        () => {
-          console.error("위치 정보를 가져올 수 없습니다.");
-        }
-      );
-    } else {
-      console.error("Geolocation이 지원되지 않습니다.");
-    }
+  getAverageCoordinate(data: { latitude: number; longitude: number }[]): { latitude: number; longitude: number } {
+    const latSum = data.reduce((sum, d) => sum + d.latitude, 0);
+    const lngSum = data.reduce((sum, d) => sum + d.longitude, 0);
+    const count = data.length;
+
+    return {
+      latitude: latSum / count,
+      longitude: lngSum / count,
+    };
   }
 
-  loadKakaoMap(latitude: number, longitude: number) {
+  loadKakaoMap(latitude: number, longitude: number): void {
     if (typeof kakao === "undefined" || !kakao.maps) {
-      this.loadKakaoScript().then(() => {
-        kakao.maps.load(() => {
-          this.initMap(latitude, longitude);
+      this.loadKakaoScript()
+        .then(() => {
+          kakao.maps.load(() => this.initMap(latitude, longitude));
+        })
+        .catch((error) => {
+          console.error("카카오 지도 스크립트 로드 실패:", error);
         });
-      });
     } else {
-      kakao.maps.load(() => {
-        this.initMap(latitude, longitude);
-      });
+      kakao.maps.load(() => this.initMap(latitude, longitude));
     }
   }
 
@@ -95,45 +138,50 @@ export class PanoramaComponent implements OnInit {
       const script = document.createElement("script");
       script.id = "kakao-map-script";
       script.src = `https://dapi.kakao.com/v2/maps/sdk.js?appkey=${environment.kakaoMapApiKey}&libraries=services&autoload=false`;
-
       script.onload = () => resolve();
       script.onerror = () => reject(new Error("카카오 지도 SDK 로드 실패"));
       document.body.appendChild(script);
     });
   }
 
-  initMap(latitude: number, longitude: number) {
+  initMap(latitude: number, longitude: number): void {
     const container = document.getElementById("map");
-    if (!container) return;
+    if (!container) {
+      console.error('지도를 그릴 #map 요소를 찾을 수 없습니다.');
+      return;
+    }
 
     const options = {
       center: new kakao.maps.LatLng(latitude, longitude),
-      level: 3,
+      level: 6,
     };
 
-    const map = new kakao.maps.Map(container, options);
+    this.map = new kakao.maps.Map(container, options);
+    this.renderMarkers(); // ✅ 초기 마커 렌더링
+  }
 
-    // 중심 위치 마커
-    const centerMarker = new kakao.maps.Marker({
-      position: new kakao.maps.LatLng(latitude, longitude),
-      map: map,
-    });
+  renderMarkers(): void {
+    // 기존 마커 제거
+    this.currentMarkers.forEach(marker => marker.setMap(null));
+    this.currentMarkers = [];
 
-    // 리스트 데이터를 기반으로 마커 추가
-    this.markersData.forEach((place) => {
+    this.markersData.forEach(markerData => {
       const marker = new kakao.maps.Marker({
-        position: new kakao.maps.LatLng(place.latitude, place.longitude),
-        map: map,
-      });
-
-      // 마커 클릭 시 정보창 표시
-      const infowindow = new kakao.maps.InfoWindow({
-        content: `<div style="padding:5px;font-size:12px;">${place.name}</div>`,
+        position: new kakao.maps.LatLng(markerData.latitude, markerData.longitude),
+        map: this.map,
       });
 
       kakao.maps.event.addListener(marker, "click", () => {
-        infowindow.open(map, marker);
+        this.panoramaService.getpanoramaById(markerData.panoramaId).subscribe({
+          next: (data) => {
+            this.selectedPanorama = data;
+            setTimeout(() => this.map?.relayout(), 0);
+          },
+          error: (err) => console.error("파노라마 상세 정보 요청 실패:", err),
+        });
       });
+
+      this.currentMarkers.push(marker);
     });
   }
 }

@@ -1,13 +1,72 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 html,
 body {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  font-family: 'Noto Sans KR', sans-serif;
+}
+
+.page-container {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding-top: 60px;
+  box-sizing: border-box;
+}
+
+.panorama-container {
+  display: flex;
+  flex: 1;
+  width: 100%;
+  height: 100%;
 }
 
 #map {
-    width: 100vw;
-    height: 100vh;
+  flex: 1;
+  height: 100%;
+}
+
+.era-filter {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 1000;
+
+  &.right {
+    right: 20px; // 오른쪽에 고정
+  }
+
+  .filter-btn {
+    padding: 8px 12px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background-color: #f0f0f0;
+    }
+
+    &.active {
+      background-color: #007bff;
+      color: white;
+      border-color: #007bff;
+    }
+
+    &.clear {
+      font-weight: bold;
+    }
+  }
 }

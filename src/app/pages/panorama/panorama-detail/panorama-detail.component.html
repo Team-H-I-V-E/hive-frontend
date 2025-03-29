@@ -1,0 +1,15 @@
+<div class="sidebar">
+    <div class="sidebar-header">
+      <button class="close-button" (click)="onClose()">×</button>
+    </div>
+  
+    <h2>{{ panorama.Panorama_ruinsName }}</h2>
+    <p><strong>시대:</strong> {{ panorama.Panorama_ruinsAge }}</p>
+    <p><strong>위치:</strong> {{ panorama.Panorama_ruinsLocation }}</p>
+    <p><strong>설명:</strong> {{ panorama.Panorama_ruinsInformation }}</p>
+  
+    <div class="panorama-viewer" *ngIf="panorama?.Panorama_panoramaImage">
+      <div id="pano_div"></div>
+    </div>
+  </div>
+  

@@ -1,5 +1,5 @@
 import { NgModule } from "@angular/core";
-import { ArticleComponent } from "./article-list/article-list.component";
+import { ArticleListComponent } from "./article-list/article-list.component";
 import { ArticleRoutingModule } from "./article-routing.module";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
@@ -8,7 +8,7 @@ import { LayoutModule } from "src/app/layouts/layouts.module";
 
 @NgModule({
     declarations: [
-        ArticleComponent,
+        ArticleListComponent,
     ],
     imports: [
         CommonModule,
@@ -17,6 +17,6 @@ import { LayoutModule } from "src/app/layouts/layouts.module";
         ArticleRoutingModule,
         LayoutModule,
     ],
-    exports: [ArticleComponent],
+    exports: [ArticleListComponent],
 })
 export class ArticleComponentModule {}

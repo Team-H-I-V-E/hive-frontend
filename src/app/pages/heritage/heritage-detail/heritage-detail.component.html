@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar>
     <ion-title (click)="goToHeritageList()">Heritage</ion-title>
-    <ion-title>{{ heritage?.heritageName }}</ion-title>
+    <ion-title>{{ heritage.heritageName }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -10,6 +10,14 @@
     <h2 class="heritage-title">{{ heritage.heritageName }}</h2>
     <p class="heritage-description">{{ heritage.heritageDescription }}</p>
     <p class="heritage-location"><strong>Location:</strong> {{ heritage.heritageLocation }}</p>
+
+    <!-- 카카오 지도 -->
     <div id="map" class="heritage-map"></div>
+
+    <!-- 3D 모델 뷰어 -->
+    <div class="heritage-3d-container">
+      <h3>3D Model Viewer</h3>
+      <div #rendererContainer class="viewer-container"></div>
+    </div>
   </div>
 </ion-content>

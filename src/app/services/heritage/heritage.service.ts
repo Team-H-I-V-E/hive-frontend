@@ -12,15 +12,19 @@ export class HeritageService {
 
   constructor(private http: HttpClient) {}
 
+  private getHeaders(): HttpHeaders {
+    return new HttpHeaders({ 'Content-Type': 'application/json' });
+  }
+
   // 유산 목록(리스트) 조회
   getHeritages(): Observable<GetHeritagesResponseData[]> {
     const headers = new HttpHeaders({'Content-Type': 'application/json'});
-    return this.http.get<GetHeritagesResponseData[]>(`${this.apiUrl}`,{headers});
+    return this.http.get<GetHeritagesResponseData[]>(`${this.apiUrl}`, { headers: this.getHeaders() });
   }
 
-  // 유산 특정 조회  
+  // 유산 특정 조회 (3D 모델 URL 포함)
   getHeritageById(id: number): Observable<GetHeritagesByIdResponseData> {
     const headers = new HttpHeaders({'Content-Type': 'application/json'});
-    return this.http.get<GetHeritagesByIdResponseData>(`${this.apiUrl}/${id}`,{headers});
+    return this.http.get<GetHeritagesByIdResponseData>(`${this.apiUrl}/${id}`, { headers: this.getHeaders() });
   }
 }

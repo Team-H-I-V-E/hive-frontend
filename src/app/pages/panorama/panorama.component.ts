@@ -24,7 +24,7 @@ export class PanoramaComponent implements OnInit {
     longitude: number;
   }[] = [];
 
-  eras: string[] = ['고조선', '백제', '신라', '고구려', '고려', '조선', '현대'];
+  eras: string[] = ['고조선', '삼국', '고려', '조선', '근대', '현대'];
   selectedEra: string = '';
 
   private map: any;
@@ -153,7 +153,7 @@ export class PanoramaComponent implements OnInit {
 
     const options = {
       center: new kakao.maps.LatLng(latitude, longitude),
-      level: 6,
+      level: 8,
     };
 
     this.map = new kakao.maps.Map(container, options);

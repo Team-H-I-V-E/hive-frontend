@@ -1,15 +1,16 @@
 <div class="sidebar">
-    <div class="sidebar-header">
-      <button class="close-button" (click)="onClose()">×</button>
-    </div>
-  
-    <h2>{{ panorama.Panorama_ruinsName }}</h2>
-    <p><strong>시대:</strong> {{ panorama.Panorama_ruinsAge }}</p>
-    <p><strong>위치:</strong> {{ panorama.Panorama_ruinsLocation }}</p>
-    <p><strong>설명:</strong> {{ panorama.Panorama_ruinsInformation }}</p>
-  
-    <div class="panorama-viewer" *ngIf="panorama?.Panorama_panoramaImage">
-      <div id="pano_div"></div>
+  <div class="sidebar-header">
+    <button class="close-button" (click)="onClose()">닫기</button>
+  </div>
+
+  <h2>{{ panorama.ruinsName }}</h2>
+  <p><strong>시대:</strong> {{ panorama.ruinsAge }}</p>
+  <p><strong>위치:</strong> {{ panorama.ruinsLocation }}</p>
+  <p><strong>설명:</strong> {{ panorama.ruinsInformation }}</p>
+
+  <div class="panorama-viewer" *ngIf="panorama?.panoramaImages?.length">
+    <div *ngFor="let image of panorama.panoramaImages; let i = index">
+      <div [id]="'pano_div_' + i" class="pano-container"></div>
     </div>
   </div>
-  
+</div>

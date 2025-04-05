@@ -1,37 +1,38 @@
 .sidebar {
-    width: 100%;
-    background-color: #f8f9fa;
-    padding: 1rem;
-    border-right: 1px solid #ccc;
-    overflow-y: auto;
-    height: 100%;
-    z-index: 10; // 사이드바가 위로 올라오도록 설정
-    position: relative; // z-index 적용을 위해 필요
-  
-    .sidebar-header {
-      display: flex;
-      justify-content: flex-end;
-  
-      .close-button {
-        background: none;
-        border: none;
-        font-size: 1.5rem;
-        cursor: pointer;
-        color: #333;
-        z-index: 11; // 버튼은 최상위
-        position: relative;
-      }
-    }
-  
-    .panorama-viewer {
-      margin-top: 1rem;
-  
-      #pano_div {
-        width: 100%;
-        height: 400px;
-        position: relative; // 👈 이것도 명시적으로
-        z-index: 1;
-      }
+  width: 400px;
+  background-color: #f8f9fa;
+  padding: 1rem;
+  border-right: 1px solid #ccc;
+  overflow-y: auto;
+  height: 100%;
+  z-index: 10;
+  position: relative;
+
+  .sidebar-header {
+    display: flex;
+    justify-content: flex-end;
+
+    .close-button {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: #333;
+      z-index: 11; // 버튼은 최상위
+      position: relative;
     }
   }
-  
+
+  .panorama-viewer {
+    margin-top: 1rem;
+
+    .pano-container {
+      width: 100%;
+      height: 200px;
+      margin-bottom: 20px;
+      position: relative;
+      z-index: 1;
+      border: 1px solid #ccc;
+    }
+  }
+}

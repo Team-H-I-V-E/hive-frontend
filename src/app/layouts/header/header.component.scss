@@ -1,12 +1,62 @@
-ion-header {
-    background-color: #f8f8f8; // 헤더 배경색
-    ion-toolbar {
-      --background: #ffffff; // 툴바 배경색
-      --color: #000000; // 텍스트 색상
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #231f1f;
+  padding: 1rem 3rem;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.1);
+
+  .logo {
+    display: flex;
+    align-items: center;
+  
+    img {
+      height: 48px;
+      width: auto;
+      filter: brightness(1.3) contrast(1.2);
+      transition: transform 0.3s;
+  
+      &:hover {
+        transform: scale(1.05); // 호버 시 약간 확대 효과
+      }
     }
-    height: 60px;
   }
 
-ion-button {
-  margin-right : 30px;
+  .nav-end {
+    list-style: none;
+    display: flex;
+    gap: 2.5rem;
+    margin: 0;
+    padding: 0;
+
+    li {
+      display: flex;
+      align-items: center;
+    }
+
+    a {
+      position: relative;
+      color: #fff;
+      text-decoration: none;
+      font-size: 1rem;
+      font-weight: 500;
+      padding: 0.5rem 0;
+      transition: all 0.2s ease;
+
+      &:hover {
+        color: #ddd;
+      }
+
+      &.active::after {
+        content: '';
+        position: absolute;
+        bottom: -4px;
+        left: 25%;
+        width: 50%;
+        height: 2px;
+        background-color: #888;
+        border-radius: 1px;
+      }
+    }
+  }
 }

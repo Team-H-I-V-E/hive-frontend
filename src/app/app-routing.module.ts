@@ -6,9 +6,9 @@ import { HomeComponent } from './pages/home/home.component';
 const routes: Routes = [
   {
     path: '',
-    component: HomeComponent,
+    redirectTo: 'home',
+    pathMatch: 'full'
   },
-
   {
     path: 'home',
     loadChildren: () => import('./pages/home/home.module').then( m => m.HomeComponentModule)
@@ -33,10 +33,6 @@ const routes: Routes = [
     path: 'mypage',
     loadChildren: () => import('./pages/mypage/mypage.module').then( m => m.MyPageComponentModule)
   },
-  { 
-    path: 'heritage/heritageList', component: HeritageListComponent 
-  }, 
-
 ];
 
 @NgModule({

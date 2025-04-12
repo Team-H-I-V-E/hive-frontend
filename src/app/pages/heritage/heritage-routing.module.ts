@@ -5,14 +5,14 @@ import { HeritageListComponent } from "./heritage-list/heritage-list.component";
 
 const routes: Routes = [
     {
-        path: 'heritageList',
-        component: HeritageListComponent
+      path: '',
+      component: HeritageListComponent
     },
     {
-        path: 'heritagedetail/:id',
-        component: HeritageDetailComponent
-    },   
-];
+      path: ':id',
+      component: HeritageDetailComponent
+    }
+  ];  
 
 @NgModule({
     imports: [RouterModule.forChild(routes)],

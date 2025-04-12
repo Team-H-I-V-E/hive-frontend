@@ -1,4 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, AfterViewInit, NgZone } from '@angular/core';
+import { Router, NavigationEnd } from '@angular/router';
+
+declare const bootstrap: any;
 
 @Component({
   selector: 'app-header',
@@ -6,4 +9,16 @@ import { Component } from '@angular/core';
   styleUrls: ['./header.component.scss'],
   standalone: false,
 })
-export class HeaderComponent {}
+export class HeaderComponent implements AfterViewInit {
+  constructor(private router: Router) {}
+
+  ngAfterViewInit(): void {
+    this.router.events.subscribe(() => {
+      const offcanvasEl = document.getElementById('mobileMenu');
+      if (offcanvasEl && offcanvasEl.classList.contains('show')) {
+        const bsOffcanvas = bootstrap.Offcanvas.getInstance(offcanvasEl);
+        if (bsOffcanvas) bsOffcanvas.hide();
+      }
+    });
+  }
+}

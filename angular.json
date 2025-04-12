@@ -33,11 +33,13 @@
               }
             ],
             "styles": [
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "src/global.scss",
               "src/theme/variables.scss",
               "node_modules/pannellum/build/pannellum.css"
             ],
             "scripts": [
+              "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js",
               "node_modules/pannellum/build/pannellum.js"
             ]
           },

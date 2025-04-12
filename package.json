@@ -26,6 +26,7 @@
     "@capacitor/haptics": "7.0.0",
     "@capacitor/keyboard": "7.0.0",
     "@capacitor/status-bar": "7.0.0",
+    "bootstrap": "^5.3.5",
     "geolib": "^3.3.4",
     "ionicons": "^7.0.0",
     "pannellum": "^2.5.6",

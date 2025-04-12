@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environment/environment';
 
@@ -8,7 +8,7 @@ import { environment } from 'src/environment/environment';
   styleUrls: ['arexplore.component.scss'],
   standalone: false,
 })
-export class ARExploreComponent implements OnInit {
+export class ARExploreComponent implements OnInit, AfterViewInit {
   private baseUrl = `${environment.apiBaseUrl}/api/arexperience`;
 
   userLatitude: number | null = null;
@@ -22,13 +22,25 @@ export class ARExploreComponent implements OnInit {
     this.getUserLocation();
   }
 
+  ngAfterViewInit() {
+    // 렌더링 후 AR.js가 요소를 인식할 수 있도록 1초 대기
+    setTimeout(() => {
+      console.log('✅ AR.js가 요소를 인식할 수 있음');
+    }, 1000);
+  }
+
   getUserLocation() {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(position => {
         this.userLatitude = position.coords.latitude;
         this.userLongitude = position.coords.longitude;
 
+        // 현재 위치 콘솔 출력
+        console.log('📍 현재 위치:', this.userLatitude, this.userLongitude);
+
         this.loadStamps(); // 위치 얻은 뒤 스탬프 불러오기
+      }, error => {
+        console.error('❌ 위치 정보 가져오기 실패:', error);
       });
     } else {
       alert("브라우저가 위치 정보를 지원하지 않습니다.");
@@ -39,8 +51,8 @@ export class ARExploreComponent implements OnInit {
     this.http.get<any[]>(`${this.baseUrl}/${this.userId}/unacquired-stamps`)
       .subscribe(stamps => {
         this.stamps = stamps;
+        console.log('📦 불러온 스탬프 목록:', this.stamps);
 
-        // 위치 비교해서 획득 조건 충족되면 획득 시도
         this.stamps.forEach(stamp => {
           const distance = this.calculateDistance(
             this.userLatitude!,
@@ -49,7 +61,9 @@ export class ARExploreComponent implements OnInit {
             stamp.stampLongitude
           );
 
-          if (distance <= 20) {
+          console.log(`📏 스탬프 ${stamp.stampID}까지 거리: ${distance}m`);
+
+          if (distance <= 1000) {
             this.acquireStamp(stamp.stampID);
           }
         });

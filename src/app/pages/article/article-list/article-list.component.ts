@@ -4,6 +4,11 @@ import { Article } from 'src/app/models/article/article.model';
 import { ArticleService } from 'src/app/services/article/aritlce.service';
 import { environment } from 'src/environment/environment';
 
+interface ArticleWithUI extends Article {
+  currentImageIndex: number;
+  userProfileImage?: string;
+  nickname?: string;
+}
 
 @Component({
   selector: 'app-article-list',
@@ -12,7 +17,7 @@ import { environment } from 'src/environment/environment';
   standalone: false,
 })
 export class ArticleListComponent implements OnInit {
-  articles: Article[] = [];
+  articles: ArticleWithUI[] = []; // ✅ 타입 사용 가능
   environment = environment;
 
   constructor(
@@ -21,14 +26,29 @@ export class ArticleListComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.articleService.getArticles().subscribe((res) => {
-      this.articles = res;
-      console.log('불러온 게시글:', this.articles);
-      const article = this.articles[0];
+    this.articleService.getArticles().subscribe((res: Article[]) => {
+      this.articles = res.map(article => ({
+        ...article,
+        currentImageIndex: 0
+      }));
     });
   }
 
   goToDetail(articleId: number) {
     this.router.navigate(['/articles/detail', articleId]);
+  }
+
+  prevImage(article: ArticleWithUI, event: MouseEvent) {
+    event.stopPropagation();
+    if (article.currentImageIndex > 0) {
+      article.currentImageIndex--;
+    }
+  }
+
+  nextImage(article: ArticleWithUI, event: MouseEvent) {
+    event.stopPropagation();
+    if (article.currentImageIndex < article.articleImages.length - 1) {
+      article.currentImageIndex++;
+    }
   }
 }

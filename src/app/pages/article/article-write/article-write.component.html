@@ -1,0 +1,20 @@
+<form [formGroup]="articleForm" (ngSubmit)="submitArticle()" class="article-write-form">
+    <input formControlName="title" type="text" placeholder="제목" class="title-input" />
+    <textarea formControlName="content" rows="6" placeholder="내용" class="content-textarea"></textarea>
+
+    <div class="dropzone" (dragover)="onDragOver($event)" (dragleave)="onDragLeave($event)" (drop)="onDrop($event)"
+        [class.dragging]="isDragging">
+        <p>이미지를 드래그하거나 클릭해서 업로드하세요</p>
+        <button type="button" (click)="triggerFileSelect()" class="upload-btn">파일 선택</button>
+        <input type="file" accept="image/*" hidden #fileInput (change)="onImageSelected($event)" />
+    </div>
+
+    <div class="preview-wrapper" *ngIf="imagePreviews.length > 0">
+        <div class="preview-box" *ngFor="let preview of imagePreviews; let i = index">
+            <img [src]="preview" alt="미리보기" />
+            <button class="remove-btn" (click)="removeImage(i)"><i class="bi bi-x-circle"></i></button>
+        </div>
+    </div>
+
+    <button type="submit" [disabled]="!articleForm.valid" class="submit-button">등록</button>
+</form>

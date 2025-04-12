@@ -43,7 +43,8 @@
     .article-image img {
         width: 100%;
         height: 350px;
-        object-fit: cover;
+        object-fit: cover; // 이미지 잘라서 고정 비율 유지
+        border-radius: 4px;
     }
 
     .article-actions {
@@ -81,5 +82,67 @@
         padding: 0.5rem 1rem;
         font-size: 0.8rem;
         color: #777;
+    }
+}
+
+.write-fixed-btn {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background-color: #5e4521; // 갈색 배경
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px; // 아이콘 크기 지정
+    border: none;
+    z-index: 1000;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+
+    i {
+        pointer-events: none;
+        color: #fff;
+        font-size: 22px; // 아이콘이 0이 아니도록 명시
+    }
+
+    &:hover {
+        background-color: #7a5d30;
+    }
+}
+
+.slider-wrapper {
+    position: relative;
+
+    .image-counter {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        background: rgba(0, 0, 0, 0.5);
+        color: white;
+        padding: 2px 6px;
+        font-size: 0.75rem;
+        border-radius: 8px;
+    }
+
+    .nav-btn {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(0, 0, 0, 0.3);
+        color: white;
+        border: none;
+        padding: 6px 10px;
+        cursor: pointer;
+    }
+
+    .prev {
+        left: 5px;
+    }
+
+    .next {
+        right: 5px;
     }
 }

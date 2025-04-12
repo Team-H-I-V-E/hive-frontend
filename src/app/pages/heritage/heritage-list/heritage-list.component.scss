@@ -1,31 +1,74 @@
-ion-header {
-    --background: #f8f4e1; 
+.heritage-section {
+  background-color: #faf9f3; // 바탕색 지정
+  padding: 3rem 1rem;
+
+  .heritage-header {
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto 2rem;
+
+    h2 {
+      font-weight: bold;
+      font-size: 1.5rem;
+      line-height: 1.4;
+      margin: 4rem 0 0.3rem; 
+    }
+
+    hr {
+      border: 0;
+      height: 1px;
+      background-color: #000;
+      margin: 0 auto 1.5rem; 
+      width: 60%;
+    }
   }
-  
-  ion-toolbar {
-    --color: #6f4f37; 
+
+
+  p {
+    color: #777;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    word-break: keep-all;
+    white-space: normal;
   }
-  
-  .heritage-item {
-    background-color: #f9f2d6; 
-    margin-bottom: 10px;
-    border-radius: 8px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+
+.heritage-grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.heritage-card {
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  overflow: hidden;
+  transition: transform 0.2s ease;
+
+  &:hover {
+    transform: translateY(-4px);
   }
-  
-  .heritage-item:hover {
-    background-color: #f5e6b3;
+
+  img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    display: block;
   }
-  
-  .heritage-title {
-    font-size: 18px;
-    color: #6f4f37;
-    font-weight: bold;
+
+  .heritage-content {
+    padding: 1rem;
+
+    h5 {
+      margin: 0;
+      font-weight: bold;
+      font-size: 1rem;
+    }
   }
+
   
-  .heritage-description {
-    font-size: 14px;
-    color: #8e7d5b;
-    margin-top: 4px;
-  }
-  
+}

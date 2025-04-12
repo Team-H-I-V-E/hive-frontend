@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ARExploreComponentRoutingModule } from './arexplore-routing.module';
@@ -16,5 +16,6 @@ import { LayoutModule } from 'src/app/layouts/layouts.module';
     LayoutModule,
   ],
   exports: [ARExploreComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class ARExploreComponentModule {}

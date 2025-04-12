@@ -1,13 +1,31 @@
 <div class="article-feed">
-    <div class="article-list" *ngFor="let article of articles" (click)="goToDetail(article.articleId)">
+    <div class="article-list" *ngFor="let article of articles">
         <div class="article-header">
-            <img class="avatar" [src]="'assets/no-image.png'" alt="user" />
-            <span class="username">User {{ article.userId || '알 수 없음' }}</span>
+            <img class="avatar" [src]="article.userProfileImage || 'assets/no-image.png'" alt="user" />
+            <span class="username">{{ article.nickname || '알 수 없음' }}</span>
         </div>
 
-        <div class="article-image" *ngIf="article.articleImages?.length">
-            <img *ngIf="article.articleImages?.length"
-                [src]="environment.apiBaseUrl + article.articleImages[0].articleImage" alt="article image" />
+        <!-- Bootstrap Carousel 사용 -->
+        <div id="carousel-{{ article.articleId }}" class="carousel slide" data-bs-ride="carousel"
+            *ngIf="(article.articleImages?.length ?? 0) > 0">
+            <div class="carousel-inner">
+                <div class="carousel-item" *ngFor="let image of article.articleImages; let i = index"
+                    [ngClass]="{ active: i === 0 }">
+                    <img [src]="environment.apiBaseUrl + '/uploads/article/' + image.articleImage" class="d-block w-100"
+                        alt="slide image" />
+                </div>
+            </div>
+
+            <button class="carousel-control-prev" [attr.data-bs-target]="'#carousel-' + article.articleId"
+                [attr.data-bs-slide]="'prev'">
+                <span class="carousel-control-prev-icon"></span>
+            </button>
+
+            <button class="carousel-control-next" [attr.data-bs-target]="'#carousel-' + article.articleId"
+                [attr.data-bs-slide]="'next'">
+                <span class="carousel-control-next-icon"></span>
+            </button>
+
         </div>
 
         <div class="article-actions">
@@ -25,3 +43,7 @@
         <div class="article-location">📍 세종특별자치시</div>
     </div>
 </div>
+
+<button class="write-fixed-btn" routerLink="/article/write">
+    <i class="bi bi-pencil"></i>
+</button>

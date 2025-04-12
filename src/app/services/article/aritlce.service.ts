@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Article } from 'src/app/models/article/article.model';
-import { CreateArticleDto } from 'src/app/models/article/create-article.dto';
 import { UpdateArticleDto } from 'src/app/models/article/update-article.dto';
 
 @Injectable({
@@ -23,9 +22,9 @@ export class ArticleService {
     return this.http.get<Article>(`${this.API_URL}/detail/${id}`);
   }
 
-  // 게시글 작성
-  createArticle(dto: CreateArticleDto): Observable<Article> {
-    return this.http.post<Article>(`${this.API_URL}/`, dto);
+  // ✅ 게시글 작성 (FormData 버전)
+  createArticle(formData: FormData): Observable<Article> {
+    return this.http.post<Article>(`${this.API_URL}/`, formData);
   }
 
   // 게시글 수정

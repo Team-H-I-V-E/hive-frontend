@@ -1,8 +1,14 @@
 <div class="custom-ar-page">
-    <div id="location">위치: </div>
-  
-    <a-scene embedded arjs="sourceType: webcam; debugUIEnabled: false;">
-      <a-box color="yellow" gps-entity-place="latitude: 36.6214218; longitude: 127.2867893"></a-box>
-      <a-camera gps-camera rotation-reader></a-camera>
-    </a-scene>
+  <div id="location">위치: {{ userLatitude }}, {{ userLongitude }}</div>
+  <div *ngFor="let stamp of stamps">
+    <p>{{ stamp.stampID }} - {{ stamp.stampLatitude }}, {{ stamp.stampLongitude }}</p>
+  </div>  
+  <a-scene embedded arjs="sourceType: webcam; debugUIEnabled: false;">
+    <a-box *ngFor="let stamp of stamps"
+       color="yellow"
+       [attr.gps-entity-place]="'latitude: ' + stamp.stampLatitude + '; longitude: ' + stamp.stampLongitude">
+    </a-box>
+
+    <a-camera gps-camera rotation-reader></a-camera>
+  </a-scene>
 </div>

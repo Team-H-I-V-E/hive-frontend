@@ -3,6 +3,7 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { HeritageListComponent } from './pages/heritage/heritage-list/heritage-list.component';
 import { HomeComponent } from './pages/home/home.component';
 import { LayoutComponent } from './layouts/layouts.component';
+import { HeritageDetailComponent } from './pages/heritage/heritage-detail/heritage-detail.component';
 
 const routes: Routes = [
   {
@@ -33,7 +34,20 @@ const routes: Routes = [
       {
         path: 'mypage',
         loadChildren: () => import('./pages/mypage/mypage.module').then(m => m.MyPageComponentModule)
-      }
+      },
+      {
+        path: 'heritage/heritagedetail/:id',
+        component: HeritageDetailComponent
+      },
+      {
+        path: 'heritage',
+        children: [
+          {
+            path: 'heritagedetail/:id',
+            component: HeritageDetailComponent
+          }
+        ]
+      },
     ]
   }
 ];

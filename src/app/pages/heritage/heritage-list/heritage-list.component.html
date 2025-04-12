@@ -1,17 +1,28 @@
-<!-- <ion-header>
-  <ion-toolbar>
-    <ion-title>Heritage List</ion-title>
-  </ion-toolbar>
-</ion-header>
+<div class="heritage-section">
+  <div class="heritage-header">
+    <h2>Heritage Collection</h2>
+    <hr />
+    <p>
+      This feature allows users to explore artifacts in 3D from various angles, providing an immersive experience.
+      It also provides information on the artifact’s description, story, and location for a deeper understanding.
+    </p>
+  </div>
 
-<ion-content>
-  <ion-list>
-    <ion-item *ngFor="let heritage of heritages" (click)="goToHeritageDetail(heritage.heritageId)"
-      class="heritage-item">
-      <ion-label>
-        <h2 class="heritage-title">{{ heritage.heritageName }}</h2>
-        <p class="heritage-description">{{ heritage.heritageDescription }}</p>
-      </ion-label>
-    </ion-item>
-  </ion-list>
-</ion-content> -->
+  <div class="heritage-grid-container">
+    <div 
+      class="heritage-card" 
+      *ngFor="let heritage of heritages" 
+      (click)="goToHeritageDetail(heritage.heritageId)">
+      
+      <img 
+        src="'assets/images/default.jpg'" 
+        alt="heritage.heritageName"
+      />
+      
+      <div class="heritage-content">
+        <h5>{{ heritage.heritageName || '이름 없음' }}</h5>
+      </div>
+    </div>
+  </div>
+</div>
+

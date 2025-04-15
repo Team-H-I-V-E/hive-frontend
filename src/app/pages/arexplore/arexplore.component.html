@@ -11,7 +11,7 @@
     <!-- 스탬프의 위치에 맞게 박스 표시 -->
     <a-box *ngFor="let stamp of stamps"
            color="yellow"
-           gps-entity-place="'latitude: ' + stamp.stampLatitude + '; longitude: ' + stamp.stampLongitude">
+           [attr.gps-entity-place]="'latitude: ' + stamp.stampLatitude + '; longitude: ' + stamp.stampLongitude">
     </a-box>
 
     <!-- 카메라 설정 -->

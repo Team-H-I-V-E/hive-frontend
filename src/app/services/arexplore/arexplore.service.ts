@@ -15,9 +15,10 @@ export class ArExploreService {
 
   // 스탬프 획득 요청
   acquireStamp(userId: number, stampId: number, lat: number, lng: number) {
-    return this.http.post(`${this.baseUrl}/${userId}/${stampId}`, {
+    const ret = this.http.post(`${this.baseUrl}/${userId}/${stampId}`, {
       userLatitude: lat,
       userLongitude: lng,
     });
+    return ret;
   }
 }

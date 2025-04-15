@@ -19,7 +19,29 @@ export class ARExploreComponent implements OnInit, AfterViewInit {
   constructor(private http: HttpClient) {}
 
   ngOnInit() {
-    this.getUserLocation();
+    this.stamps = [
+      {
+        stampID: 9,
+        stampImage: 'http://example.com/image9.png',
+        stampLatitude: 36.621187,
+        stampLongitude: 127.286557
+      }
+    ]
+    // this.getUserLocation();
+
+    this.userLatitude = 36.62118;
+    this.userLongitude = 127.28655;
+
+    this.stamps.forEach(stamp => {
+      const distance = this.calculateDistance(
+        this.userLatitude!,
+        this.userLongitude!,
+        stamp.stampLatitude,
+        stamp.stampLongitude
+      );
+
+      console.log(`📏 스탬프 ${stamp.stampID}까지 거리: ${distance}m`);
+    });
   }
 
   ngAfterViewInit() {
@@ -75,7 +97,7 @@ export class ARExploreComponent implements OnInit, AfterViewInit {
       userLatitude: this.userLatitude,
       userLongitude: this.userLongitude
     }).subscribe({
-      next: (res) => console.log('획득 성공:', res),
+      next: (res) => alert(res),
       error: (err) => console.error('획득 실패:', err)
     });
   }

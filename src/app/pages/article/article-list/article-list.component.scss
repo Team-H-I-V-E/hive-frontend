@@ -1,148 +1,137 @@
-.article-feed {
-    margin-top: 60px;
-    min-height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+// 배경 색 전체 통일
+:host {
+    display: block;
+    background-color: #fdfbf7;
+}
+
+.article-grid {
+    padding: 5rem 2rem 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
     background: #fdfbf7;
+
+    .article-card {
+        background: #fff;
+        border-radius: 12px;
+        overflow: hidden;
+        border: 1px solid #ddd;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+        transition: transform 0.2s ease;
+
+        &:hover {
+            transform: translateY(-3px);
+        }
+
+        .article-image {
+            width: 100%;
+            aspect-ratio: 4 / 3;
+            background: #f0f0f0;
+
+            img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+        }
+
+        .carousel-control-prev,
+        .carousel-control-next {
+            background: none;
+            filter: drop-shadow(0 0 2px #333);
+            width: auto;
+            height: auto;
+        }
+
+        .carousel-control-prev-icon,
+        .carousel-control-next-icon {
+            background-size: 100% 100%;
+            width: 24px;
+            height: 24px;
+        }
+
+        .article-caption {
+            padding: 0.75rem 1rem;
+
+            .article-user {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+
+                .username {
+                    font-weight: bold;
+                    font-size: 0.9rem;
+                }
+
+                span {
+                    display: flex;
+                    gap: 0.5rem;
+
+                    i {
+                        font-size: 1.1rem;
+                        color: #888;
+                        cursor: pointer;
+
+                        &:hover {
+                            color: #5e4521;
+                        }
+                    }
+                }
+            }
+
+            .title {
+                font-size: 0.95rem;
+                color: #333;
+                margin: 0.3rem 0 0.6rem;
+            }
+
+            .meta-row {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+
+                .date {
+                    font-size: 0.8rem;
+                    color: #aaa;
+                }
+
+                .location {
+                    font-size: 0.85rem;
+                    color: #5e4521;
+                    text-align: right;
+                    flex-shrink: 0;
+                }
+            }
+        }
+    }
 }
 
-
-.article-list {
-    width: 100%;
-    max-width: 500px;
-    background: #fff;
-    border-radius: 12px;
-    border: 1px solid #ddd;
-    overflow: hidden;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-    transition: transform 0.2s ease;
-
-    &:hover {
-        transform: scale(1.01);
-    }
-
-    .article-header {
-        display: flex;
-        align-items: center;
-        padding: 1rem;
-
-        .avatar {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            margin-right: 0.75rem;
-        }
-
-        .username {
-            font-weight: bold;
-            font-size: 0.9rem;
-        }
-    }
-
-    .article-image img {
-        width: 100%;
-        height: 350px;
-        object-fit: cover; // 이미지 잘라서 고정 비율 유지
-        border-radius: 4px;
-    }
-
-    .article-actions {
-        display: flex;
-        gap: 1rem;
-        padding: 0.75rem 1rem;
-        font-size: 1.2rem;
-        color: #555;
-    }
-
-    .article-caption {
-        padding: 0 1rem;
-
-        strong {
-            display: block;
-            font-size: 1rem;
-            margin: 0.5rem 0;
-        }
-
-        p {
-            margin: 0;
-            font-size: 0.9rem;
-            color: #444;
-        }
-
-        .date {
-            font-size: 0.75rem;
-            color: #aaa;
-            display: block;
-            margin-top: 0.5rem;
-        }
-    }
-
-    .article-location {
-        padding: 0.5rem 1rem;
-        font-size: 0.8rem;
-        color: #777;
-    }
-}
-
+// 작성 버튼 1.3배 확대
 .write-fixed-btn {
     position: fixed;
     bottom: 2rem;
     right: 2rem;
-    width: 56px;
-    height: 56px;
+    width: 72.8px; // 56 * 1.3
+    height: 72.8px;
     border-radius: 50%;
-    background-color: #5e4521; // 갈색 배경
+    background-color: #5e4521;
     color: #fff;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 24px; // 아이콘 크기 지정
+    font-size: 30px;
     border: none;
     z-index: 1000;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
 
     i {
         pointer-events: none;
-        color: #fff;
-        font-size: 22px; // 아이콘이 0이 아니도록 명시
+        font-size: 28px;
     }
 
     &:hover {
         background-color: #7a5d30;
-    }
-}
-
-.slider-wrapper {
-    position: relative;
-
-    .image-counter {
-        position: absolute;
-        top: 8px;
-        right: 8px;
-        background: rgba(0, 0, 0, 0.5);
-        color: white;
-        padding: 2px 6px;
-        font-size: 0.75rem;
-        border-radius: 8px;
-    }
-
-    .nav-btn {
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        background: rgba(0, 0, 0, 0.3);
-        color: white;
-        border: none;
-        padding: 6px 10px;
-        cursor: pointer;
-    }
-
-    .prev {
-        left: 5px;
-    }
-
-    .next {
-        right: 5px;
     }
 }

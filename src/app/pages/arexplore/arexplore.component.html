@@ -1,10 +1,8 @@
 <div class="custom-ar-page">
-  <div id="location">위치: {{ userLatitude }}, {{ userLongitude }}</div>
-  
-  <!-- 위치가 정상적으로 출력되는지 확인 -->
-  <div *ngFor="let stamp of stamps">
-    <p>{{ stamp.stampID }} - {{ stamp.stampLatitude }}, {{ stamp.stampLongitude }}</p>
-  </div>  
+  <div id="location"> 
+    <p>📍유저 위치: {{ userLatitude }}, {{ userLongitude }}</p>
+    <p *ngFor="let stamp of stamps"> 🧭 스탬프 {{ stamp.stampID }} 위치: {{ stamp.stampLatitude }}, {{ stamp.stampLongitude }}</p>
+  </div>
   
   <!-- AR.js 씬 -->
   <a-scene embedded arjs="sourceType: webcam; debugUIEnabled: false;">

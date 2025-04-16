@@ -23,14 +23,14 @@ export class ARExploreComponent implements OnInit, AfterViewInit {
       {
         stampID: 9,
         stampImage: 'http://example.com/image9.png',
-        stampLatitude: 36.621187,
-        stampLongitude: 127.286557
+        stampLatitude: 37.621059,
+        stampLongitude: 127.058259
       }
     ]
     // this.getUserLocation();
 
-    this.userLatitude = 36.62118;
-    this.userLongitude = 127.28655;
+    this.userLatitude = 37.621059;
+    this.userLongitude = 127.058259;
 
     this.stamps.forEach(stamp => {
       const distance = this.calculateDistance(

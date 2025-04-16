@@ -1,6 +1,7 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environment/environment';
+import { Stamp } from 'src/app/models/arexplore/stamp.model';
 
 @Component({
   selector: 'app-arexplore',
@@ -13,7 +14,7 @@ export class ARExploreComponent implements OnInit, AfterViewInit {
 
   userLatitude: number | null = null;
   userLongitude: number | null = null;
-  stamps: any[] = [];
+  stamps: Stamp[] = [];
   userId = 1;
 
   constructor(private http: HttpClient) {}
@@ -27,10 +28,8 @@ export class ARExploreComponent implements OnInit, AfterViewInit {
         stampLongitude: 127.058259
       }
     ]
-    // this.getUserLocation();
 
-    this.userLatitude = 37.621059;
-    this.userLongitude = 127.058259;
+    this.getUserLocation();
 
     this.stamps.forEach(stamp => {
       const distance = this.calculateDistance(
@@ -52,22 +51,22 @@ export class ARExploreComponent implements OnInit, AfterViewInit {
   }
 
   getUserLocation() {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(position => {
-        this.userLatitude = position.coords.latitude;
-        this.userLongitude = position.coords.longitude;
+  if (navigator.geolocation) {
+    navigator.geolocation.watchPosition(position => {
+      this.userLatitude = position.coords.latitude;
+      this.userLongitude = position.coords.longitude;
 
-        // 현재 위치 콘솔 출력
-        console.log('📍 현재 위치:', this.userLatitude, this.userLongitude);
+      console.log('📍 실시간 위치:', this.userLatitude, this.userLongitude);
 
-        this.loadStamps(); // 위치 얻은 뒤 스탬프 불러오기
-      }, error => {
-        console.error('❌ 위치 정보 가져오기 실패:', error);
-      });
-    } else {
-      alert("브라우저가 위치 정보를 지원하지 않습니다.");
-    }
+      this.loadStamps();
+    }, error => {
+      console.error('❌ 위치 정보 가져오기 실패:', error);
+    });
+  } else {
+    alert("브라우저가 위치 정보를 지원하지 않습니다.");
   }
+}
+
 
   loadStamps() {
     this.http.get<any[]>(`${this.baseUrl}/${this.userId}/unacquired-stamps`)

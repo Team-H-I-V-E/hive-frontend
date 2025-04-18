@@ -4,6 +4,7 @@ import { HeritageListComponent } from './pages/heritage/heritage-list/heritage-l
 import { HomeComponent } from './pages/home/home.component';
 import { LayoutComponent } from './layouts/layouts.component';
 import { HeritageDetailComponent } from './pages/heritage/heritage-detail/heritage-detail.component';
+import { Heritage3DViewerComponent } from './pages/heritage/heritage3d-viewer/heritage3d-viewer.component';
 
 const routes: Routes = [
   {
@@ -48,6 +49,8 @@ const routes: Routes = [
           }
         ]
       },
+      { path: 'heritage-viewer/:id', component: Heritage3DViewerComponent },
+
     ]
   }
 ];

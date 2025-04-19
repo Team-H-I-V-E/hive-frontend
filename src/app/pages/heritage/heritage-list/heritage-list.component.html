@@ -13,12 +13,9 @@
       class="heritage-card" 
       *ngFor="let heritage of heritages" 
       (click)="goToHeritageDetail(heritage.heritageId)">
-      
-      <img 
-        src="'assets/images/default.jpg'" 
-        alt="heritage.heritageName"
-      />
-      
+
+      <img [src]="'http://localhost:3000' + heritage.heritageImageUrl" alt="heritage.heritageName" />
+
       <div class="heritage-content">
         <h5>{{ heritage.heritageName || '이름 없음' }}</h5>
       </div>

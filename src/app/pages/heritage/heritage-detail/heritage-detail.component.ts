@@ -16,12 +16,13 @@ declare var kakao: any;
   standalone: false
 })
 export class HeritageDetailComponent implements OnInit, AfterViewInit {
-  show3DModel = false; 
+  show3DModel = false;
   @ViewChild("rendererContainer", { static: false }) rendererContainer!: ElementRef;
   heritage: GetHeritagesByIdResponseData = {
     heritageId: 0,
     heritageName: '',
     heritageDescription: '',
+    heritageYear: '',
     heritageLocation: '',
     heritageLatitude: 0,
     heritageLongitude: 0,
@@ -29,6 +30,8 @@ export class HeritageDetailComponent implements OnInit, AfterViewInit {
       heritage3dModelId: 0,
       modelFileUrl: ''
     },
+    heritageImageUrl: ''
+
   };
 
   private scene!: THREE.Scene;
@@ -52,10 +55,10 @@ export class HeritageDetailComponent implements OnInit, AfterViewInit {
   ngAfterViewInit() {
     console.log("컨테이너 DOM:", this.rendererContainer.nativeElement);
     const container = this.rendererContainer.nativeElement;
-    console.log("사이즈:", container.offsetWidth, container.offsetHeight); 
-  
+    console.log("사이즈:", container.offsetWidth, container.offsetHeight);
+
   }
-  
+
   loadHeritageDetail(heritageId: number) {
     this.heritageService.getHeritageById(heritageId).subscribe((data) => {
       console.log("데이터:", data); // 데이터 확인
@@ -126,22 +129,25 @@ export class HeritageDetailComponent implements OnInit, AfterViewInit {
   initThreeJS() {
     this.scene = new THREE.Scene();
     this.scene.background = new THREE.Color(0xdddddd);
-  
+
     const container = this.rendererContainer.nativeElement;
     const width = container.offsetWidth;
     const height = container.offsetHeight;
-  
+
     this.camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
     this.camera.position.set(0, 2, 5);
     this.camera.lookAt(0, 0, 0);
-  
+
     this.renderer = new THREE.WebGLRenderer({ antialias: true });
     this.renderer.setSize(width, height); // width, height 꼭 지정
     container.appendChild(this.renderer.domElement);
-  
+
     const light = new THREE.DirectionalLight(0xffffff, 1);
     light.position.set(10, 10, 10);
     this.scene.add(light);
+
+    const ambientLight = new THREE.AmbientLight(0xffffff, 4.7);
+    this.scene.add(ambientLight);
 
     // OrbitControls
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
@@ -151,11 +157,11 @@ export class HeritageDetailComponent implements OnInit, AfterViewInit {
     this.controls.zoomSpeed = 0.5;
     this.controls.minDistance = 0.5;
     this.controls.maxDistance = 100;
-  
+
     this.animate();
   }
-  
-  
+
+
 
   loadModel(url: string) {
     const loader = new GLTFLoader();
@@ -175,7 +181,17 @@ export class HeritageDetailComponent implements OnInit, AfterViewInit {
     loader.load(
       absoluteUrl,
       (gltf) => {
-        this.scene.add(gltf.scene);
+        const model = gltf.scene;
+
+        // 크기 조절
+        model.scale.set(6, 6, 6); 
+
+        // 위치 중앙으로 조정
+        const box = new THREE.Box3().setFromObject(model);
+        const center = box.getCenter(new THREE.Vector3());
+        model.position.sub(center); // 모델 중심을 원점으로 이동
+
+        this.scene.add(model);
         console.log("✅ GLB 모델 로드 성공");
       },
       undefined,
@@ -183,22 +199,23 @@ export class HeritageDetailComponent implements OnInit, AfterViewInit {
         console.error("❌ GLB 모델 로드 실패:", error);
       }
     );
+
   }
 
   animate() {
     requestAnimationFrame(() => this.animate());
-  
+
     if (this.controls) {
       this.controls.update();
     }
-  
+
     if (this.renderer && this.scene && this.camera) {
       this.renderer.render(this.scene, this.camera);
     } else {
       console.warn("렌더 요소가 준비되지 않았습니다");
     }
   }
-  
+
   goToHeritageList() {
     this.router.navigate([`/heritage/heritageList`]);
   }
@@ -206,7 +223,7 @@ export class HeritageDetailComponent implements OnInit, AfterViewInit {
   view3DModel() {
     console.log("3D View 클릭됨!");
     this.show3DModel = true;
-  
+
     // 0ms보다 조금 더 여유 있는 타이밍으로 DOM이 확실히 생성된 후 실행
     setTimeout(() => {
       // 컨테이너가 완전히 DOM에 올라왔는지 확인
@@ -214,18 +231,18 @@ export class HeritageDetailComponent implements OnInit, AfterViewInit {
         console.error("rendererContainer가 아직 DOM에 없습니다!");
         return;
       }
-      
+
       const container = this.rendererContainer.nativeElement;
       const w = container.offsetWidth;
       const h = container.offsetHeight;
       console.log("렌더링 div 사이즈 확인:", w, h);
-  
+
       if (w === 0 || h === 0) {
         console.warn("렌더링 컨테이너 크기가 0입니다! CSS를 확인하세요.");
       }
-  
+
       this.initThreeJS();
-  
+
       const modelUrl = this.heritage.heritage3DModel?.modelFileUrl;
       if (modelUrl) {
         const absoluteUrl = modelUrl.startsWith("http") ? modelUrl : `http://localhost:3000${modelUrl}`;
@@ -233,8 +250,10 @@ export class HeritageDetailComponent implements OnInit, AfterViewInit {
       }
     }, 100);
   }
-  
-  
-  
-  
+
+  goTo3DViewer() {
+    this.router.navigate(['/heritage-viewer', this.heritage.heritageId]);
+  }
+
+
 }

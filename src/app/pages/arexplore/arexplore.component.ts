@@ -20,27 +20,9 @@ export class ARExploreComponent implements OnInit, AfterViewInit {
   constructor(private http: HttpClient) {}
 
   ngOnInit() {
-    this.stamps = [
-      {
-        stampID: 9,
-        stampImage: 'http://example.com/image9.png',
-        stampLatitude: 37.621059,
-        stampLongitude: 127.058259
-      }
-    ]
 
     this.getUserLocation();
-
-    this.stamps.forEach(stamp => {
-      const distance = this.calculateDistance(
-        this.userLatitude!,
-        this.userLongitude!,
-        stamp.stampLatitude,
-        stamp.stampLongitude
-      );
-
-      console.log(`📏 스탬프 ${stamp.stampID}까지 거리: ${distance}m`);
-    });
+    console.log('🚀 컴포넌트 초기화됨');
   }
 
   ngAfterViewInit() {
@@ -59,6 +41,7 @@ export class ARExploreComponent implements OnInit, AfterViewInit {
       console.log('📍 실시간 위치:', this.userLatitude, this.userLongitude);
 
       this.loadStamps();
+
     }, error => {
       console.error('❌ 위치 정보 가져오기 실패:', error);
     });
@@ -68,28 +51,41 @@ export class ARExploreComponent implements OnInit, AfterViewInit {
 }
 
 
-  loadStamps() {
-    this.http.get<any[]>(`${this.baseUrl}/${this.userId}/unacquired-stamps`)
-      .subscribe(stamps => {
+loadStamps() {
+  console.log('📨 스탬프 불러오기 요청 보냄');
+  this.http.get<Stamp[]>(`${this.baseUrl}/${this.userId}/unacquired-stamps`)
+    .subscribe({
+      next: (stamps) => {
         this.stamps = stamps;
         console.log('📦 불러온 스탬프 목록:', this.stamps);
 
         this.stamps.forEach(stamp => {
-          const distance = this.calculateDistance(
-            this.userLatitude!,
-            this.userLongitude!,
-            stamp.stampLatitude,
-            stamp.stampLongitude
-          );
-
-          console.log(`📏 스탬프 ${stamp.stampID}까지 거리: ${distance}m`);
-
-          if (distance <= 1000) {
-            this.acquireStamp(stamp.stampID);
+          if (this.userLatitude !== null && this.userLongitude !== null) {
+            const distance = this.calculateDistance(
+              this.userLatitude,
+              this.userLongitude,
+              stamp.stampLatitude,
+              stamp.stampLongitude
+            );
+        
+            console.log(`📏 스탬프 ${stamp.stampID}까지 거리: ${distance}m`);
+        
+            if (distance <= 1000) {
+              console.log(`⏳ 스탬프 ${stamp.stampID}는 2분 뒤에 획득 처리 예정`);
+              setTimeout(() => {
+                this.acquireStamp(stamp.stampID);
+              }, 120000); // 120,000ms = 2분
+            }
+          } else {
+            console.warn(`📌 위치 정보가 아직 없음 → 스탬프 ${stamp.stampID}는 거리 계산 생략`);
           }
         });
-      });
-  }
+      },
+      error: (err) => {
+        console.error('❌ 스탬프 불러오기 실패:', err);
+      }
+    });
+}
 
   acquireStamp(stampId: number) {
     this.http.post(`${this.baseUrl}/${this.userId}/${stampId}`, {

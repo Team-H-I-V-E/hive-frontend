@@ -17,38 +17,20 @@ interface ArticleWithUI extends Article {
   standalone: false,
 })
 export class ArticleListComponent implements OnInit {
-  articles: ArticleWithUI[] = []; // ✅ 타입 사용 가능
+  articles: ArticleWithUI[] = [];
   environment = environment;
 
   constructor(
     private articleService: ArticleService,
     private router: Router
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.articleService.getArticles().subscribe((res: Article[]) => {
       this.articles = res.map(article => ({
         ...article,
-        currentImageIndex: 0
+        currentImageIndex: 0,
       }));
     });
-  }
-
-  goToDetail(articleId: number) {
-    this.router.navigate(['/articles/detail', articleId]);
-  }
-
-  prevImage(article: ArticleWithUI, event: MouseEvent) {
-    event.stopPropagation();
-    if (article.currentImageIndex > 0) {
-      article.currentImageIndex--;
-    }
-  }
-
-  nextImage(article: ArticleWithUI, event: MouseEvent) {
-    event.stopPropagation();
-    if (article.currentImageIndex < article.articleImages.length - 1) {
-      article.currentImageIndex++;
-    }
   }
 }

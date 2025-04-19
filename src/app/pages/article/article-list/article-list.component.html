@@ -1,49 +1,42 @@
-<div class="article-feed">
-    <div class="article-list" *ngFor="let article of articles">
-        <div class="article-header">
-            <img class="avatar" [src]="article.userProfileImage || 'assets/no-image.png'" alt="user" />
-            <span class="username">{{ article.nickname || '알 수 없음' }}</span>
-        </div>
-
-        <!-- Bootstrap Carousel 사용 -->
-        <div id="carousel-{{ article.articleId }}" class="carousel slide" data-bs-ride="carousel"
-            *ngIf="(article.articleImages?.length ?? 0) > 0">
+<div class="article-grid">
+    <div class="article-card" *ngFor="let article of articles">
+        <div *ngIf="article.articleImages?.length" class="carousel slide" [id]="'carousel-' + article.articleId"
+            data-bs-ride="carousel">
             <div class="carousel-inner">
-                <div class="carousel-item" *ngFor="let image of article.articleImages; let i = index"
-                    [ngClass]="{ active: i === 0 }">
-                    <img [src]="environment.apiBaseUrl + '/uploads/article/' + image.articleImage" class="d-block w-100"
-                        alt="slide image" />
+                <div class="carousel-item" *ngFor="let image of article.articleImages; let j = index"
+                    [class.active]="j === 0">
+                    <div class="article-image">
+                        <img [src]="environment.apiBaseUrl + '/uploads/article/' + image.articleImage"
+                            alt="slide image" />
+                    </div>
                 </div>
             </div>
-
-            <button class="carousel-control-prev" [attr.data-bs-target]="'#carousel-' + article.articleId"
-                [attr.data-bs-slide]="'prev'">
-                <span class="carousel-control-prev-icon"></span>
+            <button class="carousel-control-prev" type="button" [attr.data-bs-target]="'#carousel-' + article.articleId"
+                data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
             </button>
-
-            <button class="carousel-control-next" [attr.data-bs-target]="'#carousel-' + article.articleId"
-                [attr.data-bs-slide]="'next'">
-                <span class="carousel-control-next-icon"></span>
+            <button class="carousel-control-next" type="button" [attr.data-bs-target]="'#carousel-' + article.articleId"
+                data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
             </button>
-
-        </div>
-
-        <div class="article-actions">
-            <i class="icon-heart"></i>
-            <i class="icon-comment"></i>
-            <i class="icon-bookmark"></i>
         </div>
 
         <div class="article-caption">
-            <strong>{{ article.articleTitle }}</strong>
-            <p>{{ article.articleContents }}</p>
-            <span class="date">{{ article.articleCreatedAt | date: 'longDate' }}</span>
+            <div class="article-user">
+                <span class="username">{{ article.nickname || '알 수 없음' }}</span>
+                <span>
+                    <i class="bi bi-heart"></i>
+                    <i class="bi bi-bookmark"></i>
+                </span>
+            </div>
+            <p class="title">{{ article.articleTitle }}</p>
+            <div class="meta-row">
+                <span class="date">{{ article.articleCreatedAt | date: 'longDate' }}</span>
+                <span class="location">📍 세종특별자치시</span>
+            </div>
         </div>
-
-        <div class="article-location">📍 세종특별자치시</div>
     </div>
 </div>
-
 <button class="write-fixed-btn" routerLink="/article/write">
     <i class="bi bi-pencil"></i>
 </button>

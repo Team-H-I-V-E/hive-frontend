@@ -24,7 +24,7 @@ export class PanoramaComponent implements OnInit {
     longitude: number;
   }[] = [];
 
-  eras: string[] = ['고조선', '삼국', '고려', '조선', '근대', '현대'];
+  eras: string[] = ['기타', '고조선', '삼국', '고려', '조선', '근대', '현대'];
   selectedEra: string = '';
 
   private map: any;

@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Article } from 'src/app/models/article/article.model';
 import { UpdateArticleDto } from 'src/app/models/article/update-article.dto';
+import { environment } from 'src/environment/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,7 @@ import { UpdateArticleDto } from 'src/app/models/article/update-article.dto';
 export class ArticleService {
   private readonly API_URL = 'http://localhost:3000/api/articles';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   // 전체 게시글 조회
   getArticles(): Observable<Article[]> {
@@ -33,8 +34,8 @@ export class ArticleService {
   }
 
   // 게시글 삭제
-  deleteArticle(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.API_URL}/${id}`);
+  deleteArticle(articleId: number): Observable<void> {
+    return this.http.delete<void>(`${environment.apiBaseUrl}/api/articles/${articleId}`);
   }
 
   // 유저별 게시글 조회

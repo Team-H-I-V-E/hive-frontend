@@ -2,6 +2,7 @@ import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
 import { ArticleListComponent } from "./article-list/article-list.component";
 import { ArticleWriteComponent } from "./article-write/article-write.component";
+import { ArticleDetailComponent } from "./article-detail/article-detail.component";
 
 const routes: Routes = [
     {
@@ -11,6 +12,10 @@ const routes: Routes = [
     {
         path: 'write',
         component: ArticleWriteComponent
+    },
+    { 
+        path: ':id', 
+        component: ArticleDetailComponent 
     },
 ];
 

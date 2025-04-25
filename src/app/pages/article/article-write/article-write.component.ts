@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
     selector: 'app-article-write',
     templateUrl: './article-write.component.html',
     styleUrls: ['./article-write.component.scss'],
-    standalone:false,
+    standalone: false,
 })
 export class ArticleWriteComponent implements OnInit {
     @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
@@ -105,16 +105,18 @@ export class ArticleWriteComponent implements OnInit {
         if (this.articleForm.invalid) return;
 
         const formData = new FormData();
-        formData.append('userId', '1');
         formData.append('articleTitle', this.articleForm.value.title);
         formData.append('articleContents', this.articleForm.value.content);
 
         this.imageFiles.forEach(file => {
-            formData.append('images', file);
+            formData.append('files', file); // ✅ 여기 수정
         });
 
         this.articleService.createArticle(formData).subscribe({
-            next: () => this.router.navigate(['/article']),
+            next: () => {
+                console.log('게시글 등록 성공');
+                this.router.navigate(['/article']);
+            },
             error: (err) => console.error('업로드 실패', err),
         });
     }

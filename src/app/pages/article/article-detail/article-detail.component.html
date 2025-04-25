@@ -1,0 +1,36 @@
+<div class="detail-container">
+    <!-- 이미지 -->
+    <div class="image-box">
+        <img *ngIf="article?.articleImages?.[0]"
+            [src]="environment.apiBaseUrl + '/uploads/article/' + article.articleImages[0].articleImage" />
+    </div>
+
+    <!-- 댓글 및 내용 -->
+    <div class="comment-panel">
+        <div class="article-info">
+            <div class="writer">{{ article.user.nickname }}</div>
+            <div class="title">{{ article.articleTitle }}</div>
+            <div class="content">{{ article.articleContents }}</div>
+
+            <!-- 수정/삭제 버튼 (작성자만 표시) -->
+            <div class="actions" *ngIf="isOwner()">
+                <button class="edit-btn">수정</button>
+                <button class="delete-btn">삭제</button>
+            </div>
+        </div>
+
+        <!-- 댓글 리스트 -->
+        <div class="comment-list" *ngIf="comments.length > 0">
+            <div class="comment" *ngFor="let comment of comments">
+                <p class="nickname">{{ comment.user.nickname }}</p>
+                <p class="content">{{ comment.comments }}</p>
+            </div>
+        </div>
+
+        <!-- 댓글 입력창 (고정) -->
+        <div class="comment-input-box">
+            <input type="text" [(ngModel)]="commentInput" placeholder="댓글 달기..." (keydown.enter)="postComment()" />
+            <button (click)="postComment()">완료</button>
+        </div>
+    </div>
+</div>

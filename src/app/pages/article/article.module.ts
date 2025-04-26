@@ -7,6 +7,7 @@ import { LayoutModule } from "src/app/layouts/layouts.module";
 import { RouterModule } from "@angular/router";
 import { ArticleWriteComponent } from "./article-write/article-write.component";
 import { ImageCropperComponent } from 'ngx-image-cropper';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 @NgModule({
     declarations: [
@@ -21,6 +22,7 @@ import { ImageCropperComponent } from 'ngx-image-cropper';
         RouterModule,
         ReactiveFormsModule,
         ImageCropperComponent,
+        InfiniteScrollModule,
     ],
     exports: [ArticleListComponent],
 })

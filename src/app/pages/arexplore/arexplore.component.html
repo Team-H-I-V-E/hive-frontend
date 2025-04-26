@@ -6,15 +6,23 @@
   
   <!-- AR.js 씬 -->
   <a-scene embedded arjs="sourceType: webcam; debugUIEnabled: false;">
+    <!-- 조명 추가 -->
+    <a-light type="ambient" color="#fff" intensity="5"></a-light>
+    
+    <!-- cursor 추가 -->
+    <a-camera gps-camera rotation-reader>
+      <a-cursor fuse="true"></a-cursor>
+    </a-camera>
+
     <!-- GLB 모델을 각 스탬프 위치에 표시 -->
     <a-entity *ngFor="let stamp of stamps"
               [attr.gps-entity-place]="'latitude: ' + stamp.stampLatitude + '; longitude: ' + stamp.stampLongitude"
-              gltf-model="/assets/models/seal.glb"
-              scale="10 10 10"
-              rotation="0 180 0">
+              gltf-model="/assets/models/great_seal.glb"
+              scale="0.5 0.5 0.5"
+              rotation="0 180 0"
+              (click)="onModelClick(stamp.stampID)"
+              animation="property: position; to: 0 0.5 0; dir: alternate; dur: 1000; loop: true">
     </a-entity>
 
-    <!-- 카메라 설정 -->
-    <a-camera gps-camera rotation-reader></a-camera>
   </a-scene>
 </div>

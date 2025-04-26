@@ -1,42 +1,49 @@
-<div class="article-grid">
-    <div class="article-card" *ngFor="let article of articles">
-        <div *ngIf="article.articleImages?.length" class="carousel slide" [id]="'carousel-' + article.articleId"
-            data-bs-ride="carousel">
-            <div class="carousel-inner">
-                <div class="carousel-item" *ngFor="let image of article.articleImages; let j = index"
-                    [class.active]="j === 0">
-                    <div class="article-image">
-                        <img [src]="environment.apiBaseUrl + '/uploads/article/' + image.articleImage"
-                            alt="slide image" />
+<div class="article-grid-wrapper">
+    <div class="article-grid" infiniteScroll [infiniteScrollDistance]="1" [infiniteScrollThrottle]="300"
+        (scrolled)="loadMoreArticles()">
+        <div class="article-card" *ngFor="let article of visibleArticles">
+            <div *ngIf="article.articleImages?.length" class="carousel slide" [id]="'carousel-' + article.articleId"
+                (click)="goToDetail(article.articleId)">
+
+                <div class="carousel-inner" (click)="$event.stopPropagation()">
+                    <div class="carousel-item" *ngFor="let image of article.articleImages; let j = index"
+                        [class.active]="j === article.currentImageIndex">
+                        <div class="article-image">
+                            <img [src]="environment.apiBaseUrl + '/uploads/article/' + image.articleImage"
+                                alt="article image" />
+                            <span class="image-index" *ngIf="article.articleImages.length > 1">
+                                {{ article.currentImageIndex + 1 }}/{{ article.articleImages.length }}
+                            </span>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <button class="carousel-control-prev" type="button" [attr.data-bs-target]="'#carousel-' + article.articleId"
-                data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            </button>
-            <button class="carousel-control-next" type="button" [attr.data-bs-target]="'#carousel-' + article.articleId"
-                data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            </button>
-        </div>
 
-        <div class="article-caption">
-            <div class="article-user">
-                <span class="username">{{ article.nickname || '알 수 없음' }}</span>
-                <span>
-                    <i class="bi bi-heart"></i>
-                    <i class="bi bi-bookmark"></i>
-                </span>
+                <button class="carousel-control-prev" type="button" (click)="prevImage(article, $event)">
+                    <span class="carousel-control-prev-icon"></span>
+                </button>
+                <button class="carousel-control-next" type="button" (click)="nextImage(article, $event)">
+                    <span class="carousel-control-next-icon"></span>
+                </button>
             </div>
-            <p class="title">{{ article.articleTitle }}</p>
-            <div class="meta-row">
-                <span class="date">{{ article.articleCreatedAt | date: 'longDate' }}</span>
-                <span class="location">📍 세종특별자치시</span>
+
+            <div class="article-caption" (click)="goToDetail(article.articleId)">
+                <div class="article-user">
+                    <span class="username">{{ article.nickname || '알 수 없음' }}</span>
+                    <span class="icon-btns">
+                        <i class="bi bi-heart" (click)="toggleLike($event, article)"></i>
+                        <i class="bi bi-bookmark" (click)="toggleFavorite($event, article)"></i>
+                    </span>
+                </div>
+                <p class="title">{{ article.articleTitle }}</p>
+                <div class="meta-row">
+                    <span class="date">{{ article.articleCreatedAt | date: 'longDate' }}</span>
+                    <span class="location">📍 세종특별자치시</span>
+                </div>
             </div>
         </div>
     </div>
 </div>
+
 <button class="write-fixed-btn" routerLink="/article/write">
     <i class="bi bi-pencil"></i>
 </button>

@@ -1,8 +1,28 @@
 <div class="custom-ar-page">
-    <div id="location">위치: </div>
+  <div id="location"> 
+    <p>📍유저 위치: {{ userLatitude }}, {{ userLongitude }}</p>
+    <p *ngFor="let stamp of stamps"> 🧭 스탬프 {{ stamp.stampID }} 위치: {{ stamp.stampLatitude }}, {{ stamp.stampLongitude }}</p>
+  </div>
   
-    <a-scene embedded arjs="sourceType: webcam; debugUIEnabled: false;">
-      <a-box color="yellow" gps-entity-place="latitude: 36.6214218; longitude: 127.2867893"></a-box>
-      <a-camera gps-camera rotation-reader></a-camera>
-    </a-scene>
+  <!-- AR.js 씬 -->
+  <a-scene embedded arjs="sourceType: webcam; debugUIEnabled: false;">
+    <!-- 조명 추가 -->
+    <a-light type="ambient" color="#fff" intensity="5"></a-light>
+    
+    <!-- cursor 추가 -->
+    <a-camera gps-camera rotation-reader>
+      <a-cursor fuse="true"></a-cursor>
+    </a-camera>
+
+    <!-- GLB 모델을 각 스탬프 위치에 표시 -->
+    <a-entity *ngFor="let stamp of stamps"
+              [attr.gps-entity-place]="'latitude: ' + stamp.stampLatitude + '; longitude: ' + stamp.stampLongitude"
+              gltf-model="/assets/models/great_seal.glb"
+              scale="0.5 0.5 0.5"
+              rotation="0 180 0"
+              (click)="onModelClick(stamp.stampID)"
+              animation="property: position; to: 0 0.5 0; dir: alternate; dur: 1000; loop: true">
+    </a-entity>
+
+  </a-scene>
 </div>

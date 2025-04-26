@@ -1,0 +1,48 @@
+<div class="article-detail-wrapper">
+    <div class="article-detail-container">
+        <!-- Image Carousel -->
+        <div class="article-image-carousel carousel slide" *ngIf="article?.articleImages?.length"
+            [id]="'carousel-' + article.articleId">
+            <div class="carousel-inner">
+                <div class="carousel-item" *ngFor="let image of article.articleImages; let i = index"
+                    [class.active]="i === article.currentImageIndex">
+                    <img [src]="environment.apiBaseUrl + '/uploads/article/' + image.articleImage"
+                        alt="Article image" />
+                    <span class="image-index" *ngIf="article.articleImages.length > 1">{{ article.currentImageIndex + 1
+                        }}/{{ article.articleImages.length }}</span>
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" (click)="prevImage(article, $event)">
+                <span class="carousel-control-prev-icon"></span>
+            </button>
+            <button class="carousel-control-next" type="button" (click)="nextImage(article, $event)">
+                <span class="carousel-control-next-icon"></span>
+            </button>
+        </div>
+
+        <!-- Content & Comments -->
+        <div class="article-side">
+            <div class="article-info">
+                <div class="author">
+                    <div class="profile"></div>
+                    <span class="username">{{ article.user?.nickname || '알 수 없음' }}</span>
+                </div>
+                <p class="content">{{ article.articleContents }}</p>
+                <span class="created-date">{{ article.articleCreatedAt | date:'longDate' }}</span>
+            </div>
+
+            <div class="article-comments">
+                <div class="comment" *ngFor="let c of comments">
+                    <span class="comment-nickname">{{ c.nickname }}</span>
+                    <p class="comment-text">{{ c.text }}</p>
+                    <span class="comment-date">{{ c.createdAt | date:'mediumDate' }}</span>
+                </div>
+
+                <div class="comment-form">
+                    <input type="text" [(ngModel)]="newComment" placeholder="댓글 달기..." />
+                    <button (click)="submitComment()">완료</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -36,22 +36,3 @@
 // /* @import "@ionic/angular/css/palettes/dark.class.css"; */
 // @import "@ionic/angular/css/palettes/dark.system.css";
 @use "bootstrap";
-
-html,
-body {
-    height: 100%;
-    background-color: #fdfbf7;
-    margin: 0;
-    padding: 0;
-}
-
-app-root {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-    background-color: #fdfbf7;
-}
-
-* {
-    box-sizing: border-box;
-}

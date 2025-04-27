@@ -3,7 +3,7 @@ import { NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs';
 
 @Component({
-    selector: 'app-layout',
+    selector: 'layout',
     templateUrl: './layouts.component.html',
     styleUrls: ['./layouts.component.scss'],
     standalone: false,

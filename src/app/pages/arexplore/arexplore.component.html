@@ -1,7 +1,7 @@
 <div class="custom-ar-page">
   <div id="location"> 
     <p>📍유저 위치: {{ userLatitude }}, {{ userLongitude }}</p>
-    <p *ngFor="let stamp of stamps"> 🧭 스탬프 {{ stamp.stampID }} 위치: {{ stamp.stampLatitude }}, {{ stamp.stampLongitude }}</p>
+    <p *ngFor="let stamp of stamps"> 🧭 주변에 있는 스탬프 : {{ stamp.stampName }}</p> <!--{{ stamp.stampLatitude }}, {{ stamp.stampLongitude }}-->
   </div>
   
   <!-- AR.js 씬 -->

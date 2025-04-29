@@ -1,21 +1,53 @@
-<div class="page-container">
-  <div class="panorama-container">
+<style>
+  @media (max-width: 768px) {
+    .panorama-sidebar {
+      width: 100vw !important;
+      /* 모바일에서는 전체 가로폭 사용 */
+      flex: 0 0 100vw !important;
+    }
+  }
+</style>
 
-    <!-- 사이드바 분리 컴포넌트 -->
-    <app-panorama-detail *ngIf="selectedPanorama" [panorama]="selectedPanorama" (close)="closeSidebar()">
-    </app-panorama-detail>
+<div class="d-flex flex-column p-0" style="height: calc(100vh - 80px);">
+  <!-- panorama 전체 wrapper -->
 
-    <!-- 시대 필터 버튼 (지도 오른쪽 중앙에 고정) -->
-    <div class="era-filter right">
-      <button *ngFor="let era of eras" (click)="selectEra(era)" [class.active]="selectedEra === era" class="filter-btn">
-        {{ era }}
-      </button>
-      <button (click)="selectEra('')" [class.active]="selectedEra === ''" class="filter-btn clear">
-        전체
-      </button>
+  <div class="d-flex flex-grow-1 position-relative" style="height: 100%;">
+    <!-- 지도 + 사이드바를 담는 컨테이너 -->
+
+    <!-- 디테일 사이드바 -->
+    <div *ngIf="selectedPanorama" class="d-flex flex-column bg-light border-end panorama-sidebar"
+      style="flex: 0 0 23vw; height: 100%;">
+      <!-- 
+        flex: 0 0 23vw; ➔ 가로폭 화면의 23% 사용
+        height: 100%; ➔ 부모 높이에 맞춰서
+      -->
+
+      <div style="flex: 0 0 auto;">
+        <!-- 헤더 영역 (닫기 버튼 넣을 수 있음) -->
+      </div>
+
+      <div class="overflow-auto" style="flex: 1 1 auto;">
+        <app-panorama-detail [panorama]="selectedPanorama" (close)="closeSidebar()"></app-panorama-detail>
+      </div>
+
     </div>
 
-    <!-- 지도 -->
-    <div id="map"></div>
+    <!-- 지도 영역 -->
+    <div class="flex-grow-1 position-relative" style="height: 100%;">
+      <div id="map" class="w-100 h-100"></div>
+
+      <!-- 시대 필터 버튼 -->
+      <div class="position-absolute top-50 end-0 translate-middle-y d-flex flex-column gap-2 me-3 z-3">
+        <button *ngFor="let era of eras" (click)="selectEra(era)" class="btn btn-light rounded-pill py-2 px-3"
+          [class.active]="selectedEra === era">
+          {{ era }}
+        </button>
+        <button (click)="selectEra('')" class="btn btn-outline-primary rounded-pill fw-bold py-2 px-3"
+          [class.active]="selectedEra === ''">
+          전체
+        </button>
+      </div>
+    </div>
+
   </div>
 </div>

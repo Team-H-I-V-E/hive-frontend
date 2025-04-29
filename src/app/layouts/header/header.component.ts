@@ -1,5 +1,5 @@
-import { Component, AfterViewInit, NgZone } from '@angular/core';
-import { Router, NavigationEnd } from '@angular/router';
+import { Component, AfterViewInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 declare const bootstrap: any;
 

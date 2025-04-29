@@ -1,51 +1,107 @@
-<nav class="navbar navbar-expand-lg bg-dark navbar-dark fixed-top shadow-sm px-4">
+<nav class="navbar navbar-expand-lg bg-dark navbar-dark fixed-top shadow-sm px-4" style="height: 80px;">
   <div class="container-fluid">
     <!-- 로고 -->
     <a class="navbar-brand d-flex align-items-center" routerLink="/home">
-      <img src="assets/icon/main_icon.png" alt="세종실록 로고" height="48" />
+      <img src="assets/icon/main_icon.png" alt="세종실록 로고" height="48"
+        style="filter: brightness(1.3) contrast(1.2); transition: transform 0.3s;"
+        onmouseover="this.style.transform='scale(1.05)';" onmouseout="this.style.transform='scale(1)';">
     </a>
 
     <!-- 햄버거 버튼 (모바일 전용) -->
-    <button class="navbar-toggler d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileMenu">
+    <button class="navbar-toggler d-lg-none border-0 shadow-none" type="button" data-bs-toggle="offcanvas"
+      data-bs-target="#mobileMenu" aria-controls="mobileMenu" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
     <!-- PC 메뉴 (lg 이상에서만 표시) -->
     <div class="collapse navbar-collapse justify-content-end d-none d-lg-flex">
-      <ul class="navbar-nav gap-4">
-        <li class="nav-item"><a class="nav-link" routerLink="/heritage" routerLinkActive="active">Heritage</a></li>
-        <li class="nav-item"><a class="nav-link" routerLink="/panorama" routerLinkActive="active">Historical site</a></li>
-        <li class="nav-item"><a class="nav-link" routerLink="/arexplore" routerLinkActive="active">AR Explore</a></li>
-        <li class="nav-item"><a class="nav-link" routerLink="/article" routerLinkActive="active">Blog</a></li>
-        <li class="nav-item"><a class="nav-link" routerLink="/mypage" routerLinkActive="active">My Page</a></li>
+      <ul class="navbar-nav gap-4 align-items-center">
+        <li class="nav-item">
+          <a class="nav-link text-white fw-medium position-relative" routerLink="/heritage"
+            routerLinkActive="border-bottom border-2 border-light" [routerLinkActiveOptions]="{ exact: true }"
+            style="transition: color 0.2s;" onmouseover="this.style.color='#f8f9fa';" onmouseout="this.style.color='';">
+            Heritage
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white fw-medium position-relative" routerLink="/panorama"
+            routerLinkActive="border-bottom border-2 border-light" [routerLinkActiveOptions]="{ exact: true }"
+            style="transition: color 0.2s;" onmouseover="this.style.color='#f8f9fa';" onmouseout="this.style.color='';">
+            Historical site
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white fw-medium position-relative" routerLink="/arexplore"
+            routerLinkActive="border-bottom border-2 border-light" [routerLinkActiveOptions]="{ exact: true }"
+            style="transition: color 0.2s;" onmouseover="this.style.color='#f8f9fa';" onmouseout="this.style.color='';">
+            AR Explore
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white fw-medium position-relative" routerLink="/article"
+            routerLinkActive="border-bottom border-2 border-light" [routerLinkActiveOptions]="{ exact: true }"
+            style="transition: color 0.2s;" onmouseover="this.style.color='#f8f9fa';" onmouseout="this.style.color='';">
+            Blog
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white fw-medium position-relative" routerLink="/mypage"
+            routerLinkActive="border-bottom border-2 border-light" [routerLinkActiveOptions]="{ exact: true }"
+            style="transition: color 0.2s;" onmouseover="this.style.color='#f8f9fa';" onmouseout="this.style.color='';">
+            My Page
+          </a>
+        </li>
       </ul>
     </div>
   </div>
 </nav>
 
 <!-- 오프캔버스 메뉴 (모바일 전용) -->
-<div class="offcanvas offcanvas-end bg-dark text-white" tabindex="-1" id="mobileMenu">
-  <div class="offcanvas-header">
-    <h5 class="offcanvas-title">Menu</h5>
-    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
+<div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="mobileMenu" aria-labelledby="mobileMenuLabel"
+  style="width: 60vw; max-width: 320px;">
+
+  <div class="offcanvas-header align-items-center py-3" style="height: 60px; border-bottom: 1px solid #444;">
+    <h5 class="offcanvas-title mb-0" id="mobileMenuLabel">Menu</h5>
+    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
   </div>
-  <div class="offcanvas-body">
+
+  <div class="offcanvas-body d-flex flex-column align-items-center justify-content-start text-center px-0 pt-3">
     <ul class="navbar-nav">
-      <li class="nav-item">
-        <a class="nav-link text-white" routerLink="/heritage" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Heritage</a>
+      <li class="nav-item py-3">
+        <a class="nav-link text-white fw-medium" routerLink="/heritage" routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }" style="display: inline-block;">
+          Heritage
+        </a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link text-white" routerLink="/panorama" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Historical site</a>
+      <li class="nav-item py-3">
+        <a class="nav-link text-white fw-medium" routerLink="/panorama" routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }" style="display: inline-block;">
+          Historical site
+        </a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link text-white" routerLink="/arexplore" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">AR Explore</a>
+      <li class="nav-item py-3">
+        <a class="nav-link text-white fw-medium" routerLink="/arexplore" routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }" style="display: inline-block;">
+          AR Explore
+        </a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link text-white" routerLink="/article" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Blog</a>
+      <li class="nav-item py-3">
+        <a class="nav-link text-white fw-medium" routerLink="/article" routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }" style="display: inline-block;">
+          Blog
+        </a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link text-white" routerLink="/mypage" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">My Page</a>
+      <li class="nav-item py-3">
+        <a class="nav-link text-white fw-medium" routerLink="/mypage" routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }" style="display: inline-block;">
+          My Page
+        </a>
       </li>
     </ul>
   </div>
-</div>
+
+  <style>
+    .nav-link.active {
+      border-bottom: 2px solid #888;
+    }
+  </style>

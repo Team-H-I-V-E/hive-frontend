@@ -14,8 +14,8 @@ export class ArticleService {
   constructor(private http: HttpClient) { }
 
   // 전체 게시글 조회
-  getArticles(): Observable<Article[]> {
-    return this.http.get<Article[]>(`${this.API_URL}/`);
+  getArticles(page: number = 1, limit: number = 30) {
+    return this.http.get<Article[]>(`${this.API_URL}?page=${page}&limit=${limit}`);
   }
 
   // 단일 게시글 조회

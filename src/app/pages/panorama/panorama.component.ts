@@ -9,7 +9,7 @@ declare var kakao: any;
 @Component({
   selector: 'app-panorama',
   templateUrl: 'panorama.component.html',
-  styleUrls: ['panorama.component.scss'],
+  styleUrls: [],
   standalone: false,
 })
 export class PanoramaComponent implements OnInit {
@@ -29,7 +29,7 @@ export class PanoramaComponent implements OnInit {
 
   private map: any;
 
-  constructor(private panoramaService: PanoramaService) {}
+  constructor(private panoramaService: PanoramaService) { }
 
   ngOnInit(): void {
     this.loadPanoramaLocations();
@@ -45,9 +45,10 @@ export class PanoramaComponent implements OnInit {
     const panoDiv = document.getElementById('pano_div');
     if (panoDiv) panoDiv.innerHTML = '';
 
+    // 지도 레이아웃 재조정 (조금 delay 주는 게 부드러움)
     setTimeout(() => {
-      this.map?.relayout();
-    }, 0);
+      if (this.map) this.map.relayout();
+    }, 50);
   }
 
   selectEra(era: string): void {
@@ -56,7 +57,7 @@ export class PanoramaComponent implements OnInit {
   }
 
   applyFilters(): void {
-    if (this.allPanoramaData.length === 0) {
+    if (!this.allPanoramaData.length) {
       console.warn('⛔ 데이터가 아직 로드되지 않았습니다.');
       return;
     }
@@ -73,18 +74,16 @@ export class PanoramaComponent implements OnInit {
     }));
 
     if (!this.map) {
-      // 최초 지도 생성
       const center = this.getAverageCoordinate(this.markersData);
       this.loadKakaoMap(center.latitude, center.longitude);
     } else {
-      // 지도 유지한 채 마커만 다시 그림
       this.renderMarkers();
     }
   }
 
   loadPanoramaLocations(): void {
     this.panoramaService.getPanorama().subscribe((data) => {
-      if (!data || data.length === 0) {
+      if (!data?.length) {
         console.warn('받아온 파노라마 데이터가 없습니다.');
         return;
       }
@@ -157,7 +156,7 @@ export class PanoramaComponent implements OnInit {
     };
 
     this.map = new kakao.maps.Map(container, options);
-    this.renderMarkers(); // ✅ 초기 마커 렌더링
+    this.renderMarkers();
   }
 
   renderMarkers(): void {
@@ -175,7 +174,7 @@ export class PanoramaComponent implements OnInit {
         this.panoramaService.getpanoramaById(markerData.panoramaId).subscribe({
           next: (data) => {
             this.selectedPanorama = data;
-            setTimeout(() => this.map?.relayout(), 0);
+            setTimeout(() => this.map?.relayout(), 50);
           },
           error: (err) => console.error("파노라마 상세 정보 요청 실패:", err),
         });

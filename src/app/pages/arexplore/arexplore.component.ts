@@ -11,6 +11,8 @@ import { Stamp } from 'src/app/models/arexplore/stamp.model';
 export class ARExploreComponent implements OnInit, AfterViewInit {
   private readonly API_URL = '/api/arexplore'; // http://localhost:3000/api/arexperience와 같이 http://localhost:3000로 지정하면 안됨
 
+  private lastUpdate: number = 0;
+  private updateInterval: number = 30000; 
   userLatitude: number | null = null;
   userLongitude: number | null = null;
   previousLatitude: number | null = null;
@@ -39,32 +41,41 @@ export class ARExploreComponent implements OnInit, AfterViewInit {
   }
 
   getUserLocation() {
-  if (navigator.geolocation) {
-    navigator.geolocation.watchPosition(position => {
-      this.userLatitude = position.coords.latitude;
-      this.userLongitude = position.coords.longitude;
+    if (navigator.geolocation) {
+      navigator.geolocation.watchPosition(position => {
+        const now = Date.now();
 
-      console.log('📍 실시간 위치:', this.userLatitude, this.userLongitude);
+        // 위치 정보는 계속 갱신 (실시간으로 위치 추적 : 클라이언트)
+        this.userLatitude = position.coords.latitude;
+        this.userLongitude = position.coords.longitude;
 
-      if (this.previousLatitude === null && this.previousLongitude === null) {
-        // 처음 위치일 때 스탬프 목록을 불러옴
-        this.loadStamps();
-      } else if (this.shouldLoadStamps()) {
-        // 위치가 1km 이상 이동했을 때만 데이터를 새로 가져옴
-        this.loadStamps();
-      }
+        console.log('📍 실시간 위치:', this.userLatitude, this.userLongitude);
+        
+        // 위치가 1km 이상 이동했을 때만 스탬프 목록 갱신
+        if (this.previousLatitude !== null && this.previousLongitude !== null) {
+          if (this.shouldLoadStamps()) {
+            this.loadStamps(); // 1km 이상 이동한 경우
+          }
+        } 
 
-      // 현재 위치를 이전 위치로 업데이트
-      this.previousLatitude = this.userLatitude;
-      this.previousLongitude = this.userLongitude;
+        // 30초마다 위치 갱신 (갱신된 위치 전송 : 서버)
+        if (now - this.lastUpdate > this.updateInterval) { 
+          this.lastUpdate = now;
 
-    }, error => {
-      console.error('❌ 위치 정보 가져오기 실패:', error);
-    });
-  } else {
-    alert("브라우저가 위치 정보를 지원하지 않습니다.");
+          // 스탬프 목록을 일정 시간마다 갱신
+          this.loadStamps();
+          
+          // 현재 위치를 이전 위치로 업데이트
+          this.previousLatitude = this.userLatitude;
+          this.previousLongitude = this.userLongitude;
+        }
+      }, error => {
+        console.error('❌ 위치 정보 가져오기 실패:', error);
+      });
+    } else {
+      alert("브라우저가 위치 정보를 지원하지 않습니다.");
+    }
   }
-}
 
   shouldLoadStamps(): boolean {
     if (this.previousLatitude !== null && this.previousLongitude !== null) {

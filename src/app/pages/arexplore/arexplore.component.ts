@@ -12,7 +12,7 @@ export class ARExploreComponent implements OnInit, AfterViewInit {
   private readonly API_URL = '/api/arexplore'; // http://localhost:3000/api/arexperience와 같이 http://localhost:3000로 지정하면 안됨
 
   private lastUpdate: number = 0;
-  private updateInterval: number = 30000; 
+  private updateInterval: number = 60000; 
   userLatitude: number | null = null;
   userLongitude: number | null = null;
   previousLatitude: number | null = null;
@@ -58,7 +58,7 @@ export class ARExploreComponent implements OnInit, AfterViewInit {
           }
         } 
 
-        // 30초마다 위치 갱신 (갱신된 위치 전송 : 서버)
+        // 1분마다 위치 갱신 (갱신된 위치 전송 : 서버)
         if (now - this.lastUpdate > this.updateInterval) { 
           this.lastUpdate = now;
 
@@ -90,7 +90,7 @@ export class ARExploreComponent implements OnInit, AfterViewInit {
     }
     return false;
   }
-  
+
   loadStamps() {
     console.log('📨 스탬프 불러오기 요청 보냄');
     this.http.get<Stamp[]>(`${this.API_URL}/${this.userId}/unacquired-stamps`)

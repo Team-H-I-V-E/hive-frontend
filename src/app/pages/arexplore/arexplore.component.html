@@ -1,8 +1,19 @@
 <div class="custom-ar-page">
-  <div id="location"> 
-    <p>📍유저 위치: {{ userLatitude }}, {{ userLongitude }}</p>
-    <p *ngFor="let stamp of stamps"> 🧭 주변에 있는 스탬프 : {{ stamp.stampName }}</p> <!--{{ stamp.stampLatitude }}, {{ stamp.stampLongitude }}-->
-  </div>
+  <div class="row">
+    <div class="col-12">
+      <div class="position-fixed bg-white bg-opacity-75 text-black p-3 rounded-2" style="bottom: 10px; left: 10px; max-width: 80%; max-height: 200px; border: 1px solid #ccc; overflow: auto; font-size: 0.8rem;">
+        <p class="mb-2">📍유저 위치: {{ userLatitude }}, {{ userLongitude }}</p>
+        <!-- 스탬프가 있는 경우 -->
+        <div *ngIf="stamps.length > 0; else noStamps">
+          <p *ngFor="let stamp of stamps" class="mb-0">🧭 주변에 있는 스탬프: {{ stamp.stampName }}</p>
+        </div>
+        <!-- 스탬프가 없는 경우 -->
+        <ng-template #noStamps>
+          <p class="mb-0">🧭 획득할 스탬프가 없습니다.</p>
+        </ng-template>
+      </div>
+    </div>
+  </div>  
   
   <!-- AR.js 씬 -->
   <a-scene arjs="sourceType: webcam; debugUIEnabled: false;">

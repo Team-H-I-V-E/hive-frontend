@@ -1,0 +1,18 @@
+<div class="modal fade show" tabindex="-1" style="display: block; background-color: rgba(0, 0, 0, 0.5);" aria-labelledby="stampModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="stampModalLabel">스탬프 획득</h5>
+          <button type="button" class="btn-close" (click)="close()" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p><strong>스탬프 이름:</strong> {{ stampName }}</p>
+          <p><strong>설명:</strong> {{ stampDescription }}</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="close()">닫기</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  

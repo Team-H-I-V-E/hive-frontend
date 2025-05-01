@@ -5,7 +5,9 @@
         <p class="mb-2">📍유저 위치: {{ userLatitude }}, {{ userLongitude }}</p>
         <!-- 스탬프가 있는 경우 -->
         <div *ngIf="stamps.length > 0; else noStamps">
-          <p *ngFor="let stamp of stamps" class="mb-0">🧭 주변에 있는 스탬프: {{ stamp.stampName }}</p>
+          <p *ngFor="let stamp of stamps" class="mb-0" (click)="onModelClick(stamp.stampID)">
+            🧭 주변에 있는 스탬프: {{ stamp.stampName }}
+          </p>
         </div>
         <!-- 스탬프가 없는 경우 -->
         <ng-template #noStamps>
@@ -13,8 +15,8 @@
         </ng-template>
       </div>
     </div>
-  </div>  
-  
+  </div>
+
   <!-- AR.js 씬 -->
   <a-scene arjs="sourceType: webcam; debugUIEnabled: false;">
     <!-- 조명 추가 -->
@@ -34,6 +36,13 @@
               (click)="onModelClick(stamp.stampID)"
               animation="property: position; to: 0 0.5 0; dir: alternate; dur: 1000; loop: true">
     </a-entity>
-
   </a-scene>
+
+  <!-- 스탬프 모달 -->
+  <app-stamp-modal *ngIf="showModal" 
+                   [stampName]="stampName" 
+                   [stampDescription]="stampDescription" 
+                   [stampId]="stampId"
+                   (closeModal)="closeModal()">
+  </app-stamp-modal>
 </div>

@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { ARExploreComponentRoutingModule } from './arexplore-routing.module';
 import { ARExploreComponent } from './arexplore.component';
 import { LayoutModule } from 'src/app/layouts/layouts.module';
+import { StampModalComponent } from 'src/app/components/stamp-modal/stamp-modal.component';
 
 @NgModule({
   declarations: [
@@ -14,6 +15,7 @@ import { LayoutModule } from 'src/app/layouts/layouts.module';
     FormsModule,
     ARExploreComponentRoutingModule,
     LayoutModule,
+    StampModalComponent
   ],
   exports: [ARExploreComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

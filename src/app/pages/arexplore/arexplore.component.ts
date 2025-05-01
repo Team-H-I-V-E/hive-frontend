@@ -19,10 +19,14 @@ export class ARExploreComponent implements OnInit, AfterViewInit {
   stamps: Stamp[] = [];
   userId = 1;
 
+  stampName: string = '';
+  stampDescription: string = '';
+  stampId: number = 0; 
+  showModal: boolean = false;
+
   constructor(private http: HttpClient) {}
 
   ngOnInit() {
-
     this.getUserLocation();
     console.log('🚀 컴포넌트 초기화됨');
   }
@@ -105,7 +109,7 @@ export class ARExploreComponent implements OnInit, AfterViewInit {
   }
   
   onModelClick(stampId: number) {
-    console.log(`스탬프 ${stampId}를 클릭했습니다. 즉시 획득 처리`);
+    console.log(`스탬프 ${stampId}를 클릭했습니다.`);
     this.acquireStamp(stampId);
   }
   
@@ -116,12 +120,17 @@ export class ARExploreComponent implements OnInit, AfterViewInit {
     }).subscribe({
       next: (response: any) => {
         console.log(`스탬프 ${stampId} 획득 성공`);
-        alert(`[ ${response.stampDetails.stampName} ] ${response.stampDetails.stampDescription}`);
+        
+        this.stampName = response.stampDetails.stampName;
+        this.stampDescription = response.stampDetails.stampDescription;
+        this.stampId = response.stampDetails.stampID;
+
+        this.showModal = true;
+
         this.loadStamps();
       },
       error: (err) => {
         console.error(`스탬프 ${stampId} 획득 실패`, err);
-        alert(`스탬프 ${stampId} 획득 실패 : ${err.message ?? err}`);
       }
     });
   }  
@@ -136,5 +145,8 @@ export class ARExploreComponent implements OnInit, AfterViewInit {
               Math.sin(dLon / 2) * Math.sin(dLon / 2);
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     return R * c;
+  }
+  closeModal() {
+    this.showModal = false;
   }
 }

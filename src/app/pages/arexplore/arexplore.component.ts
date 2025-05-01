@@ -114,9 +114,9 @@ export class ARExploreComponent implements OnInit, AfterViewInit {
       userLatitude: this.userLatitude,
       userLongitude: this.userLongitude
     }).subscribe({
-      next: () => {
+      next: (response: any) => {
         console.log(`스탬프 ${stampId} 획득 성공`);
-        alert(`스탬프 ${stampId} 획득 성공`);
+        alert(`[ ${response.stampDetails.stampName} ] ${response.stampDetails.stampDescription}`);
         this.loadStamps();
       },
       error: (err) => {

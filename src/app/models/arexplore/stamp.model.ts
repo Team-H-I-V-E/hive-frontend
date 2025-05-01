@@ -3,5 +3,8 @@ export interface Stamp {
     stampName: string;
     stampLatitude: number;
     stampLongitude: number;
+    stampLocation: string;
+    stampPeriod: string;
+    stampDescription: string;
     stampImage: string;
   }  

@@ -1,6 +1,5 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { environment } from 'src/environment/environment';
 import { Stamp } from 'src/app/models/arexplore/stamp.model';
 
 @Component({
@@ -10,8 +9,10 @@ import { Stamp } from 'src/app/models/arexplore/stamp.model';
   standalone: false,
 })
 export class ARExploreComponent implements OnInit, AfterViewInit {
-  private baseUrl = `${environment.apiBaseUrl}/api/arexperience`;
+  private readonly API_URL = '/api/arexplore'; // http://localhost:3000/api/arexperience와 같이 http://localhost:3000로 지정하면 안됨
 
+  private lastUpdate: number = 0;
+  private updateInterval: number = 60000; 
   userLatitude: number | null = null;
   userLongitude: number | null = null;
   previousLatitude: number | null = null;
@@ -20,10 +21,14 @@ export class ARExploreComponent implements OnInit, AfterViewInit {
   stamps: Stamp[] = [];
   userId = 1;
 
+  stampName: string = '';
+  stampDescription: string = '';
+  stampId: number = 0; 
+  showModal: boolean = false;
+
   constructor(private http: HttpClient) {}
 
   ngOnInit() {
-
     this.getUserLocation();
     console.log('🚀 컴포넌트 초기화됨');
   }
@@ -36,32 +41,41 @@ export class ARExploreComponent implements OnInit, AfterViewInit {
   }
 
   getUserLocation() {
-  if (navigator.geolocation) {
-    navigator.geolocation.watchPosition(position => {
-      this.userLatitude = position.coords.latitude;
-      this.userLongitude = position.coords.longitude;
+    if (navigator.geolocation) {
+      navigator.geolocation.watchPosition(position => {
+        const now = Date.now();
 
-      console.log('📍 실시간 위치:', this.userLatitude, this.userLongitude);
+        // 위치 정보는 계속 갱신 (실시간으로 위치 추적 : 클라이언트)
+        this.userLatitude = position.coords.latitude;
+        this.userLongitude = position.coords.longitude;
 
-      if (this.previousLatitude === null && this.previousLongitude === null) {
-        // 처음 위치일 때 스탬프 목록을 불러옴
-        this.loadStamps();
-      } else if (this.shouldLoadStamps()) {
-        // 위치가 1km 이상 이동했을 때만 데이터를 새로 가져옴
-        this.loadStamps();
-      }
+        console.log('📍 실시간 위치:', this.userLatitude, this.userLongitude);
+        
+        // 위치가 1km 이상 이동했을 때만 스탬프 목록 갱신
+        if (this.previousLatitude !== null && this.previousLongitude !== null) {
+          if (this.shouldLoadStamps()) {
+            this.loadStamps(); // 1km 이상 이동한 경우
+          }
+        } 
 
-      // 현재 위치를 이전 위치로 업데이트
-      this.previousLatitude = this.userLatitude;
-      this.previousLongitude = this.userLongitude;
+        // 1분마다 위치 갱신 (갱신된 위치 전송 : 서버)
+        if (now - this.lastUpdate > this.updateInterval) { 
+          this.lastUpdate = now;
 
-    }, error => {
-      console.error('❌ 위치 정보 가져오기 실패:', error);
-    });
-  } else {
-    alert("브라우저가 위치 정보를 지원하지 않습니다.");
+          // 스탬프 목록을 일정 시간마다 갱신
+          this.loadStamps();
+          
+          // 현재 위치를 이전 위치로 업데이트
+          this.previousLatitude = this.userLatitude;
+          this.previousLongitude = this.userLongitude;
+        }
+      }, error => {
+        console.error('❌ 위치 정보 가져오기 실패:', error);
+      });
+    } else {
+      alert("브라우저가 위치 정보를 지원하지 않습니다.");
+    }
   }
-}
 
   shouldLoadStamps(): boolean {
     if (this.previousLatitude !== null && this.previousLongitude !== null) {
@@ -72,14 +86,14 @@ export class ARExploreComponent implements OnInit, AfterViewInit {
         this.userLongitude!
       );
       console.log(`이동 거리: ${distance}m`);
-      return distance >= 1000; // 1km 이상 이동했을 경우만 데이터를 다시 요청
+      return distance >= 1000;
     }
-    return false; // 처음 위치는 1km 이동한 것으로 간주하지 않음
+    return false;
   }
-  
+
   loadStamps() {
     console.log('📨 스탬프 불러오기 요청 보냄');
-    this.http.get<Stamp[]>(`${this.baseUrl}/${this.userId}/unacquired-stamps`)
+    this.http.get<Stamp[]>(`${this.API_URL}/${this.userId}/unacquired-stamps`)
       .subscribe({
         next: (stamps) => {
           this.stamps = stamps.filter(stamp => {
@@ -93,7 +107,6 @@ export class ARExploreComponent implements OnInit, AfterViewInit {
               
               console.log(`📏 스탬프 ${stamp.stampID}까지 거리: ${distance}m`);
               
-              // 1km 이내인 경우만 리스트에 포함
               return distance <= 1000;
             }
             return false;
@@ -107,23 +120,28 @@ export class ARExploreComponent implements OnInit, AfterViewInit {
   }
   
   onModelClick(stampId: number) {
-    console.log(`스탬프 ${stampId}를 클릭했습니다. 즉시 획득 처리`);
+    console.log(`스탬프 ${stampId}를 클릭했습니다.`);
     this.acquireStamp(stampId);
   }
   
   acquireStamp(stampId: number) {
-    this.http.post(`${this.baseUrl}/${this.userId}/${stampId}`, {
+    this.http.post(`${this.API_URL}/${this.userId}/${stampId}`, {
       userLatitude: this.userLatitude,
       userLongitude: this.userLongitude
     }).subscribe({
-      next: () => {
+      next: (response: any) => {
         console.log(`스탬프 ${stampId} 획득 성공`);
-        alert(`스탬프 ${stampId} 획득 성공`);
-        this.loadStamps(); // 스탬프 획득 후 새로 갱신된 목록을 다시 불러옵니다.
+        
+        this.stampName = response.stampDetails.stampName;
+        this.stampDescription = response.stampDetails.stampDescription;
+        this.stampId = response.stampDetails.stampID;
+
+        this.showModal = true;
+
+        this.loadStamps();
       },
       error: (err) => {
         console.error(`스탬프 ${stampId} 획득 실패`, err);
-        alert(`스탬프 ${stampId} 획득 실패 : ${err.message ?? err}`);
       }
     });
   }  
@@ -138,5 +156,8 @@ export class ARExploreComponent implements OnInit, AfterViewInit {
               Math.sin(dLon / 2) * Math.sin(dLon / 2);
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     return R * c;
+  }
+  closeModal() {
+    this.showModal = false;
   }
 }

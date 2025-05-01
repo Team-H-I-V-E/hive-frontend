@@ -1,11 +1,24 @@
 <div class="custom-ar-page">
-  <div id="location"> 
-    <p>📍유저 위치: {{ userLatitude }}, {{ userLongitude }}</p>
-    <p *ngFor="let stamp of stamps"> 🧭 스탬프 {{ stamp.stampID }} 위치: {{ stamp.stampLatitude }}, {{ stamp.stampLongitude }}</p>
+  <div class="row">
+    <div class="col-12">
+      <div class="position-fixed bg-white bg-opacity-75 text-black p-3 rounded-2" style="bottom: 10px; left: 10px; max-width: 80%; max-height: 200px; border: 1px solid #ccc; overflow: auto; font-size: 0.8rem;">
+        <p class="mb-2">📍유저 위치: {{ userLatitude }}, {{ userLongitude }}</p>
+        <!-- 스탬프가 있는 경우 -->
+        <div *ngIf="stamps.length > 0; else noStamps">
+          <p *ngFor="let stamp of stamps" class="mb-0" (click)="onModelClick(stamp.stampID)">
+            🧭 주변에 있는 스탬프: {{ stamp.stampName }}
+          </p>
+        </div>
+        <!-- 스탬프가 없는 경우 -->
+        <ng-template #noStamps>
+          <p class="mb-0">🧭 획득할 스탬프가 없습니다.</p>
+        </ng-template>
+      </div>
+    </div>
   </div>
-  
+
   <!-- AR.js 씬 -->
-  <a-scene embedded arjs="sourceType: webcam; debugUIEnabled: false;">
+  <a-scene arjs="sourceType: webcam; debugUIEnabled: false;">
     <!-- 조명 추가 -->
     <a-light type="ambient" color="#fff" intensity="5"></a-light>
     
@@ -23,6 +36,13 @@
               (click)="onModelClick(stamp.stampID)"
               animation="property: position; to: 0 0.5 0; dir: alternate; dur: 1000; loop: true">
     </a-entity>
-
   </a-scene>
+
+  <!-- 스탬프 모달 -->
+  <app-stamp-modal *ngIf="showModal" 
+                   [stampName]="stampName" 
+                   [stampDescription]="stampDescription" 
+                   [stampId]="stampId"
+                   (closeModal)="closeModal()">
+  </app-stamp-modal>
 </div>

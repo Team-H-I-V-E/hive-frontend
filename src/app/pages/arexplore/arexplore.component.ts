@@ -24,6 +24,7 @@ export class ARExploreComponent implements OnInit, AfterViewInit {
   stampName: string = '';
   stampDescription: string = '';
   stampId: number = 0; 
+  stampImg: string = '';
   showModal: boolean = false;
 
   constructor(private http: HttpClient) {}
@@ -135,7 +136,10 @@ export class ARExploreComponent implements OnInit, AfterViewInit {
         this.stampName = response.stampDetails.stampName;
         this.stampDescription = response.stampDetails.stampDescription;
         this.stampId = response.stampDetails.stampID;
+        this.stampImg = response.stampDetails.stampImage;
 
+        console.log('이미지 URL:', this.stampImg); 
+        
         this.showModal = true;
 
         this.loadStamps();

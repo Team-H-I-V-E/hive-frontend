@@ -1,17 +1,21 @@
 <div class="modal fade show" tabindex="-1" style="display: block; background-color: rgba(0, 0, 0, 0.5);" aria-labelledby="stampModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="stampModalLabel">스탬프 획득</h5>
-          <button type="button" class="btn-close" (click)="close()" aria-label="Close"></button>
+      <div class="modal-content" style="background-color: #F7F6EC;">
+        <div class="modal-header" style="background:#231F1F; padding: 16px 24px 16px 24px; color: #F7F6EC">
+            <h5 class="modal-title mb-0" id="stampModalLabel">스탬프 획득</h5>
+            <div class="me-3 ms-2" style="border-left: 2px solid #F7F6EC; height: 18px;"></div>
+            <p class="mb-0">{{ stampName }}</p>
+          <button type="button" class="btn-close btn-close-white" (click)="close()" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <p><strong>스탬프 이름:</strong> {{ stampName }}</p>
-          <p><strong>설명:</strong> {{ stampDescription }}</p>
+            <div *ngIf="stampImg" style="display: flex; justify-content: center; align-items: center;">
+                <img [src]="stampImg" alt="Stamp Image" style="width: 40%; height: auto;" class="mb-3"/>
+            </div>
+            <p> {{ stampDescription }}</p>
         </div>
-        <div class="modal-footer">
+        <!-- <div class="modal-footer">
           <button type="button" class="btn btn-secondary" (click)="close()">닫기</button>
-        </div>
+        </div> -->
       </div>
     </div>
   </div>

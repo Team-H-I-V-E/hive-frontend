@@ -1,0 +1,36 @@
+import { Component } from "@angular/core";
+
+@Component({
+    selector: 'app-signup',
+    templateUrl: './create-account.component.html',
+})
+export class SignupComponent {
+    user = {
+        userName: '',
+        nickname: '',
+        userEmail: '',
+        userPassword: '',
+        confirmPassword: ''
+    };
+
+    showPassword = false;
+    showConfirmPassword = false;
+
+    togglePassword() {
+        this.showPassword = !this.showConfirmPassword;
+    }
+
+    toggleConfirmPassword() {
+        this.showConfirmPassword = !this.showConfirmPassword;
+    }
+
+    onSubmit() {
+        if (this.user.userPassword !== this.user.confirmPassword) {
+            alert('비밀번호가 일치하지 않습니다.');
+            return;
+        }
+
+        //AuthService로 회원가입 요청
+        console.log('회원가입 요청', this.user);
+    }
+}

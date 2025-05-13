@@ -4,7 +4,7 @@ import { Component } from "@angular/core";
     selector: 'app-signup',
     templateUrl: './create-account.component.html',
 })
-export class SignupComponent {
+export class CreateAccountComponent {
     user = {
         userName: '',
         nickname: '',

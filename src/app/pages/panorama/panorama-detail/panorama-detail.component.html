@@ -1,16 +1,71 @@
-<div class="sidebar">
-  <div class="sidebar-header">
-    <button class="close-button" (click)="onClose()"><i class="bi bi-x"></i></button>
+<!-- 📦 디테일 사이드바 -->
+<div class="sidebar p-3"
+  style="background-color: #F7F6EC; width: 100%; max-width: 400px; height: 100vh; overflow-y: auto; border-right: 1px solid #ccc; position: relative; z-index: 10;">
+
+  <!-- 닫기 버튼 -->
+  <div class="d-flex justify-content-end mb-2">
+    <button class="btn btn-sm btn-outline-secondary" (click)="onClose()">
+      <i class="bi bi-x-lg"></i>
+    </button>
   </div>
 
-  <h2>{{ panorama.ruinsName }}</h2>
+  <!-- 유적 대표 이미지 -->
+  <div *ngIf="panorama.ruinsImage" class="mb-3">
+    <img [src]="'http://localhost:3000/' + panorama.ruinsImage" alt="대표 이미지" class="img-fluid rounded w-100" />
+  </div>
+
+  <!-- 유적 정보 -->
+  <h5 class="fw-bold mb-2">{{ panorama.ruinsName }}</h5>
   <p><strong>시대:</strong> {{ panorama.ruinsAge }}</p>
   <p><strong>위치:</strong> {{ panorama.ruinsLocation }}</p>
   <p><strong>설명:</strong> {{ panorama.ruinsInformation }}</p>
 
-  <div class="panorama-viewer" *ngIf="panorama?.panoramaImages?.length">
-    <div *ngFor="let image of panorama.panoramaImages; let i = index">
-      <div [id]="'pano_div_' + i" class="pano-container"></div>
+  <!-- 🔄 360° 파노라마 미리보기 -->
+  <div *ngIf="panorama?.panoramaImages?.length" class="mt-4 mb-3 position-relative rounded overflow-hidden"
+    style="height: 200px; cursor: pointer;" (click)="activateViewer()">
+    <div id="pano_preview" class="w-100 h-100" style="
+         filter: brightness(60%);
+         transition: filter 0.3s ease;
+         border-radius: 0.5rem;
+       ">
+    </div>
+
+    <!-- 오버레이 텍스트 -->
+    <div class="position-absolute top-50 start-50 translate-middle text-white text-center"
+      style="pointer-events: none;">
+      <div style="font-size: 1.5rem; font-weight: bold;">360</div>
+      <div style="font-size: 1rem;">
+        <i class="bi bi-arrow-repeat fs-4"></i>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 🖼️ 전체 뷰어 오버레이 -->
+<div *ngIf="viewerActive" class="position-fixed top-0 start-0 w-100 h-100 bg-dark bg-opacity-75" style="z-index: 1050;">
+  <div class="position-absolute top-0 end-0 p-3 z-2">
+    <button class="btn btn-sm btn-light" (click)="viewerActive = false">
+      <i class="bi bi-x-lg"></i> 닫기
+    </button>
+  </div>
+
+  <div class="position-relative w-100 h-100">
+    <div id="pano_div_0" class="w-100 h-100"></div>
+
+    <!-- 미니맵 -->
+    <div id="minimap" *ngIf="panorama.minimapImage && panorama.miniMapPoints?.length"
+      class="position-absolute bottom-0 end-0 border rounded shadow" style="width: 350px; z-index: 10;">
+      <img [src]="'http://localhost:3000/' + panorama.minimapImage" class="img-fluid rounded w-100" />
+      <ng-container *ngFor="let point of panorama.miniMapPoints">
+        <div class="position-absolute translate-middle" [ngStyle]="{ left: point.x + '%', top: point.y + '%' }"
+          style="cursor: pointer;" (click)="moveToPanorama(point)">
+          <i class="bi fs-5" [ngClass]="{
+        'bi-geo-alt-fill': true,
+        'text-danger': selectedPointId === point.id,
+        'text-primary': selectedPointId !== point.id
+      }"></i>
+        </div>
+      </ng-container>
     </div>
   </div>
 </div>

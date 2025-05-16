@@ -1,4 +1,7 @@
-import { Component, Input, Output, EventEmitter, OnChanges, AfterViewInit, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnChanges, AfterViewInit } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
+import { PanoramaService } from 'src/app/services/panorama/panorama.service';
+import { NotFoundError } from 'rxjs';
 
 declare const pannellum: any;
 
@@ -8,13 +11,17 @@ declare const pannellum: any;
   styleUrls: ['./panorama-detail.component.scss'],
   standalone: false,
 })
-
 export class PanoramaDetailComponent implements OnChanges, AfterViewInit {
   @Input() panorama: any;
+  @Input() userId!: number; // 부모 컴포넌트에서 전달받기
   @Output() close = new EventEmitter<void>();
+
   viewerActive = false;
   currentImageUrl: string = '';
   selectedPointId: number | null = null;
+  isFavorite = false;
+
+  constructor(private panoramaService: PanoramaService) { }
 
   ngAfterViewInit(): void {
     this.initPreviewViewer();
@@ -22,10 +29,51 @@ export class PanoramaDetailComponent implements OnChanges, AfterViewInit {
 
   ngOnChanges(): void {
     this.initPreviewViewer();
+    this.checkIfFavorite(); // 파노라마 바뀔 때마다 즐겨찾기 여부 확인
   }
 
   onClose(): void {
     this.close.emit();
+  }
+
+  checkIfFavorite(): void {
+    if (!this.userId || !this.panorama?.panoramaId) return;
+
+    this.panoramaService.getFavorites(this.userId).subscribe({
+      next: (favorites) => {
+        this.isFavorite = favorites.some(fav => fav.panoramaId === this.panorama.panoramaId);
+      },
+      error: (err: HttpErrorResponse) => {
+        console.error('즐겨찾기 확인 실패', err);
+        this.isFavorite = false;
+      },
+    });
+  }
+
+  toggleFavorite(): void {
+    if (!this.userId || !this.panorama?.panoramaId) return;
+
+    if (this.isFavorite) {
+      // 즐겨찾기 삭제
+      this.panoramaService.deleteFavorite(this.userId, this.panorama.panoramaId).subscribe({
+        next: () => {
+          this.isFavorite = false;
+        },
+        error: (err) => {
+          console.error('즐겨찾기 삭제 실패', err);
+        },
+      });
+    } else {
+      // 즐겨찾기 추가
+      this.panoramaService.addFavorite(this.userId, this.panorama.panoramaId).subscribe({
+        next: () => {
+          this.isFavorite = true;
+        },
+        error: (err) => {
+          console.error('즐겨찾기 추가 실패', err);
+        },
+      });
+    }
   }
 
   initPreviewViewer(): void {

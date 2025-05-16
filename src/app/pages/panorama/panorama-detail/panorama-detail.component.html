@@ -1,9 +1,20 @@
 <!-- 📦 디테일 사이드바 -->
 <div class="sidebar p-3"
-  style="background-color: #F7F6EC; width: 100%; max-width: 400px; height: 100vh; overflow-y: auto; border-right: 1px solid #ccc; position: relative; z-index: 10;">
+  style="background-color: #F7F6EC; width: 100%; min-width: 400px; height: 100vh; overflow-y: auto; border-right: 1px solid #ccc; position: relative; z-index: 10;">
 
-  <!-- 닫기 버튼 -->
-  <div class="d-flex justify-content-end mb-2">
+  <!-- 닫기/즐겨찾기/스탬프 보유 버튼 -->
+  <div class="d-flex justify-content-end align-items-center mb-2 gap-2">
+
+    <!-- ✅ 스탬프 보유 아이콘 -->
+    <i *ngIf="panorama?.isStamped" class="bi bi-search" style="color: #198754; font-size: 1.2rem;" title="스탬프 보유됨"></i>
+
+    <!-- 즐겨찾기 아이콘 -->
+    <button class="btn btn-sm" (click)="toggleFavorite()" [ngStyle]="{ color: isFavorite ? 'gold' : 'gray' }"
+      style="font-size: 1.2rem;">
+      <i class="bi" [ngClass]="isFavorite ? 'bi-star-fill' : 'bi-star'"></i>
+    </button>
+
+    <!-- 닫기 버튼 -->
     <button class="btn btn-sm btn-outline-secondary" (click)="onClose()">
       <i class="bi bi-x-lg"></i>
     </button>

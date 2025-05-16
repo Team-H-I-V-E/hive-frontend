@@ -1,36 +1,39 @@
-<div class="detail-container">
-    <!-- 이미지 -->
-    <div class="image-box">
+<div class="container-fluid py-4 px-5 d-flex gap-4" style="height: calc(100vh - 80px); box-sizing: border-box;">
+    <!-- 이미지 영역 -->
+    <div class="flex-grow-1 d-flex justify-content-center align-items-center">
         <img *ngIf="article?.articleImages?.[0]"
-            [src]="environment.apiBaseUrl + '/uploads/article/' + article.articleImages[0].articleImage" />
+            [src]="environment.apiBaseUrl + '/uploads/article/' + article.articleImages[0].articleImage"
+            class="img-fluid rounded shadow" style="max-width: 700px; aspect-ratio: 4/3; object-fit: cover;" />
     </div>
 
-    <!-- 댓글 및 내용 -->
-    <div class="comment-panel">
-        <div class="article-info">
-            <div class="writer">{{ article.user.nickname }}</div>
-            <div class="title">{{ article.articleTitle }}</div>
-            <div class="content">{{ article.articleContents }}</div>
+    <!-- 댓글 및 내용 영역 -->
+    <div class="d-flex flex-column border rounded p-3 bg-white" style="width: 400px; height: 100%;">
+        <!-- 게시글 정보 -->
+        <div class="mb-3">
+            <div class="fw-bold mb-1">{{ article.user.nickname }}</div>
+            <div class="h5 mb-2">{{ article.articleTitle }}</div>
+            <div class="text-muted">{{ article.articleContents }}</div>
 
-            <!-- 수정/삭제 버튼 (작성자만 표시) -->
-            <div class="actions" *ngIf="isOwner()">
-                <button class="edit-btn">수정</button>
-                <button class="delete-btn">삭제</button>
+            <!-- 수정/삭제 버튼 -->
+            <div class="mt-3" *ngIf="isOwner()">
+                <button class="btn btn-outline-primary btn-sm me-2">수정</button>
+                <button class="btn btn-outline-danger btn-sm">삭제</button>
             </div>
         </div>
 
         <!-- 댓글 리스트 -->
-        <div class="comment-list" *ngIf="comments.length > 0">
-            <div class="comment" *ngFor="let comment of comments">
-                <p class="nickname">{{ comment.user.nickname }}</p>
-                <p class="content">{{ comment.comments }}</p>
+        <div class="flex-grow-1 overflow-auto mb-3">
+            <div *ngFor="let comment of comments" class="border-bottom pb-2 mb-2">
+                <p class="fw-semibold mb-1">{{ comment.user.nickname }}</p>
+                <p class="mb-0 text-body">{{ comment.comments }}</p>
             </div>
         </div>
 
-        <!-- 댓글 입력창 (고정) -->
-        <div class="comment-input-box">
-            <input type="text" [(ngModel)]="commentInput" placeholder="댓글 달기..." (keydown.enter)="postComment()" />
-            <button (click)="postComment()">완료</button>
+        <!-- 댓글 입력창 -->
+        <div class="border-top pt-3 d-flex align-items-center">
+            <input type="text" [(ngModel)]="commentInput" class="form-control me-2" placeholder="댓글 달기..."
+                (keydown.enter)="postComment()" />
+            <button class="btn btn-dark" (click)="postComment()">완료</button>
         </div>
     </div>
 </div>

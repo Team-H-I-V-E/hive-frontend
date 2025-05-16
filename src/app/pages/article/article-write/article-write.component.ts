@@ -84,12 +84,29 @@ export class ArticleWriteComponent implements OnInit {
     }
 
     openCropWindow(base64: string): void {
-        const cropUrl = `${window.location.origin}/assets/cropper.html?image=${encodeURIComponent(base64)}`;
+        const cropUrl = `${window.location.origin}/assets/cropper.html`;
         const popup = window.open(cropUrl, '_blank', 'width=600,height=600');
 
         if (!popup) {
             alert('팝업이 차단되었습니다. 브라우저 설정을 확인해주세요.');
+            return;
         }
+
+        // ✅ popup에 메시지를 안전하게 보내기 위한 load 이벤트 리스너 사용
+        const onMessageReady = () => {
+            popup?.postMessage({ image: base64 }, window.location.origin);
+            window.removeEventListener('message', onMessageReady);
+        };
+
+        // popup이 로드되고 메시지를 받을 준비가 되면 'ready' 메시지를 먼저 받는다고 가정
+        const waitForReady = (event: MessageEvent) => {
+            if (event.origin === window.location.origin && event.data === 'ready') {
+                popup?.postMessage({ image: base64 }, window.location.origin);
+                window.removeEventListener('message', waitForReady);
+            }
+        };
+
+        window.addEventListener('message', waitForReady);
     }
 
     triggerFileSelect(): void {

@@ -49,7 +49,6 @@
 
 <body>
     <div class="crop-wrapper">
-        <h2>이미지 자르기</h2>
         <img id="image" />
         <div class="buttons">
             <button class="btn-complete" onclick="sendCroppedImage()">완료</button>
@@ -57,29 +56,45 @@
         </div>
     </div>
 
-    <!-- ✅ cropper.js CDN 추가 -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
     <script>
-        const params = new URLSearchParams(window.location.search);
-        const imageBase64 = params.get('image');
         const image = document.getElementById('image');
         let cropper;
 
-        image.src = imageBase64;
+        // ✅ 부모 창에게 준비되었음을 알림
+        window.opener?.postMessage('ready', window.origin);
 
-        image.onload = () => {
-            cropper = new Cropper(image, {
-                aspectRatio: 4 / 3,
-                viewMode: 1,
-            });
-        };
+        // ✅ 부모 창으로부터 이미지 base64 수신
+        window.addEventListener('message', (event) => {
+            if (event.origin !== window.origin) return;
+
+            const base64 = event.data.image;
+            if (!base64) return;
+
+            image.src = base64;
+
+            image.onload = () => {
+                cropper = new Cropper(image, {
+                    aspectRatio: 4 / 3,
+                    viewMode: 1,
+                    dragMode: 'move',
+                    movable: true,
+                    zoomable: true,
+                    scalable: false,
+                    cropBoxMovable: false,
+                    cropBoxResizable: false,
+                    background: false,
+                    autoCropArea: 1.0
+                });
+            };
+        });
 
         function sendCroppedImage() {
             if (!cropper) return;
 
             const canvas = cropper.getCroppedCanvas();
             const croppedImage = canvas.toDataURL('image/png');
-            window.opener.postMessage({ croppedImage }, '*');
+            window.opener.postMessage({ croppedImage }, window.origin);
             window.close();
         }
     </script>

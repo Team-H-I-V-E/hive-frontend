@@ -21,7 +21,7 @@ app-header {
 
 .main-container {
     flex: 1;
-    overflow: hidden;
+    overflow: auto; 
     /* 필요하면 auto */
     display: flex;
     flex-direction: column;

@@ -1,20 +1,49 @@
-<form [formGroup]="articleForm" (ngSubmit)="submitArticle()" class="article-write-form">
-    <input formControlName="title" type="text" placeholder="제목" class="title-input" />
-    <textarea formControlName="content" rows="6" placeholder="내용" class="content-textarea"></textarea>
+<form [formGroup]="articleForm" (ngSubmit)="submitArticle()" class="container p-4 shadow-sm rounded"
+    style="max-width: 600px; margin: 120px auto; background-color: #F7F6EC;">
 
-    <div class="dropzone" (dragover)="onDragOver($event)" (dragleave)="onDragLeave($event)" (drop)="onDrop($event)"
-        [class.dragging]="isDragging">
-        <p>이미지를 드래그하거나 클릭해서 업로드하세요</p>
-        <button type="button" (click)="triggerFileSelect()" class="upload-btn">파일 선택</button>
+    <!-- 제목 -->
+    <div class="mb-3">
+        <input formControlName="title" type="text" placeholder="제목" class="form-control form-control-lg" />
+    </div>
+
+    <!-- 내용 -->
+    <div class="mb-3">
+        <textarea formControlName="content" rows="6" placeholder="내용" class="form-control"></textarea>
+    </div>
+
+    <!-- 드래그 & 업로드 -->
+    <div class="mb-3 text-center p-4 border border-2 rounded" [ngClass]="{ 'border-warning': isDragging }" [ngStyle]="{
+         'border-style': 'dashed',
+         'background-color': isDragging ? '#ece6d9' : '#f9f5ec',
+         'cursor': 'pointer'
+       }" (dragover)="onDragOver($event)" (dragleave)="onDragLeave($event)" (drop)="onDrop($event)">
+        <p class="mb-2">이미지를 드래그하거나 클릭해서 업로드하세요</p>
+        <button type="button" (click)="triggerFileSelect()" class="btn btn-sm text-white"
+            style="background-color: #5d3e00;">파일 선택</button>
         <input type="file" accept="image/*" hidden #fileInput (change)="onImageSelected($event)" />
     </div>
 
-    <div class="preview-wrapper" *ngIf="imagePreviews.length > 0">
-        <div class="preview-box" *ngFor="let preview of imagePreviews; let i = index">
-            <img [src]="preview" alt="미리보기" />
-            <button class="remove-btn" (click)="removeImage(i)"><i class="bi bi-x-circle"></i></button>
+    <!-- 이미지 미리보기 -->
+    <div class="mb-3 d-flex flex-wrap gap-3" *ngIf="imagePreviews.length > 0">
+        <div *ngFor="let preview of imagePreviews; let i = index" class="position-relative"
+            style="width: 100px; height: 100px;">
+            <img [src]="preview" class="img-thumbnail w-100 h-100" style="object-fit: cover; border-radius: 8px;" />
+            <button type="button" (click)="removeImage(i)"
+                class="btn btn-sm position-absolute p-0 rounded-circle d-flex align-items-center justify-content-center"
+                style="width: 20px; height: 20px; background-color: rgba(0,0,0,0.6); color: white; font-size: 14px; top: 4px; right: 4px;">
+                <i class="bi bi-x-circle"></i>
+            </button>
         </div>
     </div>
 
-    <button type="submit" [disabled]="!articleForm.valid" class="submit-button">등록</button>
+    <!-- 등록 버튼 -->
+    <div class="d-grid">
+        <button type="submit" [disabled]="!articleForm.valid" class="btn fw-bold py-2" [ngStyle]="{
+              'background-color': articleForm.valid ? '#231f1f' : '#ccc',
+              'color': articleForm.valid ? '#fff' : '#888',
+              'cursor': articleForm.valid ? 'pointer' : 'not-allowed'
+            }">
+            등록
+        </button>
+    </div>
 </form>

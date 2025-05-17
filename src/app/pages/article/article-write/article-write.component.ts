@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
     selector: 'app-article-write',
     templateUrl: './article-write.component.html',
     styleUrls: ['./article-write.component.scss'],
-    standalone:false,
+    standalone: false,
 })
 export class ArticleWriteComponent implements OnInit {
     @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
@@ -84,12 +84,29 @@ export class ArticleWriteComponent implements OnInit {
     }
 
     openCropWindow(base64: string): void {
-        const cropUrl = `${window.location.origin}/assets/cropper.html?image=${encodeURIComponent(base64)}`;
+        const cropUrl = `${window.location.origin}/assets/cropper.html`;
         const popup = window.open(cropUrl, '_blank', 'width=600,height=600');
 
         if (!popup) {
             alert('팝업이 차단되었습니다. 브라우저 설정을 확인해주세요.');
+            return;
         }
+
+        // ✅ popup에 메시지를 안전하게 보내기 위한 load 이벤트 리스너 사용
+        const onMessageReady = () => {
+            popup?.postMessage({ image: base64 }, window.location.origin);
+            window.removeEventListener('message', onMessageReady);
+        };
+
+        // popup이 로드되고 메시지를 받을 준비가 되면 'ready' 메시지를 먼저 받는다고 가정
+        const waitForReady = (event: MessageEvent) => {
+            if (event.origin === window.location.origin && event.data === 'ready') {
+                popup?.postMessage({ image: base64 }, window.location.origin);
+                window.removeEventListener('message', waitForReady);
+            }
+        };
+
+        window.addEventListener('message', waitForReady);
     }
 
     triggerFileSelect(): void {
@@ -105,16 +122,18 @@ export class ArticleWriteComponent implements OnInit {
         if (this.articleForm.invalid) return;
 
         const formData = new FormData();
-        formData.append('userId', '1');
         formData.append('articleTitle', this.articleForm.value.title);
         formData.append('articleContents', this.articleForm.value.content);
 
         this.imageFiles.forEach(file => {
-            formData.append('images', file);
+            formData.append('files', file); // ✅ 여기 수정
         });
 
         this.articleService.createArticle(formData).subscribe({
-            next: () => this.router.navigate(['/article']),
+            next: () => {
+                console.log('게시글 등록 성공');
+                this.router.navigate(['/article']);
+            },
             error: (err) => console.error('업로드 실패', err),
         });
     }

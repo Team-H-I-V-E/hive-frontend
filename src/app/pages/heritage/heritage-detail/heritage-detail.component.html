@@ -16,38 +16,42 @@
       <div class="col-md-7">
         <!-- 제목 -->
         <h4 class="fw-bold mb-1">{{ heritage.heritageName }}</h4>
-        <p class="text-muted" style="font-style: italic; font-size: 15px">
+        <p class="text-muted" style="font-style: italic; font-size: 15px ">
           Buddhist Stele with Inscription of "Muin Year" and Pedestal at
           Yeonhwasa Temple, Sejong
         </p>
 
         <!-- 정보 테이블 -->
-        <table class="table table-sm table-borderless" style="font-size: 15px">
+        <table class="table-clean">
           <tbody>
             <tr>
-              <th class="text-secondary fw-normal" style="width: 120px">
-                유형
-              </th>
-              <td>보물</td>
+              <th>유형</th>
+              <td>{{ heritage.heritageType }}</td>
             </tr>
             <tr>
-              <th class="text-secondary fw-normal">시대</th>
+              <th>시대</th>
               <td>{{ heritage.heritageYear }}</td>
             </tr>
             <tr>
-              <th class="text-secondary fw-normal">분류</th>
-              <td>유물 / 불교 조각 / 석조 / 대좌</td>
+              <th>분류</th>
+              <td>{{ heritage.heritageCategory }}</td>
             </tr>
             <tr>
-              <th class="text-secondary fw-normal">수량/면적</th>
-              <td>1좌</td>
+              <th>수량/면적</th>
+              <td>{{ heritage.heritagePeriodArea }}</td>
             </tr>
             <tr>
-              <th class="text-secondary fw-normal">지정(등록)일</th>
-              <td>1978. 12. 07</td>
+              <th>지정(등록)일</th>
+              <td>
+                {{
+                  heritage.designationDate
+                    ? (heritage.designationDate | date : "yyyy. MM. dd")
+                    : "미상"
+                }}
+              </td>
             </tr>
             <tr>
-              <th class="text-secondary fw-normal">소재지</th>
+              <th>소재지</th>
               <td>{{ heritage.heritageLocation }}</td>
             </tr>
           </tbody>
@@ -62,8 +66,6 @@
             <i class="bi bi-box"></i> 3D View
           </button>
         </div>
-
-       
       </div>
     </div>
     <!-- 설명 영역: row 바깥으로 빼지 말고 내부 유지 -->

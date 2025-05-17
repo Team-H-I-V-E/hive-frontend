@@ -17,13 +17,29 @@ export class CollectionStampComponent implements OnInit {
   constructor(private svc: CollectionStampService) {}
 
   ngOnInit() {
-    this.svc.getMyStamps().subscribe(data => this.stamps = data);
+    console.log('📨 내 스탬프 목록 요청');
+    this.svc.getMyStamps().subscribe({
+      next: data => {
+        console.log('📦 받은 스탬프 목록:', data);
+        this.stamps = data;
+      },
+      error: err => {
+        console.error('❌ 스탬프 조회 실패:', err);
+      }
+    });
   }
 
   onImageClick(s: StampList) {
-    this.svc.getStampDetail(s.stampID).subscribe(d => {
-      this.detail = { ...d, stampImage: s.stampImage };
-      this.showDetail = true;
+    console.log(`📨 스탬프 상세 조회 요청: stampID=${s.stampID}`);
+    this.svc.getStampDetail(s.stampID).subscribe({
+      next: d => {
+        console.log('📦 받은 스탬프 상세:', d);
+        this.detail = { ...d, stampImage: s.stampImage };
+        this.showDetail = true;
+      },
+      error: err => {
+        console.error(`❌ 스탬프 상세 조회 실패 (stampID=${s.stampID}):`, err);
+      }
     });
   }
 

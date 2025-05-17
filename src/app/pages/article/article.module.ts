@@ -7,11 +7,13 @@ import { LayoutModule } from "src/app/layouts/layouts.module";
 import { RouterModule } from "@angular/router";
 import { ArticleWriteComponent } from "./article-write/article-write.component";
 import { ImageCropperComponent } from 'ngx-image-cropper';
+import { ArticleDetailComponent } from "./article-detail/article-detail.component";
 
 @NgModule({
     declarations: [
         ArticleListComponent,
         ArticleWriteComponent,
+        ArticleDetailComponent,
     ],
     imports: [
         CommonModule,

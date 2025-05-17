@@ -50,11 +50,28 @@
                     style="max-height:200px;" />
                 </div>
                 <div class="col-12 col-md-6" style="font-size: 1.06rem;">
-                    <p><strong>이름 :</strong> {{ detail?.stampName }}</p>
-                    <p><strong>시대 :</strong> {{ detail?.stampPeriod }}</p>
-                    <p><strong>소재지 :</strong> {{ detail?.stampLocation }}</p>
-                    <p><strong>획득일 :</strong> {{ detail?.stampTime | date:'yyyy-MM-dd HH:mm' }}</p>
-                </div>
+                      <p class="d-flex align-items-center mb-2">
+                        <strong>이름</strong>
+                        <span class="vr mx-3" style="background-color: #918E7C; width: 2px; opacity:1"></span>
+                        <span class="ms-2">{{ detail?.stampName }}</span>
+                      </p>
+                      <p class="d-flex align-items-center mb-2">
+                        <strong>시대</strong>
+                        <span class="vr mx-3" style="background-color: #918E7C; width: 2px; opacity:1"></span>
+                        <span class="ms-2">{{ detail?.stampPeriod }}</span>
+                      </p>
+                      <p class="d-flex align-items-center mb-2">
+                        <strong>소재지</strong>
+                        <span class="vr mx-3" style="background-color: #918E7C; width: 2px; opacity:1"></span>
+                        <span class="ms-2">{{ detail?.stampLocation }}</span>
+                      </p>
+                      <p class="d-flex align-items-center mb-2">
+                        <strong>획득일</strong>
+                        <span class="vr mx-3" style="background-color: #918E7C; width: 2px; opacity:1"></span>
+                        <span class="ms-2">{{ detail?.stampTime | date:'yyyy-MM-dd HH:mm' }}</span>
+                      </p>
+                    </div>
+
             </div>
         </div>
       </div>

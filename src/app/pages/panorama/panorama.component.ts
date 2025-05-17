@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { PanoramaService } from 'src/app/services/panorama/panorama.service';
-import { GetPanoramaResponseData } from 'src/app/models/panorama/panorama-getpanorama-response-data.interface';
-import { GetPanoramaByIdResponseData } from 'src/app/models/panorama/panorama-getpanoramabyid-response-data.interface';
+import { GetPanoramaByIdResponseData, GetPanoramaResponseData } from 'src/app/models/panorama/panorama-response-data.interface';
 import { environment } from "src/environment/environment";
 
 declare var kakao: any;

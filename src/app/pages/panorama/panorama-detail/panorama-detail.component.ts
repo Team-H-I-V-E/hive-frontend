@@ -1,4 +1,7 @@
-import { Component, Input, Output, EventEmitter, AfterViewInit, OnChanges } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnChanges, AfterViewInit } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
+import { PanoramaService } from 'src/app/services/panorama/panorama.service';
+import { NotFoundError } from 'rxjs';
 
 declare const pannellum: any;
 
@@ -10,39 +13,152 @@ declare const pannellum: any;
 })
 export class PanoramaDetailComponent implements OnChanges, AfterViewInit {
   @Input() panorama: any;
+  @Input() userId!: number; // 부모 컴포넌트에서 전달받기
   @Output() close = new EventEmitter<void>();
 
+  viewerActive = false;
+  currentImageUrl: string = '';
+  selectedPointId: number | null = null;
+  isFavorite = false;
+
+  constructor(private panoramaService: PanoramaService) { }
+
   ngAfterViewInit(): void {
-    this.loadPanorama();
+    this.initPreviewViewer();
   }
 
   ngOnChanges(): void {
-    this.loadPanorama();
+    this.initPreviewViewer();
+    this.checkIfFavorite(); // 파노라마 바뀔 때마다 즐겨찾기 여부 확인
   }
 
-  loadPanorama(): void {
-    const backendUrl = 'http://localhost:3000/';
-  
-    if (this.panorama?.panoramaImages?.length) {
-      this.panorama.panoramaImages.forEach((image: any, index: number) => {
-        const panoDivId = `pano_div_${index}`;
-        const panoDiv = document.getElementById(panoDivId);
-  
-        if (panoDiv) {
-          panoDiv.innerHTML = '';
-          setTimeout(() => {
-            pannellum.viewer(panoDivId, {
-              type: 'equirectangular',
-              panorama: encodeURI(backendUrl + image.panoramaImage),
-              autoLoad: true,
-            });
-          }, 0);
-        }
+  onClose(): void {
+    this.close.emit();
+  }
+
+  checkIfFavorite(): void {
+    if (!this.userId || !this.panorama?.panoramaId) return;
+
+    this.panoramaService.getFavorites(this.userId).subscribe({
+      next: (favorites) => {
+        this.isFavorite = favorites.some(fav => fav.panoramaId === this.panorama.panoramaId);
+      },
+      error: (err: HttpErrorResponse) => {
+        console.error('즐겨찾기 확인 실패', err);
+        this.isFavorite = false;
+      },
+    });
+  }
+
+  toggleFavorite(): void {
+    if (!this.userId || !this.panorama?.panoramaId) return;
+
+    if (this.isFavorite) {
+      // 즐겨찾기 삭제
+      this.panoramaService.deleteFavorite(this.userId, this.panorama.panoramaId).subscribe({
+        next: () => {
+          this.isFavorite = false;
+        },
+        error: (err) => {
+          console.error('즐겨찾기 삭제 실패', err);
+        },
+      });
+    } else {
+      // 즐겨찾기 추가
+      this.panoramaService.addFavorite(this.userId, this.panorama.panoramaId).subscribe({
+        next: () => {
+          this.isFavorite = true;
+        },
+        error: (err) => {
+          console.error('즐겨찾기 추가 실패', err);
+        },
       });
     }
-  }  
+  }
 
-  onClose(): void {
-    this.close.emit(); // 부모에게 닫기 이벤트 전달
+  initPreviewViewer(): void {
+    const image = this.panorama?.panoramaImages?.[0];
+    if (!image) return;
+
+    const previewDiv = document.getElementById('pano_preview');
+    if (previewDiv) {
+      previewDiv.innerHTML = '';
+
+      setTimeout(() => {
+        pannellum.viewer('pano_preview', {
+          type: 'equirectangular',
+          panorama: 'http://localhost:3000/' + image.imageUrl,
+          autoLoad: true,
+          showZoomCtrl: false,
+          showFullscreenCtrl: false,
+          compass: false,
+          showControls: false,
+          disableKeyboardCtrl: true,
+          mouseZoom: false,
+        });
+      }, 0);
+    }
+  }
+
+  activateViewer(): void {
+    this.viewerActive = true;
+
+    const image = this.panorama?.panoramaImages?.[0];
+    if (!image) return;
+
+    const initialPoint = this.panorama?.miniMapPoints?.find(
+      (point: any) => point.targetPanoramaImage?.imageUrl === image.imageUrl
+    );
+
+    this.selectedPointId = initialPoint?.id ?? null;
+
+    setTimeout(() => {
+      const viewer = pannellum.viewer('pano_div_0', {
+        type: 'equirectangular',
+        panorama: 'http://localhost:3000/' + image.imageUrl,
+        autoLoad: true,
+        showZoomCtrl: true,
+        showFullscreenCtrl: true,
+      });
+
+      viewer.on('fullscreentoggle', () => {
+        const miniMapEl = document.getElementById('minimap');
+        if (!miniMapEl) return;
+
+        const isFullscreen = document.fullscreenElement !== null;
+
+        if (isFullscreen) {
+          miniMapEl.style.position = 'fixed';
+          miniMapEl.style.bottom = '16px';
+          miniMapEl.style.right = '16px';
+          miniMapEl.style.zIndex = '9999';
+          document.body.appendChild(miniMapEl);
+        } else {
+          const container = document.querySelector('.position-relative.w-100.h-100');
+          if (container) container.appendChild(miniMapEl);
+          miniMapEl.style.position = 'absolute';
+          miniMapEl.style.bottom = '';
+          miniMapEl.style.right = '';
+          miniMapEl.style.zIndex = '';
+        }
+      });
+    }, 0);
+  }
+
+  moveToPanorama(point: any): void {
+    const targetImage = point.targetPanoramaImage;
+    if (!targetImage || !targetImage.imageUrl) return;
+
+    this.selectedPointId = point.id;  // ← 선택된 포인트 ID 저장
+
+    const panoDiv = document.getElementById('pano_div_0');
+    if (panoDiv) {
+      panoDiv.innerHTML = '';
+      pannellum.viewer('pano_div_0', {
+        type: 'equirectangular',
+        panorama: 'http://localhost:3000/' + targetImage.imageUrl,
+        autoLoad: true,
+      });
+    }
   }
 }

@@ -15,6 +15,7 @@ export class ArticleWriteComponent implements OnInit {
     imageFiles: File[] = [];
     imagePreviews: string[] = [];
     isDragging = false;
+    currentCarouselIndex = 0;
 
     constructor(
         private fb: FormBuilder,
@@ -147,5 +148,14 @@ export class ArticleWriteComponent implements OnInit {
             ia[i] = byteString.charCodeAt(i);
         }
         return new Blob([ab], { type: mimeString });
+    }
+
+    updateIndex(direction: 'prev' | 'next') {
+        const total = this.imagePreviews.length;
+        if (direction === 'prev') {
+            this.currentCarouselIndex = (this.currentCarouselIndex - 1 + total) % total;
+        } else {
+            this.currentCarouselIndex = (this.currentCarouselIndex + 1) % total;
+        }
     }
 }

@@ -1,49 +1,90 @@
-<form [formGroup]="articleForm" (ngSubmit)="submitArticle()" class="container p-4 shadow-sm rounded"
-    style="max-width: 600px; margin: 120px auto; background-color: #F7F6EC;">
+<!-- 전체 배경 -->
+<div class="container-fluid d-flex justify-content-center align-items-center px-4 py-5"
+    style="background-color: #F7F6EC; min-height: 100vh;">
 
-    <!-- 제목 -->
-    <div class="mb-3">
-        <input formControlName="title" type="text" placeholder="제목" class="form-control form-control-lg" />
-    </div>
+    <!-- 콘텐츠 카드 -->
+    <form [formGroup]="articleForm" (ngSubmit)="submitArticle()"
+        class="d-flex border border-2 rounded shadow-sm overflow-hidden w-100"
+        style="max-width: 1200px; background-color: #F7F6EC; min-height: 700px;">
 
-    <!-- 내용 -->
-    <div class="mb-3">
-        <textarea formControlName="content" rows="6" placeholder="내용" class="form-control"></textarea>
-    </div>
+        <!-- ✅ 이미지 업로드 영역 (좌측) -->
+        <div class="d-flex flex-column align-items-center p-4 border-end border-2"
+            style="width: 60%; background-color: #F7F6EC; justify-content: flex-end; height: auto;">
 
-    <!-- 드래그 & 업로드 -->
-    <div class="mb-3 text-center p-4 border border-2 rounded" [ngClass]="{ 'border-warning': isDragging }" [ngStyle]="{
+            <!-- ✅ 캐러셀 미리보기 -->
+            <div *ngIf="imagePreviews.length > 0" class="position-relative w-100 mb-4">
+                <div class="carousel" id="carouselPreview">
+                    <div class="carousel-inner rounded shadow">
+                        <div class="carousel-item" *ngFor="let img of imagePreviews; let i = index"
+                            [class.active]="i === currentCarouselIndex">
+                            <div class="ratio" style="aspect-ratio: 4/3;">
+                                <img [src]="img" class="w-100 h-100 img-fluid" style="object-fit: cover;" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 좌우 컨트롤 -->
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselPreview"
+                        data-bs-slide="prev" (click)="updateIndex('prev')" style="filter: invert(1);">
+                        <span class="carousel-control-prev-icon"></span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselPreview"
+                        data-bs-slide="next" (click)="updateIndex('next')" style="filter: invert(1);">
+                        <span class="carousel-control-next-icon"></span>
+                    </button>
+                </div>
+
+                <!-- ✅ 좌측 상단: 제거 버튼 -->
+                <button type="button" (click)="removeImage(currentCarouselIndex)"
+                    class="btn btn-sm btn-danger position-absolute top-0 start-0 m-2 z-2">
+                    삭제
+                </button>
+
+                <!-- ✅ 우측 상단: 인덱스 표시 -->
+                <div
+                    class="position-absolute top-0 end-0 m-2 px-2 py-1 bg-dark text-white rounded small opacity-75 z-2">
+                    {{ currentCarouselIndex + 1 }} / {{ imagePreviews.length }}
+                </div>
+            </div>
+
+            <!-- ✅ 업로드 박스 (아래) -->
+            <div class="w-100 border border-2 rounded d-flex flex-column justify-content-center align-items-center text-center"
+                [ngClass]="{ 'border-warning': isDragging }" [ngStyle]="{
          'border-style': 'dashed',
-         'background-color': isDragging ? '#ece6d9' : '#f9f5ec',
-         'cursor': 'pointer'
+         'background-color': isDragging ? '#ece6d9' : '#FFF',
+         'cursor': 'pointer',
+         'max-width': '600px',
        }" (dragover)="onDragOver($event)" (dragleave)="onDragLeave($event)" (drop)="onDrop($event)">
-        <p class="mb-2">이미지를 드래그하거나 클릭해서 업로드하세요</p>
-        <button type="button" (click)="triggerFileSelect()" class="btn btn-sm text-white"
-            style="background-color: #5d3e00;">파일 선택</button>
-        <input type="file" accept="image/*" hidden #fileInput (change)="onImageSelected($event)" />
-    </div>
-
-    <!-- 이미지 미리보기 -->
-    <div class="mb-3 d-flex flex-wrap gap-3" *ngIf="imagePreviews.length > 0">
-        <div *ngFor="let preview of imagePreviews; let i = index" class="position-relative"
-            style="width: 100px; height: 100px;">
-            <img [src]="preview" class="img-thumbnail w-100 h-100" style="object-fit: cover; border-radius: 8px;" />
-            <button type="button" (click)="removeImage(i)"
-                class="btn btn-sm position-absolute p-0 rounded-circle d-flex align-items-center justify-content-center"
-                style="width: 20px; height: 20px; background-color: rgba(0,0,0,0.6); color: white; font-size: 14px; top: 4px; right: 4px;">
-                <i class="bi bi-x-circle"></i>
-            </button>
+                <p class="mb-2">이미지를 드래그하거나 클릭해서 업로드하세요</p>
+                <button type="button" (click)="triggerFileSelect()" class="btn btn-sm text-white"
+                    style="background-color: #5d3e00;">파일 선택</button>
+                <input type="file" accept="image/*" hidden #fileInput (change)="onImageSelected($event)" />
+            </div>
         </div>
-    </div>
 
-    <!-- 등록 버튼 -->
-    <div class="d-grid">
-        <button type="submit" [disabled]="!articleForm.valid" class="btn fw-bold py-2" [ngStyle]="{
-              'background-color': articleForm.valid ? '#231f1f' : '#ccc',
-              'color': articleForm.valid ? '#fff' : '#888',
-              'cursor': articleForm.valid ? 'pointer' : 'not-allowed'
-            }">
-            등록
-        </button>
-    </div>
-</form>
+        <!-- 텍스트 입력 영역 -->
+        <div class="p-4 d-flex flex-column justify-content-between w-40" style="width: 40%; background-color: #F7F6EC;">
+
+            <!-- 입력 필드 -->
+            <div>
+                <input formControlName="title" type="text" placeholder="제목"
+                    class="form-control form-control-sm mb-3 border border-2" style="background-color: F7F6EC;" />
+
+                <textarea formControlName="content" rows="8" placeholder="내용" class="form-control border border-2"
+                    style="resize: none; background-color: F7F6EC;"></textarea>
+            </div>
+
+            <!-- 등록 버튼 -->
+            <div class="text-end mt-3">
+                <button type="submit" [disabled]="!articleForm.valid" class="btn btn-sm fw-semibold px-4 py-2 border-0"
+                    [ngStyle]="{
+                  'background-color': articleForm.valid ? '#231f1f' : '#ccc',
+                  'color': articleForm.valid ? '#fff' : '#888',
+                  'cursor': articleForm.valid ? 'pointer' : 'not-allowed'
+                }">
+                    등록
+                </button>
+            </div>
+        </div>
+    </form>
+</div>

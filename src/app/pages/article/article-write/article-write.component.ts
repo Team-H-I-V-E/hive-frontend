@@ -117,6 +117,11 @@ export class ArticleWriteComponent implements OnInit {
     removeImage(index: number): void {
         this.imageFiles.splice(index, 1);
         this.imagePreviews.splice(index, 1);
+
+        // 인덱스 재조정
+        if (this.currentCarouselIndex >= this.imagePreviews.length) {
+            this.currentCarouselIndex = Math.max(0, this.imagePreviews.length - 1);
+        }
     }
 
     submitArticle(): void {
@@ -157,5 +162,9 @@ export class ArticleWriteComponent implements OnInit {
         } else {
             this.currentCarouselIndex = (this.currentCarouselIndex + 1) % total;
         }
+    }
+
+    goBack(): void {
+        this.router.navigate(['/article']); // 👉 게시글 목록 페이지로 이동
     }
 }

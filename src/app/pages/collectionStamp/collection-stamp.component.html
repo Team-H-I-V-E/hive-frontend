@@ -17,6 +17,7 @@
             <img
               *ngIf="s.acquired && s.stampImage"
               [src]="s.stampImage"
+              (click)="onImageClick(s)"
               [alt]="s.stampName"
                class="img-fluid rounded position-absolute top-0 start-0 w-100 h-100"
               style="object-fit: cover;"
@@ -28,3 +29,40 @@
     </div>
   </div>
 </div>
+
+
+<!-- 상세 모달 -->
+<ng-template #detailModal>
+  <div class="modal-backdrop fade show"></div>
+  <div class="modal d-block" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content" style="background: #fff;">
+        <div class="modal-header">
+          <h5 class="modal-title">{{ detail?.stampName }}</h5>
+          <button type="button" class="btn-close" (click)="closeDetail()"></button>
+        </div>
+        <div class="modal-body">
+            <div class="row justify-content-center align-items-center">
+                <div class="col-12 col-md-4 text-center mb-3 mb-md-0">
+                    <img *ngIf="detail?.stampImage as imgUrl"
+                    [src]="imgUrl"
+                    class="img-fluid mb-3 rounded"
+                    style="max-height:200px;" />
+                </div>
+                <div class="col-12 col-md-6" style="font-size: 1.06rem;">
+                    <p><strong>이름 :</strong> {{ detail?.stampName }}</p>
+                    <p><strong>시대 :</strong> {{ detail?.stampPeriod }}</p>
+                    <p><strong>소재지 :</strong> {{ detail?.stampLocation }}</p>
+                    <p><strong>획득일 :</strong> {{ detail?.stampTime | date:'yyyy-MM-dd HH:mm' }}</p>
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<!-- 모달 띄우기 -->
+<ng-container *ngIf="showDetail">
+  <ng-container *ngTemplateOutlet="detailModal"></ng-container>
+</ng-container>

@@ -35,7 +35,7 @@
 <ng-template #detailModal>
   <div class="modal-backdrop fade show"></div>
   <div class="modal d-block" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
       <div class="modal-content" style="background: #fff;">
         <div class="modal-header">
           <h5 class="modal-title">{{ detail?.stampName }}</h5>
@@ -50,28 +50,27 @@
                     style="max-height:200px;" />
                 </div>
                 <div class="col-12 col-md-6" style="font-size: 1.06rem;">
-                      <p class="d-flex align-items-center mb-2">
-                        <strong>이름</strong>
+                      <p class="d-flex align-items-center mb-3">
+                        <strong class="label" style="text-align: justify; width: 100px;">이 름</strong>
                         <span class="vr mx-3" style="background-color: #918E7C; width: 2px; opacity:1"></span>
                         <span class="ms-2">{{ detail?.stampName }}</span>
                       </p>
-                      <p class="d-flex align-items-center mb-2">
-                        <strong>시대</strong>
+                      <p class="d-flex align-items-center mb-3">
+                        <strong class="label" style="text-align: justify; width: 100px;">시 대</strong>
                         <span class="vr mx-3" style="background-color: #918E7C; width: 2px; opacity:1"></span>
                         <span class="ms-2">{{ detail?.stampPeriod }}</span>
                       </p>
-                      <p class="d-flex align-items-center mb-2">
-                        <strong>소재지</strong>
+                      <p class="d-flex align-items-center mb-3">
+                        <strong class="label" style="text-align: justify; width: 100px;">소 재 지</strong>
                         <span class="vr mx-3" style="background-color: #918E7C; width: 2px; opacity:1"></span>
                         <span class="ms-2">{{ detail?.stampLocation }}</span>
                       </p>
-                      <p class="d-flex align-items-center mb-2">
-                        <strong>획득일</strong>
+                      <p class="d-flex align-items-center mb-3">
+                        <strong class="label" style="text-align: justify; width: 100px;">획 득 일</strong>
                         <span class="vr mx-3" style="background-color: #918E7C; width: 2px; opacity:1"></span>
                         <span class="ms-2">{{ detail?.stampTime | date:'yyyy-MM-dd HH:mm' }}</span>
                       </p>
-                    </div>
-
+                </div>
             </div>
         </div>
       </div>

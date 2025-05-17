@@ -19,13 +19,15 @@ export class ArticleDetailComponent implements OnInit {
   commentInput = '';
   currentUserId: number | null = null;
   environment = environment;
+  currentImageIndex: number = 0;
+  private carouselInitialized = false;
 
   constructor(
     private route: ActivatedRoute,
     private articleService: ArticleService,
     private commentService: CommentService,
     private authService: AuthService,
-  ) {}
+  ) { }
 
   ngOnInit() {
     const articleId = Number(this.route.snapshot.paramMap.get('id'));
@@ -60,5 +62,17 @@ export class ArticleDetailComponent implements OnInit {
 
   isOwner(): boolean {
     return this.article?.user?.userId === this.currentUserId;
+  }
+
+  ngAfterViewChecked(): void {
+    const carouselId = `#detailCarousel-${this.article?.articleId}`;
+    const carouselEl = document.querySelector(carouselId);
+
+    if (carouselEl && !this.carouselInitialized) {
+      carouselEl.addEventListener('slid.bs.carousel', (event: any) => {
+        this.currentImageIndex = event.to;
+      });
+      this.carouselInitialized = true;
+    }
   }
 }

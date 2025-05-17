@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewChecked } from '@angular/core';
 import { Router } from '@angular/router';
 import { Article } from 'src/app/models/article/article.model';
 import { ArticleService } from 'src/app/services/article/aritlce.service';
@@ -18,24 +18,44 @@ interface ArticleWithUI extends Article {
   styleUrls: ['./article-list.component.scss'],
   standalone: false,
 })
-export class ArticleListComponent implements OnInit {
+export class ArticleListComponent implements OnInit, AfterViewChecked {
   articles: ArticleWithUI[] = [];
   environment = environment;
+  private isCarouselInitialized = false;
 
   constructor(
     private articleService: ArticleService,
     private router: Router
   ) { }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.articleService.getArticles().subscribe((res: Article[]) => {
       this.articles = res.map((article) => ({
         ...article,
         currentImageIndex: 0,
-        liked: false, // 초기값
-        bookmarked: false, // 초기값
+        liked: false,
+        bookmarked: false,
       }));
     });
+  }
+
+  ngAfterViewChecked(): void {
+    // 캐러셀 슬라이드 이벤트 연결 (한 번만)
+    if (!this.isCarouselInitialized && this.articles.length > 0) {
+      setTimeout(() => {
+        this.articles.forEach((article) => {
+          const carouselEl = document.querySelector(
+            `#carousel-${article.articleId}`
+          );
+          if (carouselEl) {
+            carouselEl.addEventListener('slid.bs.carousel', (event: any) => {
+              article.currentImageIndex = event.to;
+            });
+          }
+        });
+        this.isCarouselInitialized = true;
+      }, 0);
+    }
   }
 
   goToDetail(articleId: number): void {
@@ -43,20 +63,16 @@ export class ArticleListComponent implements OnInit {
   }
 
   onCarouselClick(event: Event): void {
-    event.stopPropagation();
+    event.stopPropagation(); // 카드 클릭 방지
   }
 
-  // 좋아요 토글
   toggleLike(article: ArticleWithUI, event: Event): void {
-    event.stopPropagation(); // 디테일 이동 방지
+    event.stopPropagation();
     article.liked = !article.liked;
-    // 서버 연동이 필요하면 여기서 호출
   }
 
-  // 즐겨찾기 토글
   toggleBookmark(article: ArticleWithUI, event: Event): void {
-    event.stopPropagation(); // 디테일 이동 방지
+    event.stopPropagation();
     article.bookmarked = !article.bookmarked;
-    // 서버 연동이 필요하면 여기서 호출
   }
 }

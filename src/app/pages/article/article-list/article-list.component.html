@@ -1,11 +1,14 @@
 <div class="container py-5 bg-light min-vh-100">
-    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-5 mt-4">
         <div class="col" *ngFor="let article of articles">
             <div class="card h-100 shadow-sm border-0" (click)="goToDetail(article.articleId)">
 
                 <!-- 캐러셀 -->
-                <div *ngIf="article.articleImages?.length" class="carousel slide" [id]="'carousel-' + article.articleId"
-                    data-bs-ride="carousel">
+                <div *ngIf="article.articleImages?.length" class="carousel slide" [id]="'carousel-' + article.articleId">
+                    <div class="position-absolute top-0 end-0 m-2 px-2 py-1 bg-dark text-white rounded small opacity-75"
+                        style="z-index: 2;">
+                        {{ article.currentImageIndex + 1 }} / {{ article.articleImages.length }}
+                    </div>
                     <div class="carousel-inner">
                         <div class="carousel-item" *ngFor="let image of article.articleImages; let j = index"
                             [class.active]="j === 0">

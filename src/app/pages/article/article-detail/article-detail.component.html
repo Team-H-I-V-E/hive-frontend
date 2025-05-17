@@ -1,39 +1,70 @@
-<div class="container-fluid py-4 px-5 d-flex gap-4" style="height: calc(100vh - 80px); box-sizing: border-box;">
-    <!-- 이미지 영역 -->
-    <div class="flex-grow-1 d-flex justify-content-center align-items-center">
-        <img *ngIf="article?.articleImages?.[0]"
-            [src]="environment.apiBaseUrl + '/uploads/article/' + article.articleImages[0].articleImage"
-            class="img-fluid rounded shadow" style="max-width: 700px; aspect-ratio: 4/3; object-fit: cover;" />
-    </div>
+<!-- 전체 컨테이너 -->
+<div class="container-fluid py-4 px-5 d-flex justify-content-center"
+    style="background-color: #fdfbee; height: calc(100vh - 80px);">
+    <div class="d-flex border rounded overflow-hidden" style="max-width: 1200px; width: 100%; background-color: #fff;">
 
-    <!-- 댓글 및 내용 영역 -->
-    <div class="d-flex flex-column border rounded p-3 bg-white" style="width: 400px; height: 100%;">
-        <!-- 게시글 정보 -->
-        <div class="mb-3">
-            <div class="fw-bold mb-1">{{ article.user.nickname }}</div>
-            <div class="h5 mb-2">{{ article.articleTitle }}</div>
-            <div class="text-muted">{{ article.articleContents }}</div>
+        <!-- 이미지 캐러셀 -->
+        <div class="flex-grow-1 d-flex justify-content-center align-items-center p-3">
+            <div *ngIf="article?.articleImages?.length" class="carousel slide position-relative w-100"
+                [id]="'detailCarousel-' + article.articleId" data-bs-ride="carousel" style="max-width: 700px">
 
-            <!-- 수정/삭제 버튼 -->
-            <div class="mt-3" *ngIf="isOwner()">
-                <button class="btn btn-outline-primary btn-sm me-2">수정</button>
-                <button class="btn btn-outline-danger btn-sm">삭제</button>
+                <!-- 인덱스 표시 -->
+                <div class="position-absolute top-0 end-0 m-2 px-2 py-1 bg-dark text-white rounded small opacity-75"
+                    style="z-index: 2;">
+                    {{ currentImageIndex + 1 }} / {{ article.articleImages.length }}
+                </div>
+
+                <div class="carousel-inner rounded shadow">
+                    <div class="carousel-item" *ngFor="let image of article.articleImages; let i = index"
+                        [class.active]="i === 0">
+                        <div class="ratio" style="aspect-ratio: 4/3;">
+                            <img [src]="environment.apiBaseUrl + '/uploads/article/' + image.articleImage"
+                                class="w-100 h-100 img-fluid" style="object-fit: cover;" />
+                        </div>
+                    </div>
+                </div>
+
+                <button class="carousel-control-prev" type="button"
+                    [attr.data-bs-target]="'#detailCarousel-' + article.articleId" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon"></span>
+                </button>
+                <button class="carousel-control-next" type="button"
+                    [attr.data-bs-target]="'#detailCarousel-' + article.articleId" data-bs-slide="next">
+                    <span class="carousel-control-next-icon"></span>
+                </button>
             </div>
         </div>
 
-        <!-- 댓글 리스트 -->
-        <div class="flex-grow-1 overflow-auto mb-3">
-            <div *ngFor="let comment of comments" class="border-bottom pb-2 mb-2">
-                <p class="fw-semibold mb-1">{{ comment.user.nickname }}</p>
-                <p class="mb-0 text-body">{{ comment.comments }}</p>
+        <!-- 게시글 & 댓글 패널 -->
+        <div class="d-flex flex-column border-start" style="width: 400px; background-color: #fcfbf6;">
+            <!-- 게시글 텍스트 -->
+            <div class="border-bottom p-3">
+                <div class="fw-bold mb-1">{{ article.articleTitle }}</div>
+                <div class="text-muted small">{{ article.articleContents }}</div>
+
+                <!-- 수정/삭제 버튼 -->
+                <div class="mt-3" *ngIf="isOwner()">
+                    <button class="btn btn-outline-primary btn-sm me-2">수정</button>
+                    <button class="btn btn-outline-danger btn-sm">삭제</button>
+                </div>
+            </div>
+
+            <!-- 댓글 리스트 -->
+            <div class="flex-grow-1 overflow-auto p-3">
+                <div *ngFor="let comment of comments" class="mb-3 pb-2 border-bottom">
+                    <p class="fw-semibold mb-1">[유저명]</p>
+                    <p class="mb-0 text-body">{{ comment.comments }}</p>
+                    <small class="text-muted">[날짜]</small>
+                </div>
+            </div>
+
+            <!-- 댓글 입력 -->
+            <div class="border-top p-3 d-flex align-items-center">
+                <input type="text" [(ngModel)]="commentInput" class="form-control me-2" placeholder="댓글 달기..."
+                    (keydown.enter)="postComment()" />
+                <button class="btn btn-outline-primary btn-sm" (click)="postComment()">완료</button>
             </div>
         </div>
 
-        <!-- 댓글 입력창 -->
-        <div class="border-top pt-3 d-flex align-items-center">
-            <input type="text" [(ngModel)]="commentInput" class="form-control me-2" placeholder="댓글 달기..."
-                (keydown.enter)="postComment()" />
-            <button class="btn btn-dark" (click)="postComment()">완료</button>
-        </div>
     </div>
 </div>

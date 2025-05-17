@@ -1,7 +1,9 @@
-<div class="app-wrapper d-flex flex-column min-vh-100" style="background-color: #F7F6EC;">
-    <app-header></app-header>
+<div class="d-flex flex-column w-100" style="min-height: 100vh; background-color: #F7F6EC; overflow: hidden;">
 
-    <main class="flex-grow-1">
+    <app-header style="flex-shrink: 0; height: 80px;"></app-header>
+
+    <main style="flex-grow: 1; overflow: auto; display: flex; flex-direction: column; min-height: 0;">
         <router-outlet></router-outlet>
     </main>
+    
 </div>

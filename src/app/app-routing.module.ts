@@ -18,6 +18,8 @@ const routes: Routes = [
 
   { path: 'mypage', loadChildren: () => import('./pages/mypage/mypage.module').then(m => m.MyPageComponentModule) },
 
+  { path: 'mystamps', loadChildren: () => import('./pages/collectionStamp/collection-stamp.module').then(m => m.CollectionStampModule) },
+
   { path: 'heritage/heritagedetail/:id', component: HeritageDetailComponent },
 
   { path: 'heritage-viewer/:id', component: Heritage3DViewerComponent }

@@ -1,0 +1,30 @@
+<div
+  class="stamp-wrapper d-flex justify-content-center align-items-center min-vh-100"
+  style="background-color: #F7F6EC;"
+>
+  <div
+    class="stamp-board p-5"
+    style="max-width: 80vw; background-color: #fff; border: 1px solid #785927; border-radius: 16px;"
+  >
+    <div class="row gx-5" style="row-gap: 2.5rem;">
+      <div *ngFor="let s of stamps" class="col-6 col-md-3">
+        <div class="d-flex flex-column align-items-center">
+          <div class="ratio ratio-1x1 w-100 position-relative">
+            <div
+              class="position-absolute top-0 start-0 w-100 h-100 rounded-circle"
+              style="border: 1.2px solid #AFB1B6; background-color: transparent;"
+            ></div>
+            <img
+              *ngIf="s.acquired && s.stampImage"
+              [src]="s.stampImage"
+              [alt]="s.stampName"
+               class="img-fluid rounded position-absolute top-0 start-0 w-100 h-100"
+              style="object-fit: cover;"
+            />
+          </div>
+          <div class="stamp-name mt-2 text-center" style="font-size: 1.15rem">{{ s.stampName }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

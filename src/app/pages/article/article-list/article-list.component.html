@@ -38,7 +38,7 @@
                                 [ngClass]="article.liked ? 'bi-heart-fill text-danger' : 'bi-heart text-muted'"
                                 (click)="toggleLike(article, $event)"></i>
                             <i class="bi"
-                                [ngClass]="article.bookmarked ? 'bi-bookmark-fill text-primary' : 'bi-bookmark text-muted'"
+                                [ngClass]="article.bookmarked ? 'bi-star-fill text-warning' : 'bi-star text-muted'"
                                 (click)="toggleBookmark(article, $event)"></i>
                         </span>
                     </div>

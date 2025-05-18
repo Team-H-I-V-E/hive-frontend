@@ -17,7 +17,8 @@
       <img [src]="'http://localhost:3000' + heritage.heritageImageUrl" alt="heritage.heritageName" />
 
       <div class="heritage-content">
-        <h5>{{ heritage.heritageName || '이름 없음' }}</h5>
+        <h5>{{ heritage.heritageType || '이름 없음' }}</h5>
+        <h3>{{ heritage.heritageName || '이름 없음' }}</h3>
       </div>
     </div>
   </div>

@@ -3,6 +3,7 @@ import { Component } from "@angular/core";
 @Component({
     selector: 'app-signup',
     templateUrl: './create-account.component.html',
+    standalone:false
 })
 export class CreateAccountComponent {
     user = {

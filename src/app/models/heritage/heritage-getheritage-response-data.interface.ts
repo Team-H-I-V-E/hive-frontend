@@ -7,4 +7,8 @@ export interface GetHeritagesResponseData {
   "heritageLatitude": number;
   "heritageLongitude": number;
   "heritageImageUrl": string;
+  "heritageType": string;      
+  "heritageCategory": string;
+  "heritagePeriodArea": string;
+  "designationDate": Date | null;
 }

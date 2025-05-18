@@ -30,9 +30,13 @@ export class HeritageDetailComponent implements OnInit, AfterViewInit {
       heritage3dModelId: 0,
       modelFileUrl: ''
     },
-    heritageImageUrl: ''
-
+    heritageImageUrl: '',
+    heritageType: '',    
+    heritageCategory: '',
+    heritagePeriodArea: '',
+    designationDate: null 
   };
+  
 
   private scene!: THREE.Scene;
   private camera!: THREE.PerspectiveCamera;

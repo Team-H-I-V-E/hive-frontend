@@ -11,5 +11,8 @@ export interface GetHeritagesByIdResponseData {
     "modelFileUrl": string;
   };
   "heritageImageUrl": string;
-
+"heritageType": string;      
+  "heritageCategory": string;
+  "heritagePeriodArea": string;
+  "designationDate": Date | null;
 }

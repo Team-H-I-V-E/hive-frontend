@@ -4,4 +4,6 @@ export interface StampDetail {
   stampLocation: string;
   stampTime:     string;
   stampImage?:   string | null;
+  stampLatitude: number;
+  stampLongitude: number;
 }

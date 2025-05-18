@@ -1,0 +1,86 @@
+<div
+  class="stamp-wrapper d-flex justify-content-center align-items-center min-vh-100"
+  style="background-color: #F7F6EC;"
+>
+  <div
+    class="stamp-board p-5"
+    style="max-width: 80vw; background-color: #fff; border: 1px solid #785927; border-radius: 16px;"
+  >
+    <div class="row gx-5" style="row-gap: 2.5rem;">
+      <div *ngFor="let s of stamps" class="col-6 col-md-3">
+        <div class="d-flex flex-column align-items-center">
+          <div class="ratio ratio-1x1 w-100 position-relative">
+            <div
+              class="position-absolute top-0 start-0 w-100 h-100 rounded-circle"
+              style="border: 1.2px solid #AFB1B6; background-color: transparent;"
+            ></div>
+            <img
+              *ngIf="s.acquired && s.stampImage"
+              [src]="s.stampImage"
+              (click)="onImageClick(s)"
+              [alt]="s.stampName"
+               class="img-fluid rounded position-absolute top-0 start-0 w-100 h-100"
+              style="object-fit: cover;"
+            />
+          </div>
+          <div class="stamp-name mt-2 text-center" style="font-size: 1.15rem">{{ s.stampName }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- 상세 모달 -->
+<ng-template #detailModal>
+  <div class="modal-backdrop fade show"></div>
+  <div class="modal d-block" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+      <div class="modal-content" style="background: #fff;">
+        <div class="modal-header" style="background:#231F1F; padding: 16px 24px 16px 24px; color: #F7F6EC">
+          <h5 class="modal-title mb-0" id="stampModalLabel">스탬프 상세</h5>
+          <div class="me-3 ms-2" style="border-left: 2px solid #F7F6EC; height: 18px;"></div>
+          <p class="mb-0">{{ detail?.stampName }}</p>
+          <button type="button" class="btn-close btn-close-white" (click)="closeDetail()" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <div class="row justify-content-center align-items-center">
+                <div class="col-12 col-md-4 text-center mb-3 mb-md-0">
+                    <img *ngIf="detail?.stampImage as imgUrl"
+                    [src]="imgUrl"
+                    class="img-fluid mb-3 rounded"
+                    style="max-height:200px;" />
+                </div>
+                <div class="col-12 col-md-6" style="font-size: 1.06rem;">
+                      <p class="d-flex align-items-center mb-3">
+                        <strong class="label" style="text-align: justify; width: 100px;">이 름</strong>
+                        <span class="vr mx-3" style="background-color: #918E7C; width: 2px; opacity:1"></span>
+                        <span class="ms-2">{{ detail?.stampName }}</span>
+                      </p>
+                      <p class="d-flex align-items-center mb-3">
+                        <strong class="label" style="text-align: justify; width: 100px;">시 대</strong>
+                        <span class="vr mx-3" style="background-color: #918E7C; width: 2px; opacity:1"></span>
+                        <span class="ms-2">{{ detail?.stampPeriod }}</span>
+                      </p>
+                      <p class="d-flex align-items-center mb-3">
+                        <strong class="label" style="text-align: justify; width: 100px;">소 재 지</strong>
+                        <span class="vr mx-3" style="background-color: #918E7C; width: 2px; opacity:1"></span>
+                        <span class="ms-2">{{ detail?.stampLocation }}</span>
+                      </p>
+                      <p class="d-flex align-items-center mb-3">
+                        <strong class="label" style="text-align: justify; width: 100px;">획 득 일</strong>
+                        <span class="vr mx-3" style="background-color: #918E7C; width: 2px; opacity:1"></span>
+                        <span class="ms-2">{{ detail?.stampTime | date:'yyyy-MM-dd HH:mm' }}</span>
+                      </p>
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<!-- 모달 띄우기 -->
+<ng-container *ngIf="showDetail">
+  <ng-container *ngTemplateOutlet="detailModal"></ng-container>
+</ng-container>

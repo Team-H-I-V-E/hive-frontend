@@ -1,0 +1,30 @@
+:host {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.app-wrapper {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100vh;
+    /* 전체 화면 기준 */
+    overflow: hidden;
+}
+
+app-header {
+    flex-shrink: 0;
+    height: 80px;
+    /* 헤더 높이 지정 */
+}
+
+.main-container {
+    flex: 1;
+    overflow: auto; 
+    /* 필요하면 auto */
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    /* flex 내부에서 스크롤 문제 해결 */
+}

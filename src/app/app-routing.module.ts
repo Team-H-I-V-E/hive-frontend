@@ -16,6 +16,8 @@ const routes: Routes = [
 
   { path: 'article', loadChildren: () => import('./pages/article/article.module').then(m => m.ArticleComponentModule) },
 
+  { path: 'auth', loadChildren: () => import('./pages/auth/auth.module').then(m => m.AuthModule) },
+
   { path: 'mypage', loadChildren: () => import('./pages/mypage/mypage.module').then(m => m.MyPageComponentModule) },
 
   { path: 'mystamps', loadChildren: () => import('./pages/collectionStamp/collection-stamp.module').then(m => m.CollectionStampModule) },

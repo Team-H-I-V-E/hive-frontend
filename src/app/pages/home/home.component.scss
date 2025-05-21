@@ -101,9 +101,9 @@
 }
 
 .main_img {
-  height: 70vh;
-  width: auto;
-  transform: translateY(-4vh);
+  height: auto;
+  width: 26vw;
+  transform: translateY(-2vh);
 }
 
 // title
@@ -178,15 +178,18 @@
 
 // history
 .history {
+  position: absolute;      /* 위치 고정 */
+  bottom: 8vh;               /* 화면 위에서부터 16vh 고정 */
+  left: 10vh;
   color: #F7F6EC;
   font-size: 1.2rem;
-  margin-top: 16vh;
-  margin-left: 10vh;
   display: flex;
   flex-direction: column;
-  gap: 3em;
-  position: relative;
+  gap: 3.5em;
+  height: 33vh;
+  overflow: hidden;
 }
+
 
 strong {
   font-family: 'Nanum Myeongjo', serif;
@@ -220,7 +223,7 @@ strong {
   left: 0.28em;
   top: 1.2em;
   width: 0;
-  height: 32vh;
+  height: 33vh;
   border-left: 2px dashed #F7F6EC;
   z-index: 0;
 }

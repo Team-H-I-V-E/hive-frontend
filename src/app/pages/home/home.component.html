@@ -1,33 +1,33 @@
-<div class="container-box">
+<div class="container-box" *ngIf="currentAsset">
     <!-- 콘텐츠 레이어 -->
-    <div *ngFor="let asset of assets" class="content-layer">
-        <h1 id="t1">{{ asset.nameEng }}</h1>
-        <h2 id="t2">{{ asset.name }}</h2>
-        <h3 id="t3">{{ asset.description }}</h3>
-        <div class="circule-title">
-            <span class="inner-text">{{ asset.era }}</span>
-        </div>
-        <div class="history">
-            <p><strong>지정(등록)일</strong>{{ asset.designationDate }}</p>
-            <p><strong>{{ asset.era }}</strong>{{ asset.eraDetail }}</p>
-        </div>  
+  <div class="content-layer">
+    <h1 id="t1">{{ currentAsset.nameEng }}</h1>
+    <h2 id="t2">{{ currentAsset.name }}</h2>
+    <h3 id="t3">{{ currentAsset.description }}</h3>
+    <div class="circule-title">
+      <span class="inner-text">{{ currentAsset.era }}</span>
     </div>
+    <div class="history">
+      <p><strong>지정(등록)일</strong> {{ currentAsset.designationDate }}</p>
+      <p><strong>{{ currentAsset.era }}</strong> {{ currentAsset.eraDetail }}</p>
+    </div>  
+  </div>
 
-    <!-- 배경 -->
-    <div *ngFor="let asset of assets" class="circular-gradient-background">
-        <div class="half-circle-border">
-            <div class="half-circle-rect">
-                <img class="main_img" src="http://localhost:3000/{{ asset.imageUrl }}" alt="{{ asset.name }}">
-            </div>
-        </div>
-        <div class="corner-block top-right">
-            <div>SEJONG</div>
-            <div class="indented">ANNALS</div>
-        </div>
-        <div class="corner-block bottom-left">
-            <div>SEJONG</div>
-            <div class="indented">ANNALS</div>
-        </div>
+  <!-- 배경 -->
+  <div class="circular-gradient-background">
+    <div class="half-circle-border">
+      <div class="half-circle-rect">
+        <img class="main_img" [src]="'http://localhost:3000/' + currentAsset.imageUrl" alt="{{ currentAsset.name }}">
+      </div>
     </div>
+    <div class="corner-block top-right">
+      <div>SEJONG</div>
+      <div class="indented">ANNALS</div>
+    </div>
+    <div class="corner-block bottom-left">
+      <div>SEJONG</div>
+      <div class="indented">ANNALS</div>
+    </div>
+  </div>
 </div>
 

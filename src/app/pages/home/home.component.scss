@@ -62,6 +62,9 @@
   border-radius: 14vw 14vw 0 0;
   transform: translateY(0.5vw);
   overflow: hidden; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .half-circle-rect::after { // 도형 그라데이션
@@ -95,4 +98,10 @@
   justify-content: center;
   padding-bottom: 0.5vh;   
   box-sizing: border-box;  
+}
+
+.main_img {
+  height: 70vh;
+  width: auto;
+  transform: translateY(-4vh);
 }

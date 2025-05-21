@@ -106,14 +106,32 @@
   transform: translateY(-4vh);
 }
 
+// title
 #t1 {
-  color: white;
+  color: #F7F6EC;
   font-size: 3.6rem;
   font-family: 'Times New Roman', serif;
   white-space: normal;
   word-break: keep-all;
   line-height: 1.4;
   margin-top: 8vh; 
-  padding-left: 5vw;    /* 왼쪽은 5% */
-  padding-right: 30vw;  /* 오른쪽은 화면 너비의 36% */ 
+  padding-left: 5vw;  
+  padding-right: 30vw; 
+  margin-bottom: 60px;
+}
+
+#t2 {
+  color: #F7F6EC;
+  font-family: 'Nanum Myeongjo', serif;
+  padding-left: 5vw;
+  margin-bottom: 20px;
+}
+
+#t3 {
+  color: #F7F6EC;
+  font-family: 'Nanum Myeongjo', serif;
+  font-size: 1.2rem;
+  padding-left: 5vw;  
+  padding-right: 60vw;
+  line-height: 1.5;
 }

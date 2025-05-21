@@ -141,7 +141,7 @@
   display: inline-block;
   padding: 0.5em 2em;
   padding-left: 1.6em;
-  border: 2px solid rgba(255, 255, 255, 1);
+  border: 2px solid #F7F6EC;
   border-radius: 95% / 100%;
   font-size: 1.2rem;
   color: white;
@@ -170,9 +170,57 @@
   mask-size: 100% 100%;
 }
 
-
-
 .inner-text {
   display: inline-block;
   transform: rotate(4deg);
+}
+
+
+// history
+.history {
+  color: #F7F6EC;
+  font-size: 1.2rem;
+  margin-top: 16vh;
+  margin-left: 10vh;
+  display: flex;
+  flex-direction: column;
+  gap: 3em;
+  position: relative;
+}
+
+strong {
+  font-family: 'Nanum Myeongjo', serif;
+  font-size: 1.3rem;
+  margin-right: 1rem;
+}
+
+.history p {
+  position: relative;
+  padding-left: 2em;
+  margin: 0;
+}
+
+// ● 원 표시
+.history p::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.5em;
+  width: 0.6em;
+  height: 0.6em;
+  background-color: #F7F6EC;
+  border-radius: 50%;
+  z-index: 1;
+}
+
+// 점선 연결 라인
+.history p:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  left: 0.28em;
+  top: 1.2em;
+  width: 0;
+  height: 32vh;
+  border-left: 2px dashed #F7F6EC;
+  z-index: 0;
 }

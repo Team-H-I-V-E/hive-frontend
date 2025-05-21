@@ -16,7 +16,7 @@
   z-index: -1;
   background: radial-gradient(circle, #292720 0%, #292720 1%, #231F1F 100%);
   color: white;
-  font-family: 'Georgia', serif;
+  font-family: 'Times New Roman', serif;
 }
 
 // SEJONG ANNALS 위치
@@ -104,4 +104,16 @@
   height: 70vh;
   width: auto;
   transform: translateY(-4vh);
+}
+
+#t1 {
+  color: white;
+  font-size: 3.6rem;
+  font-family: 'Times New Roman', serif;
+  white-space: normal;
+  word-break: keep-all;
+  line-height: 1.4;
+  margin-top: 8vh; 
+  padding-left: 5vw;    /* 왼쪽은 5% */
+  padding-right: 30vw;  /* 오른쪽은 화면 너비의 36% */ 
 }

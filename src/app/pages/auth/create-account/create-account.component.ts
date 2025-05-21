@@ -7,6 +7,7 @@ import { FormsModule } from "@angular/forms";
     standalone: true,
     imports: [CommonModule, FormsModule],
     templateUrl: './create-account.component.html',
+    standalone:false
     styleUrls: ['./create-account.component.scss'],
 })
 export class CreateAccountComponent {

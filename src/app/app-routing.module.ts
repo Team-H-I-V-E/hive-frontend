@@ -18,7 +18,9 @@ const routes: Routes = [
 
   { path: 'mypage', loadChildren: () => import('./pages/mypage/mypage.module').then(m => m.MyPageComponentModule) },
 
-  { path: 'auth', loadChildren: () => import('./pages/auth/auth.module').then(m => m.AuthModule)},
+  { path: 'mystamps', loadChildren: () => import('./pages/collectionStamp/collection-stamp.module').then(m => m.CollectionStampModule) },
+  
+  { path: 'auth', loadChildren: () => import('./pages/auth/auth.module').then(m => m.AuthModule)},  
 
   { path: 'heritage/heritagedetail/:id', component: HeritageDetailComponent },
 

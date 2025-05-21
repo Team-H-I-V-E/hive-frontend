@@ -1,0 +1,11 @@
+.label:after {
+    content: '';
+    display: inline-block;
+    width: 100%;
+}
+
+@media (max-width: 768px) {
+  #map {
+    width: 100%;
+  }
+}

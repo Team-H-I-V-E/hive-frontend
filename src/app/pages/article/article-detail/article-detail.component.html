@@ -1,0 +1,70 @@
+<!-- 전체 배경 -->
+<div class="container-fluid d-flex justify-content-center align-items-center px-4 py-5"
+    style="background-color: #F7F6EC; min-height: 100vh;">
+
+    <!-- 콘텐츠 카드 -->
+    <div class="d-flex border border-2 rounded shadow-sm overflow-hidden"
+        style="max-width: 1300px; width: 100%; min-height: 720px; border-color: #a48d5f; background-color: #F7F6EC;">
+
+        <!-- 📷 이미지 캐러셀 섹션 -->
+        <div class="d-flex justify-content-center align-items-center p-3 border-end border-2"
+            style="width: 60%; background-color: #F7F6EC; border-color: #a48d5f;">
+            <div *ngIf="article?.articleImages?.length" class="carousel slide position-relative w-100"
+                [id]="'detailCarousel-' + article.articleId" data-bs-ride="carousel" style="width: 100%;">
+
+                <!-- 🔢 인덱스 표시 -->
+                <div class="position-absolute top-0 end-0 m-2 px-2 py-1 bg-dark text-white rounded small opacity-75"
+                    style="z-index: 2;">
+                    {{ currentImageIndex + 1 }} / {{ article.articleImages.length }}
+                </div>
+
+                <!-- 캐러셀 아이템 -->
+                <div class="carousel-inner rounded shadow">
+                    <div class="carousel-item" *ngFor="let image of article.articleImages; let i = index"
+                        [class.active]="i === 0">
+                        <div class="ratio" style="aspect-ratio: 4/3;">
+                            <img [src]="environment.apiBaseUrl + '/uploads/article/' + image.articleImage"
+                                class="w-100 h-100 img-fluid" style="object-fit: cover;" />
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 좌우 버튼 -->
+                <button class="carousel-control-prev" type="button"
+                    [attr.data-bs-target]="'#detailCarousel-' + article.articleId" data-bs-slide="prev"
+                    style="filter: invert(1);">
+                    <span class="carousel-control-prev-icon"></span>
+                </button>
+                <button class="carousel-control-next" type="button"
+                    [attr.data-bs-target]="'#detailCarousel-' + article.articleId" data-bs-slide="next"
+                    style="filter: invert(1);">
+                    <span class="carousel-control-next-icon"></span>
+                </button>
+            </div>
+        </div>
+
+        <!-- 📝 텍스트 섹션 -->
+        <div class="d-flex flex-column justify-content-between border-2"
+            style="width: 40%; background-color: #F7F6EC; border-color: #a48d5f;">
+
+            <!-- 게시글 정보 -->
+            <div class="p-4 border-bottom border-2" style="border-color: #a48d5f;">
+                <h5 class="fw-bold mb-2">{{ article.articleTitle }}</h5>
+                <p class="text-muted mb-0" style="white-space: pre-line;">{{ article.articleContents }}</p>
+                <div class="text-muted small mt-3">{{ article.articleCreatedAt | date: 'longDate' }}</div>
+            </div>
+
+            <!-- 댓글 입력 (비활성) -->
+            <div class="p-2 border-top border-2 d-flex align-items-center justify-content-between"
+                style="border-color: #a48d5f;">
+                <input type="text" [(ngModel)]="commentInput" class="form-control border-0 me-2" placeholder="댓글 달기..."
+                    style="background-color: transparent;" disabled />
+                <button class="text-primary bg-transparent border-0"
+                    style="font-size: 10px; font-weight: 600; display: flex; align-items: center; justify-content: center; white-space: nowrap; padding: 4px 8px; line-height: 1;"
+                    disabled>
+                    완료
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

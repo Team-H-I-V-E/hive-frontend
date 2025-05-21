@@ -227,3 +227,36 @@ strong {
   border-left: 2px dashed #F7F6EC;
   z-index: 0;
 }
+
+
+/* 하단 슬라이더 버튼 */
+.slide-controls {
+  position: absolute;      
+  bottom: 10vh;            
+  left: 90%;                
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.1rem;
+  z-index: 10;       
+
+  button {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: #F7F6EC;    
+    &:hover {
+      transform: scale(1.2);
+    }
+  }
+
+  #arrow {
+    font-size: 1.5rem;
+  }
+
+  #slide-circule{
+    font-size: 0.8rem;
+  }
+}
+

@@ -51,4 +51,21 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.currentAsset = this.assets[this.currentIndex];
     }, 5000);
   }
+
+  goToPreviousAsset(): void {
+    if (this.assets.length === 0) return;
+    this.currentIndex = (this.currentIndex - 1 + this.assets.length) % this.assets.length;
+    this.currentAsset = this.assets[this.currentIndex];
+  }
+
+  goToNextAsset(): void {
+    if (this.assets.length === 0) return;
+    this.currentIndex = (this.currentIndex + 1) % this.assets.length;
+    this.currentAsset = this.assets[this.currentIndex];
+  }
+
+  goToAsset(index: number): void {
+    this.currentIndex = index;
+    this.currentAsset = this.assets[this.currentIndex];
+  }
 }

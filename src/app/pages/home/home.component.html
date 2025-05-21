@@ -13,6 +13,20 @@
     </div>  
   </div>
 
+  <!-- 하단 슬라이더 버튼 -->
+    <div class="slide-controls">
+      <button id="arrow" (click)="goToPreviousAsset()">&lt;</button>
+
+      <ng-container *ngFor="let asset of assets; let i = index">
+        <button id="slide-circule" (click)="goToAsset(i)">
+          {{ i === currentIndex ? '●' : '○' }}
+        </button>
+      </ng-container>
+
+      <button id="arrow" (click)="goToNextAsset()">&gt;</button>
+    </div>
+
+  
   <!-- 배경 -->
   <div class="circular-gradient-background">
     <div class="half-circle-border">

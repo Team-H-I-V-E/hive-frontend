@@ -1,10 +1,13 @@
+import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Router, RouterModule } from '@angular/router';
 import { AuthService } from 'src/app/services/auth/auth.service';
 
 @Component({
   selector: 'app-login',
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule, RouterModule],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
@@ -27,7 +30,7 @@ export class LoginComponent {
     this.showPassword = !this.showPassword;
   }
 
-  onLogin(): void {
+  onSubmit(): void {
     const { userEmail, userPassword } = this.loginForm.value;
 
     this.authService.signin(userEmail, userPassword).subscribe({

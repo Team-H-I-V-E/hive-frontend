@@ -18,6 +18,8 @@ const routes: Routes = [
 
   { path: 'mypage', loadChildren: () => import('./pages/mypage/mypage.module').then(m => m.MyPageComponentModule) },
 
+  { path: 'autn', loadChildren: () => import('./pages/auth/auth.module').then(m => m.AuthModule)},
+
   { path: 'heritage/heritagedetail/:id', component: HeritageDetailComponent },
 
   { path: 'heritage-viewer/:id', component: Heritage3DViewerComponent }

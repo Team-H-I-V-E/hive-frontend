@@ -36,6 +36,7 @@
     "three": "^0.164.0",
     "three-gltf-loader": "^1.111.0",
     "tslib": "^2.3.0",
+    "xml2": "^0.0.10",
     "zone.js": "~0.15.0"
   },
   "devDependencies": {

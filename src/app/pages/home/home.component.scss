@@ -1,27 +1,57 @@
-#container {
-  text-align: center;
+/* 전체 박스 */
+.container-box {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+}
 
+/* 배경 */
+.circular-gradient-background {
   position: absolute;
+  top: 0;
   left: 0;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
+  width: 100%;
+  height: 100vh;
+  z-index: -1;
+  background: radial-gradient(circle, #292720 0%, #292720 1%, #231F1F 100%);
+  color: white;
+  font-family: 'Georgia', serif;
 }
 
-#container strong {
-  font-size: 20px;
-  line-height: 26px;
+// SEJONG ANNALS 위치
+.corner-block {
+  position: absolute;
+  font-size: 5rem;
+  font-weight: bold;
+  letter-spacing: 1.5px;
+  line-height: 1.2;
+  text-align: left;
+  user-select: none;
+  color: rgba(145, 142, 124, 0.26);
 }
 
-#container p {
-  font-size: 16px;
-  line-height: 22px;
-
-  color: #8c8c8c;
-
-  margin: 0;
+.corner-block .indented {
+  margin-left: 8rem;
 }
 
-#container a {
-  text-decoration: none;
+.top-right {
+  top: 20vh;
+  right: 2vh;
 }
+
+.bottom-left {
+  bottom: 18vh;
+  left: 18vh;
+}
+
+/* 콘텐츠 레이어 */
+.content-layer {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  z-index: 1;
+}
+
+
+

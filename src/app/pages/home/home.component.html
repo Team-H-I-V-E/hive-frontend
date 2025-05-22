@@ -1,0 +1,47 @@
+<div class="container-box" *ngIf="currentAsset">
+    <!-- 콘텐츠 레이어 -->
+  <div class="content-layer">
+    <h1 *ngIf="showAsset" id="t1" class="slide-in-left">{{ currentAsset.nameEng }}</h1>
+    <h2 *ngIf="showAsset" id="t2" class="slide-in-left">{{ currentAsset.name }}</h2>
+    <h3 *ngIf="showAsset" id="t3" class="slide-in-right">{{ currentAsset.description }}</h3>
+    <div class="circule-title">
+      <span class="inner-text">{{ currentAsset.era }}</span>
+    </div>
+    <div class="history">
+      <p *ngIf="showAsset" id="fade-in-up"><strong>지정(등록)일</strong> {{ currentAsset.designationDate }}</p>
+      <p *ngIf="showAsset" id="fade-in-up"><strong>{{ currentAsset.era }}</strong> {{ currentAsset.eraDetail }}</p>
+    </div>  
+  </div>
+
+  <!-- 하단 슬라이더 버튼 -->
+    <div class="slide-controls">
+      <button id="arrow" (click)="goToPreviousAsset()">&lt;</button>
+
+      <ng-container *ngFor="let asset of assets; let i = index">
+        <button id="slide-circule" (click)="goToAsset(i)">
+          {{ i === currentIndex ? '●' : '○' }}
+        </button>
+      </ng-container>
+
+      <button id="arrow" (click)="goToNextAsset()">&gt;</button>
+    </div>
+
+  
+  <!-- 배경 -->
+  <div class="circular-gradient-background">
+    <div class="half-circle-border">
+      <div class="half-circle-rect">
+        <img *ngIf="showAsset" class="main_img" id="fade-in-up" [src]="'http://localhost:3000/' + currentAsset.imageUrl" alt="{{ currentAsset.name }}">
+      </div>
+    </div>
+    <div class="corner-block top-right">
+      <div>SEJONG</div>
+      <div class="indented">ANNALS</div>
+    </div>
+    <div class="corner-block bottom-left">
+      <div>SEJONG</div>
+      <div class="indented">ANNALS</div>
+    </div>
+  </div>
+</div>
+

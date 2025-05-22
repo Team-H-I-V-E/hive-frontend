@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
@@ -17,13 +17,32 @@ export class ARExploreIntroComponent implements OnInit {
   currentMessage: string = this.messages[0];
   private messageIndex = 0;
 
+  @ViewChild('startButton') startButton!: ElementRef<HTMLButtonElement>;
+
   constructor(private router: Router) {}
 
   ngOnInit(): void {
+    // 문구 순환
     setInterval(() => {
       this.messageIndex = (this.messageIndex + 1) % this.messages.length;
       this.currentMessage = this.messages[this.messageIndex];
     }, 3000);
+
+    // START 버튼 효과
+    setInterval(() => {
+      if (!this.startButton) return;
+
+      const btn = this.startButton.nativeElement;
+      const currentBg = getComputedStyle(btn).backgroundColor;
+
+      if (currentBg === 'rgb(35, 31, 31)') {
+        btn.style.backgroundColor = '#918E7C';
+        btn.style.color = '#231F1F';
+      } else {
+        btn.style.backgroundColor = '#231F1F';
+        btn.style.color = '#918E7C';
+      }
+    }, 800);
   }
 
   goToAR() {

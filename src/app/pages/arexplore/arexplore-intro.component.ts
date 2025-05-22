@@ -46,6 +46,16 @@ export class ARExploreIntroComponent implements OnInit {
   }
 
   goToAR() {
+    if (!this.isMobile()) {
+      alert('📱 AR Explore 기능은 GPS 기반으로 모바일 환경에서 가장 정확하게 동작합니다.');
+    }
+
     this.router.navigate(['/arexplore/main']);
+  }
+
+  isMobile(): boolean {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile/i.test(navigator.userAgent)
+      || typeof window.orientation !== 'undefined'
+      || window.innerWidth <= 768;
   }
 }

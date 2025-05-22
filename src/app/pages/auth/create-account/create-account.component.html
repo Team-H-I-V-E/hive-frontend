@@ -3,13 +3,13 @@
       <h2 class="mb-2">Welcome !</h2>
       <h4 class="mb-4 fw-bold">
         Sign up to 
-        <img src="src/assets/icon/main_icon.png" alt="세종실록 로고" style="height: 30px; vertical-align: middle; margin-left: 8px;" />
+        <img src="assets/icon/main_icon.png" alt="세종실록 로고" style="height: 30px; vertical-align: middle; margin-left: 8px;" />
     </h4>
   
       <form (ngSubmit)="onSubmit()" #signupForm="ngForm">
         <div class="mb-3">
           <label class="form-label">이메일</label>
-          <input type="email" class="form-control" placeholder="이메일을 입력하세요" [(ngModel)]="user.email" name="email" required>
+          <input type="email" class="form-control" placeholder="이메일을 입력하세요" [(ngModel)]="user.userEmail" name="email" required>
         </div>
   
         <div class="mb-3">
@@ -20,7 +20,7 @@
         <div class="mb-3 position-relative">
           <label class="form-label">비밀번호</label>
           <input [type]="showPassword ? 'text' : 'password'" class="form-control" placeholder="비밀번호를 입력해주세요"
-                 [(ngModel)]="user.password" name="password" required>
+                 [(ngModel)]="user.userPassword" name="password" required>
           <span class="position-absolute top-50 end-0 translate-middle-y me-3" (click)="togglePassword()" style="cursor:pointer;">
             <i class="bi" [ngClass]="showPassword ? 'bi-eye-slash' : 'bi-eye'"></i>
           </span>
@@ -39,7 +39,7 @@
       </form>
   
       <div class="text-center mt-3">
-        이미 계정이 있으신가요 ? <a routerLink="/login" class="fw-bold">로그인하기</a>
+        이미 계정이 있으신가요 ? <a routerLink="/auth/login" class="fw-bold">로그인하기</a>
       </div>
     </div>
   </div>

@@ -4,11 +4,16 @@ import { Observable, of, BehaviorSubject } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { User } from 'src/app/models/user/user.model';
 import { environment } from 'src/environment/environment';
+import { HttpClient } from "@angular/common/http";
+import { Injectable } from "@angular/core";
+import { Observable } from "rxjs";
+import { environment } from "src/environment/environment";
 
 @Injectable({
     providedIn: 'root',
 })
 export class AuthService {
+  
     private readonly API_URL = `${environment.apiBaseUrl}/api/auth`;
 
     private currentUserSubject = new BehaviorSubject<User | null>(null);
@@ -54,5 +59,20 @@ export class AuthService {
     /** 로그인 여부 */
     isLoggedIn(): boolean {
         return !!this.currentUserSubject.getValue();
+    private apiBaseUrl = environment.apiBaseUrl;
+
+    constructor(private http: HttpClient) {}
+
+    signin(userEmail: string, userPassword: string ): Observable<any> {
+        return this.http.post(`${this.apiBaseUrl}/auth/signin`, { 
+            userEmail, 
+            userPassword 
+        }, {
+            withCredentials: true
+        });
+    }
+
+    signup(userEmail: string, userPassword: string, nickname: string): Observable<any> {
+        return this.http.post(`${this.apiBaseUrl}/auth/signup`, { userEmail, userPassword, nickname });
     }
 }

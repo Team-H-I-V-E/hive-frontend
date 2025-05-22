@@ -1,15 +1,15 @@
 <div class="container-box" *ngIf="currentAsset">
     <!-- 콘텐츠 레이어 -->
   <div class="content-layer">
-    <h1 id="t1">{{ currentAsset.nameEng }}</h1>
-    <h2 id="t2">{{ currentAsset.name }}</h2>
-    <h3 id="t3">{{ currentAsset.description }}</h3>
+    <h1 id="t1" class="slide-in-left">{{ currentAsset.nameEng }}</h1>
+    <h2 id="t2" class="slide-in-left">{{ currentAsset.name }}</h2>
+    <h3 id="t3" class="slide-in-right">{{ currentAsset.description }}</h3>
     <div class="circule-title">
       <span class="inner-text">{{ currentAsset.era }}</span>
     </div>
     <div class="history">
-      <p><strong>지정(등록)일</strong> {{ currentAsset.designationDate }}</p>
-      <p><strong>{{ currentAsset.era }}</strong> {{ currentAsset.eraDetail }}</p>
+      <p id="fade-in-up"><strong>지정(등록)일</strong> {{ currentAsset.designationDate }}</p>
+      <p id="fade-in-up"><strong>{{ currentAsset.era }}</strong> {{ currentAsset.eraDetail }}</p>
     </div>  
   </div>
 
@@ -31,7 +31,7 @@
   <div class="circular-gradient-background">
     <div class="half-circle-border">
       <div class="half-circle-rect">
-        <img class="main_img" [src]="'http://localhost:3000/' + currentAsset.imageUrl" alt="{{ currentAsset.name }}">
+        <img class="main_img" id="fade-in-up" [src]="'http://localhost:3000/' + currentAsset.imageUrl" alt="{{ currentAsset.name }}">
       </div>
     </div>
     <div class="corner-block top-right">

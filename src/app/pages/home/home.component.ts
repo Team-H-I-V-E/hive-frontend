@@ -47,25 +47,35 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.currentAsset = this.assets[0];
 
     this.intervalId = setInterval(() => {
-      this.currentIndex = (this.currentIndex + 1) % this.assets.length;
-      this.currentAsset = this.assets[this.currentIndex];
-    }, 5000);
+      const nextIndex = (this.currentIndex + 1) % this.assets.length;
+      this.updateAsset(nextIndex);
+    }, 8000);
   }
 
   goToPreviousAsset(): void {
     if (this.assets.length === 0) return;
-    this.currentIndex = (this.currentIndex - 1 + this.assets.length) % this.assets.length;
-    this.currentAsset = this.assets[this.currentIndex];
+    const prevIndex = (this.currentIndex - 1 + this.assets.length) % this.assets.length;
+    this.updateAsset(prevIndex);
   }
 
   goToNextAsset(): void {
     if (this.assets.length === 0) return;
-    this.currentIndex = (this.currentIndex + 1) % this.assets.length;
-    this.currentAsset = this.assets[this.currentIndex];
+    const nextIndex = (this.currentIndex + 1) % this.assets.length;
+    this.updateAsset(nextIndex);
   }
 
   goToAsset(index: number): void {
-    this.currentIndex = index;
-    this.currentAsset = this.assets[this.currentIndex];
+    this.updateAsset(index);
+  }
+
+  showAsset = true;
+
+  updateAsset(index: number): void {
+    this.showAsset = false;
+    setTimeout(() => {
+      this.currentIndex = index;
+      this.currentAsset = this.assets[index];
+      this.showAsset = true;
+    }, 10);
   }
 }

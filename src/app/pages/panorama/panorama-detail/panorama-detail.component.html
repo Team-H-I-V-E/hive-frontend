@@ -1,80 +1,124 @@
-<!-- 📦 디테일 사이드바 -->
-<div class="sidebar p-3"
-  style="background-color: #F7F6EC; width: 100%; min-width: 400px; height: 100vh; overflow-y: auto; border-right: 1px solid #ccc; position: relative; z-index: 10;">
+<style>
+  @media (max-width: 768px) {
+    .panorama-detail-sidebar {
+      width: 100vw !important;
+      min-width: 100vw !important;
+      z-index: 1050 !important;
+    }
 
-  <!-- 닫기/즐겨찾기/스탬프 보유 버튼 -->
-  <div class="d-flex justify-content-end align-items-center mb-2 gap-2">
+    .panorama-detail-scroll {
+      padding-top: 1.5rem !important;
+      /* 모바일에서는 상단 여백 최소화 */
+    }
+  }
+</style>
 
-    <!-- ✅ 스탬프 보유 아이콘 -->
-    <i *ngIf="panorama?.isStamped" class="bi bi-search" style="color: #198754; font-size: 1.2rem;" title="스탬프 보유됨"></i>
+<!-- ✅ 전체 페이지 레이아웃 -->
+<div class="d-flex flex-row" style="position: fixed; inset: 0; overflow: hidden;">
 
-    <!-- 즐겨찾기 아이콘 -->
-    <button class="btn btn-sm" (click)="toggleFavorite()" [ngStyle]="{ color: isFavorite ? 'gold' : 'gray' }"
-      style="font-size: 1.2rem;">
-      <i class="bi" [ngClass]="isFavorite ? 'bi-star-fill' : 'bi-star'"></i>
-    </button>
+  <!-- 📦 디테일 사이드바 -->
+  <div class="d-flex flex-column panorama-detail-sidebar"
+    style="z-index: 2000; width: 450px; min-width: 450px; background-color: #F7F6EC; border-right: 1px solid #ccc;">
 
-    <!-- 닫기 버튼 -->
-    <button class="btn btn-sm btn-outline-secondary" (click)="onClose()">
-      <i class="bi bi-x-lg"></i>
-    </button>
-  </div>
+    <!-- ✅ 스크롤 가능한 내부 콘텐츠 -->
+    <div class="panorama-detail-scroll" style="flex: 1; overflow-y: auto; padding: 7rem 1.5rem 1.5rem;">
 
-  <!-- 유적 대표 이미지 -->
-  <div *ngIf="panorama.ruinsImage" class="mb-3">
-    <img [src]="'http://localhost:3000/' + panorama.ruinsImage" alt="대표 이미지" class="img-fluid rounded w-100" />
-  </div>
-
-  <!-- 유적 정보 -->
-  <h5 class="fw-bold mb-2">{{ panorama.ruinsName }}</h5>
-  <p><strong>시대:</strong> {{ panorama.ruinsAge }}</p>
-  <p><strong>위치:</strong> {{ panorama.ruinsLocation }}</p>
-  <p><strong>설명:</strong> {{ panorama.ruinsInformation }}</p>
-
-  <!-- 🔄 360° 파노라마 미리보기 -->
-  <div *ngIf="panorama?.panoramaImages?.length" class="mt-4 mb-3 position-relative rounded overflow-hidden"
-    style="height: 200px; cursor: pointer;" (click)="activateViewer()">
-    <div id="pano_preview" class="w-100 h-100" style="
-         filter: brightness(60%);
-         transition: filter 0.3s ease;
-         border-radius: 0.5rem;
-       ">
-    </div>
-
-    <!-- 오버레이 텍스트 -->
-    <div class="position-absolute top-50 start-50 translate-middle text-white text-center"
-      style="pointer-events: none;">
-      <div style="font-size: 1.5rem; font-weight: bold;">360</div>
-      <div style="font-size: 1rem;">
-        <i class="bi bi-arrow-repeat fs-4"></i>
+      <!-- 닫기/즐겨찾기/스탬프 -->
+      <div class="d-flex justify-content-end align-items-center mb-3 gap-2">
+        <i *ngIf="panorama?.isStamped" class="bi bi-search" title="스탬프 보유됨"></i>
+        <button class="btn btn-sm" (click)="toggleFavorite()" [ngStyle]="{ color: isFavorite ? 'gold' : 'gray' }"
+          style="font-size: 1.2rem;">
+          <i class="bi" [ngClass]="isFavorite ? 'bi-star-fill' : 'bi-star'"></i>
+        </button>
+        <button class="btn btn-sm btn-outline-secondary" (click)="onClose()">
+          <i class="bi bi-x-lg"></i>
+        </button>
       </div>
+
+      <!-- 대표 이미지 -->
+      <div *ngIf="panorama.ruinsImage" class="mb-3">
+        <img [src]="panorama.ruinsImage" alt="대표 이미지" class="img-fluid rounded w-100" />
+      </div>
+
+      <!-- 유적 정보 -->
+      <div class="mb-3">
+        <h3 class="fw-bold"
+          style="font-size: 1.5rem; position: relative; padding-bottom: 0.5rem; margin-bottom: 1.5rem;">
+          {{ panorama.ruinsName }}
+          <span
+            style="position: absolute; bottom: 0; left: 0; width: 350px; height: 3px; background-color: #000;"></span>
+        </h3>
+
+        <p><strong>소재지:</strong> {{ panorama.ruinsLocation }}</p>
+        <p><strong>수량/면적:</strong> {{ panorama.ruinsNumber }}</p>
+        <p><strong>지정일:</strong> {{ panorama.ruinsDay }}</p>
+        <p><strong>시대:</strong> {{ panorama.ruinsAge }}</p><br>
+        <p>
+          <span [ngStyle]="!isExpanded ? {
+            display: '-webkit-box',
+            WebkitBoxOrient: 'vertical',
+            WebkitLineClamp: '5',
+            overflow: 'hidden'
+          } : {}">
+            {{ panorama.ruinsInformation }}
+          </span>
+        </p>
+
+        <!-- 더보기 / 줄이기 버튼 -->
+        <div *ngIf="panorama.ruinsInformation?.length > 0" class="mt-2">
+          <button class="btn btn-sm btn-outline-secondary" (click)="toggleDescription()">
+            {{ isExpanded ? '줄이기' : '더보기' }}
+          </button>
+        </div>
+      </div>
+
+      <!-- 360 미리보기 -->
+      <div *ngIf="panorama?.panoramaImages?.length" class="position-relative rounded overflow-hidden mt-4 mb-3"
+        style="height: 200px; cursor: pointer;" (click)="activateViewer()">
+        <div id="pano_preview" class="w-100 h-100"
+          style="filter: brightness(60%); transition: filter 0.3s ease; border-radius: 0.5rem;"></div>
+        <div class="position-absolute top-50 start-50 translate-middle text-white text-center"
+          style="pointer-events: none;">
+          <div style="font-size: 1.5rem; font-weight: bold;">360</div>
+          <div style="font-size: 1rem;"><i class="bi bi-arrow-repeat fs-4"></i></div>
+        </div>
+      </div>
+
     </div>
+  </div>
+
+  <!-- 📍 지도 또는 메인 영역 -->
+  <div class="flex-grow-1 position-relative" style="z-index: 1;">
+    <div id="map" style="width: 100%; height: 100%;"></div>
   </div>
 </div>
 
-<!-- 🖼️ 전체 뷰어 오버레이 -->
+<!-- 🖼️ 파노라마 뷰어 오버레이 -->
 <div *ngIf="viewerActive" class="position-fixed top-0 start-0 w-100 h-100 bg-dark bg-opacity-75" style="z-index: 1050;">
+
+  <!-- 닫기 버튼 -->
   <div class="position-absolute top-0 end-0 p-3 z-2">
     <button class="btn btn-sm btn-light" (click)="viewerActive = false">
       <i class="bi bi-x-lg"></i> 닫기
     </button>
   </div>
 
+  <!-- pannellum 뷰어 -->
   <div class="position-relative w-100 h-100">
     <div id="pano_div_0" class="w-100 h-100"></div>
 
     <!-- 미니맵 -->
-    <div id="minimap" *ngIf="panorama.minimapImage && panorama.miniMapPoints?.length"
+    <div *ngIf="panorama.minimapImage && panorama.miniMapPoints?.length"
       class="position-absolute bottom-0 end-0 border rounded shadow" style="width: 350px; z-index: 10;">
       <img [src]="'http://localhost:3000/' + panorama.minimapImage" class="img-fluid rounded w-100" />
       <ng-container *ngFor="let point of panorama.miniMapPoints">
         <div class="position-absolute translate-middle" [ngStyle]="{ left: point.x + '%', top: point.y + '%' }"
           style="cursor: pointer;" (click)="moveToPanorama(point)">
           <i class="bi fs-5" [ngClass]="{
-        'bi-geo-alt-fill': true,
-        'text-danger': selectedPointId === point.id,
-        'text-primary': selectedPointId !== point.id
-      }"></i>
+            'bi-geo-alt-fill': true,
+            'text-danger': selectedPointId === point.id,
+            'text-primary': selectedPointId !== point.id
+          }"></i>
         </div>
       </ng-container>
     </div>

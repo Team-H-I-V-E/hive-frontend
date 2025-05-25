@@ -1,0 +1,40 @@
+<div class="container-fluid vh-100 d-flex align-items-center justify-content-center" style="background-color: #f9f8f3;">
+  <div class="row w-100" style="max-width: 1000px;">
+    
+    <!-- 로그인 폼 영역 -->
+    <div class="col-md-6 bg-white rounded shadow p-5">
+      <h2 class="mb-2">Welcome!</h2>
+      <h4 class="mb-4 fw-bold">Sign in to <span class="text-muted">세종실록</span></h4>
+
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <div class="mb-3">
+          <label for="email" class="form-label">이메일</label>
+          <input type="email" formControlName="email" class="form-control" id="email" placeholder="이메일을 입력하세요.">
+        </div>
+        <div class="mb-3">
+          <label for="password" class="form-label">비밀번호</label>
+          <div class="input-group">
+            <input [type]="showPassword ? 'text' : 'password'" formControlName="password" class="form-control" id="password" placeholder="비밀번호를 입력하세요.">
+            <button type="button" class="btn btn-outline-secondary" (click)="togglePasswordVisibility()">👁️</button>
+          </div>
+        </div>
+        <div class="mb-3 form-check d-flex justify-content-between">
+          <div>
+            <input type="checkbox" class="form-check-input" id="remember">
+            <label class="form-check-label" for="remember">로그인 저장하기</label>
+          </div>
+          <a href="#">비밀번호를 찾기</a>
+        </div>
+        <button type="submit" class="btn btn-dark w-100">로그인</button>
+      </form>
+
+      <p class="mt-3 text-center">계정이 없으신가요? <a routerLink="/auth/signup">가입하기</a></p>
+    </div>
+
+    <!-- 이미지 영역 -->
+    <div class="col-md-6 d-none d-md-flex justify-content-center align-items-center">
+      <img src="/assets/images/sejong-logo.png" alt="세종실록 로고" style="max-width: 300px; height: auto;">
+    </div>
+
+  </div>
+</div>

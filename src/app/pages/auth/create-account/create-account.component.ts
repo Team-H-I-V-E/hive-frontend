@@ -1,9 +1,14 @@
+import { CommonModule } from "@angular/common";
 import { Component } from "@angular/core";
+import { FormsModule } from "@angular/forms";
 
 @Component({
-    selector: 'app-signup',
+    selector: 'app-create-account',
+    standalone: true,
+    imports: [CommonModule, FormsModule],
     templateUrl: './create-account.component.html',
     standalone:false
+    styleUrls: ['./create-account.component.scss'],
 })
 export class CreateAccountComponent {
     user = {

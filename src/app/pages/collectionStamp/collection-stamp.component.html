@@ -45,34 +45,37 @@
         </div>
         <div class="modal-body">
             <div class="row justify-content-center align-items-center">
-                <div class="col-12 col-md-4 text-center mb-3 mb-md-0">
-                    <img *ngIf="detail?.stampImage as imgUrl"
-                    [src]="imgUrl"
-                    class="img-fluid mb-3 rounded"
-                    style="max-height:200px;" />
-                </div>
-                <div class="col-12 col-md-6" style="font-size: 1.06rem;">
-                      <p class="d-flex align-items-center mb-3">
-                        <strong class="label" style="text-align: justify; width: 100px;">이 름</strong>
-                        <span class="vr mx-3" style="background-color: #918E7C; width: 2px; opacity:1"></span>
-                        <span class="ms-2">{{ detail?.stampName }}</span>
-                      </p>
-                      <p class="d-flex align-items-center mb-3">
-                        <strong class="label" style="text-align: justify; width: 100px;">시 대</strong>
-                        <span class="vr mx-3" style="background-color: #918E7C; width: 2px; opacity:1"></span>
-                        <span class="ms-2">{{ detail?.stampPeriod }}</span>
-                      </p>
-                      <p class="d-flex align-items-center mb-3">
-                        <strong class="label" style="text-align: justify; width: 100px;">소 재 지</strong>
-                        <span class="vr mx-3" style="background-color: #918E7C; width: 2px; opacity:1"></span>
-                        <span class="ms-2">{{ detail?.stampLocation }}</span>
-                      </p>
-                      <p class="d-flex align-items-center mb-3">
-                        <strong class="label" style="text-align: justify; width: 100px;">획 득 일</strong>
-                        <span class="vr mx-3" style="background-color: #918E7C; width: 2px; opacity:1"></span>
-                        <span class="ms-2">{{ detail?.stampTime | date:'yyyy-MM-dd HH:mm' }}</span>
-                      </p>
-                </div>
+              <div class="col-12 col-md-4 text-center mb-3 mb-md-0">
+                  <img *ngIf="detail?.stampImage as imgUrl"
+                  [src]="imgUrl"
+                  class="img-fluid mb-3 rounded"
+                  style="max-height:200px;" />
+              </div>
+              <div class="col-12 col-md-6" style="font-size: 1.06rem;">
+                <p class="d-flex align-items-center mb-3">
+                  <strong class="label" style="text-align: justify; width: 100px;">이 름</strong>
+                  <span class="vr mx-3" style="background-color: #918E7C; width: 2px; opacity:1"></span>
+                  <span class="ms-2">{{ detail?.stampName }}</span>
+                </p>
+                <p class="d-flex align-items-center mb-3">
+                  <strong class="label" style="text-align: justify; width: 100px;">시 대</strong>
+                  <span class="vr mx-3" style="background-color: #918E7C; width: 2px; opacity:1"></span>
+                  <span class="ms-2">{{ detail?.stampPeriod }}</span>
+                </p>
+                <p class="d-flex align-items-center mb-3">
+                  <strong class="label" style="text-align: justify; width: 100px;">소 재 지</strong>
+                  <span class="vr mx-3" style="background-color: #918E7C; width: 2px; opacity:1"></span>
+                  <span class="ms-2">{{ detail?.stampLocation }}</span>
+                </p>
+                <p class="d-flex align-items-center mb-3">
+                  <strong class="label" style="text-align: justify; width: 100px;">획 득 일</strong>
+                  <span class="vr mx-3" style="background-color: #918E7C; width: 2px; opacity:1"></span>
+                  <span class="ms-2">{{ detail?.stampTime | date:'yyyy-MM-dd HH:mm' }}</span>
+                </p>
+              </div>
+              <div *ngIf="showDetail" class="stamp-detail">
+                <div id="map" style="width: 70%; height: 300px; margin: 0.5rem auto 1.6rem auto;"></div>
+              </div>
             </div>
         </div>
       </div>

@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewChecked } from '@angular/core';
 import { Router } from '@angular/router';
 import { Article } from 'src/app/models/article/article.model';
 import { ArticleService } from 'src/app/services/article/aritlce.service';
@@ -8,6 +8,8 @@ interface ArticleWithUI extends Article {
   currentImageIndex: number;
   userProfileImage?: string;
   nickname?: string;
+  liked?: boolean;
+  bookmarked?: boolean;
 }
 
 @Component({
@@ -16,53 +18,61 @@ interface ArticleWithUI extends Article {
   styleUrls: ['./article-list.component.scss'],
   standalone: false,
 })
-export class ArticleListComponent implements OnInit {
+export class ArticleListComponent implements OnInit, AfterViewChecked {
   articles: ArticleWithUI[] = [];
   environment = environment;
-  page = 1;         // ✅ 현재 페이지
-  limit = 30;       // ✅ 한 번에 가져올 개수
-  isLoading = false; // ✅ 중복 로딩 방지
-  isEnd = false;    // ✅ 마지막 페이지 감지
+  private isCarouselInitialized = false;
 
   constructor(
     private articleService: ArticleService,
     private router: Router
-  ) {}
+  ) { }
 
-  ngOnInit() {
-    this.loadArticles();
-  }
-
-  loadArticles() {
-    if (this.isLoading || this.isEnd) {
-      return;
-    }
-    this.isLoading = true;
-
-    this.articleService.getArticles(this.page, this.limit).subscribe((res: Article[]) => {
-      if (res.length === 0) {
-        this.isEnd = true; // 데이터 없으면 끝!
-      } else {
-        const newArticles = res.map(article => ({
-          ...article,
-          currentImageIndex: 0,
-        }));
-        this.articles = [...this.articles, ...newArticles];
-        this.page++; // 페이지 올리기
-      }
-      this.isLoading = false;
+  ngOnInit(): void {
+    this.articleService.getArticles().subscribe((res: Article[]) => {
+      this.articles = res.map((article) => ({
+        ...article,
+        currentImageIndex: 0,
+        liked: false,
+        bookmarked: false,
+      }));
     });
   }
 
-  // ✅ 스크롤 이벤트 감지
-  @HostListener('window:scroll', [])
-  onScroll(): void {
-    const scrollPosition = window.innerHeight + window.scrollY;
-    const documentHeight = document.body.offsetHeight;
-
-    if (scrollPosition >= documentHeight - 300) {
-      // 화면 아래 300px 남았을 때 추가 로딩
-      this.loadArticles();
+  ngAfterViewChecked(): void {
+    // 캐러셀 슬라이드 이벤트 연결 (한 번만)
+    if (!this.isCarouselInitialized && this.articles.length > 0) {
+      setTimeout(() => {
+        this.articles.forEach((article) => {
+          const carouselEl = document.querySelector(
+            `#carousel-${article.articleId}`
+          );
+          if (carouselEl) {
+            carouselEl.addEventListener('slid.bs.carousel', (event: any) => {
+              article.currentImageIndex = event.to;
+            });
+          }
+        });
+        this.isCarouselInitialized = true;
+      }, 0);
     }
+  }
+
+  goToDetail(articleId: number): void {
+    this.router.navigate(['/article', articleId]);
+  }
+
+  onCarouselClick(event: Event): void {
+    event.stopPropagation(); // 카드 클릭 방지
+  }
+
+  toggleLike(article: ArticleWithUI, event: Event): void {
+    event.stopPropagation();
+    article.liked = !article.liked;
+  }
+
+  toggleBookmark(article: ArticleWithUI, event: Event): void {
+    event.stopPropagation();
+    article.bookmarked = !article.bookmarked;
   }
 }

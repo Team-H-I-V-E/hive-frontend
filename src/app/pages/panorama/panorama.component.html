@@ -37,7 +37,7 @@
     <div class="flex-grow-1 position-relative" style="height: 100%;">
       <div id="map" class="w-100 h-100"></div>
 
-      <!-- 📌 시대 필터 버튼 (모바일 포함) -->
+      <!-- 시대 필터 버튼 (모바일 포함) -->
       <div class="position-absolute top-50 end-0 translate-middle-y d-flex flex-column gap-2 me-3 era-filter-mobile"
         style="z-index: 1000;">
         <button *ngFor="let era of eras" (click)="selectEra(era)" class="btn btn-light rounded-pill py-2 px-3"

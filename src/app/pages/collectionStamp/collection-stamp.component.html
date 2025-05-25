@@ -1,6 +1,6 @@
 <div
   class="stamp-wrapper d-flex justify-content-center align-items-center min-vh-100"
-  style="background-color: #F7F6EC;"
+  style="background-color: #F7F6EC; margin-top: -50px;"
 >
   <div
     class="stamp-board p-5"
@@ -23,7 +23,7 @@
               style="object-fit: cover;"
             />
           </div>
-          <div class="stamp-name mt-2 text-center" style="font-size: 1.15rem">{{ s.stampName }}</div>
+          <div class="stamp-name mt-2 text-center">{{ s.stampName }}</div>
         </div>
       </div>
     </div>
@@ -74,7 +74,7 @@
                 </p>
               </div>
               <div *ngIf="showDetail" class="stamp-detail">
-                <div id="map" style="width: 70%; height: 300px; margin: 0.5rem auto 1.6rem auto;"></div>
+                <div id="map"></div>
               </div>
             </div>
         </div>

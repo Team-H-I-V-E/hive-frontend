@@ -9,3 +9,17 @@
     width: 100%;
   }
 }
+
+#map {
+  width: 70% !important; 
+  height: 300px; 
+  margin: 0.5rem auto 1.6rem auto;
+}
+
+.stamp-name {
+  font-size: 1.15rem;
+
+  @media screen and (max-width: 768px) {
+    font-size: 0.82rem; // 모바일
+  }
+}

@@ -3,7 +3,7 @@
     <div class="col-12">
       <div class="position-fixed bg-white bg-opacity-75 text-black p-3 rounded-2"
            style="bottom: 10px; left: 10px; max-width: 80%; max-height: 200px; border: 1px solid #ccc; overflow: auto; font-size: 0.8rem;">
-        <p class="mb-2">📍유저 위치: {{ userLatitude }}, {{ userLongitude }}</p>
+        <!-- <p class="mb-2">📍유저 위치: {{ userLatitude }}, {{ userLongitude }}</p> -->
         <!-- 스탬프가 있는 경우 -->
         <div *ngIf="stamps.length > 0; else noStamps">
           <p *ngFor="let stamp of stamps" class="mb-0" (click)="onModelClick(stamp.stampID)">
@@ -37,10 +37,10 @@
               class="clickable"
               [attr.gps-entity-place]="'latitude: ' + stamp.stampLatitude + '; longitude: ' + stamp.stampLongitude"
               gltf-model="/assets/models/great_seal.glb"
-              scale="0.5 0.5 0.5"
-              rotation="0 180 0"
+              scale="0.7 0.4 0.5"
+              rotation="90 180 0"
               (click)="onModelClick(stamp.stampID)"
-              animation="property: position; to: 0 0.5 0; dir: alternate; dur: 1000; loop: true">
+              animation="property: position; to: 0 0 0.5; dir: alternate; dur: 1000; loop: true">
     </a-entity>
   </a-scene>
 

@@ -143,7 +143,7 @@ export class HeritageDetailComponent implements OnInit, AfterViewInit {
     this.camera.lookAt(0, 0, 0);
 
     this.renderer = new THREE.WebGLRenderer({ antialias: true });
-    this.renderer.setSize(width, height); // width, height 꼭 지정
+    this.renderer.setSize(width, height); 
     container.appendChild(this.renderer.domElement);
 
     const light = new THREE.DirectionalLight(0xffffff, 1);
@@ -178,8 +178,8 @@ export class HeritageDetailComponent implements OnInit, AfterViewInit {
         if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
         return response.blob();
       })
-      .then(blob => console.log("✅ Fetch 성공, 파일 크기:", blob.size))
-      .catch(error => console.error("❌ Fetch 실패:", error));
+      .then(blob => console.log(" Fetch 성공, 파일 크기:", blob.size))
+      .catch(error => console.error(" Fetch 실패:", error));
 
     // Three.js GLTFLoader로 모델 로드
     loader.load(
@@ -196,11 +196,11 @@ export class HeritageDetailComponent implements OnInit, AfterViewInit {
         model.position.sub(center); // 모델 중심을 원점으로 이동
 
         this.scene.add(model);
-        console.log("✅ GLB 모델 로드 성공");
+        console.log(" GLB 모델 로드 성공");
       },
       undefined,
       (error) => {
-        console.error("❌ GLB 모델 로드 실패:", error);
+        console.error(" GLB 모델 로드 실패:", error);
       }
     );
 

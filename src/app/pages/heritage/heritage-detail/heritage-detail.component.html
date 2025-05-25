@@ -1,7 +1,7 @@
 <div class="w-100 py-5 heritage-wrapper" *ngIf="heritage">
   <div class="mx-auto heritage-card">
     <!-- 상단: 이미지 + 정보 -->
-    <div class="row g-4">
+    <div class="row g-4 mb-5">
       <!-- 좌측: 이미지 -->
       <div class="col-md-5 text-center">
         <img
@@ -14,15 +14,13 @@
 
       <!-- 우측: 정보 -->
       <div class="col-md-7">
-        <!-- 제목 -->
-        <h4 class="fw-bold mb-1">{{ heritage.heritageName }}</h4>
-        <p class="text-muted" style="font-style: italic; font-size: 15px ">
+        <h4 class="fw-bold mb-2">{{ heritage.heritageName }}</h4>
+        <p class="text-muted mb-4" style="font-style: italic; font-size: 15px">
           Buddhist Stele with Inscription of "Muin Year" and Pedestal at
           Yeonhwasa Temple, Sejong
         </p>
 
-        <!-- 정보 테이블 -->
-        <table class="table-clean">
+        <table class="table-clean mb-4">
           <tbody>
             <tr>
               <th>유형</th>
@@ -57,8 +55,7 @@
           </tbody>
         </table>
 
-        <!-- 3D View 버튼 -->
-        <div class="text-end mb-3">
+        <div class="text-end mb-4">
           <button
             class="btn btn-outline-secondary btn-sm"
             (click)="goTo3DViewer()"
@@ -68,24 +65,28 @@
         </div>
       </div>
     </div>
-    <!-- 설명 영역: row 바깥으로 빼지 말고 내부 유지 -->
-    <div class="mt-5 px-2">
+
+    <!-- 설명 영역 -->
+    <div class="mt-7 px-2">
+      <!-- 여기 mt-5 → mt-7 로 변경 -->
       <h5 class="fw-semibold mb-3">Cultural Heritage Description</h5>
-      <p class="text-secondary" style="line-height: 1.8; white-space: pre-line">
+      <p
+        class="text-secondary mb-5"
+        style="line-height: 2; white-space: pre-line"
+      >
         {{ heritage.heritageDescription }}
       </p>
     </div>
 
     <!-- 지도 영역 -->
-    <div class="mt-5 px-2">
-      <h5 class="fw-semibold mb-3">Location</h5>
-      <div
-        id="map"
-        class="heritage-map rounded shadow-sm"
-        style="width: 100%; height: 350px"
-      ></div>
-    </div>
-    <!-- 우측 정보 col 종료 -->
+<div class="px-2" style="margin-top: 120px;"> <!-- 여기 margin-top 직접 지정 -->
+  <h5 class="fw-semibold mb-3">Location</h5>
+  <div
+    id="map"
+    class="heritage-map rounded shadow-sm"
+    style="width: 100%; height: 350px"
+  ></div>
+</div>
+
   </div>
-  <!-- row 종료 -->
 </div>

@@ -50,38 +50,58 @@ export class Heritage3DViewerComponent implements OnInit, AfterViewInit {
   }
 
   initThreeJS() {
-    this.scene = new THREE.Scene();
-    this.scene.background = new THREE.Color(0xdddddd);
+  this.scene = new THREE.Scene();
+  this.scene.background = new THREE.Color(0x333333); // 어두운 배경
 
-    const container = this.canvasContainer.nativeElement;
-    const width = container.offsetWidth;
-    const height = container.offsetHeight;
+  const container = this.canvasContainer.nativeElement;
+  const width = container.offsetWidth;
+  const height = container.offsetHeight;
 
-    this.camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
-    this.camera.position.set(0, 2, 5);
-    this.camera.lookAt(0, 0, 0);
+  this.camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
+  this.camera.position.set(0, 2, 5);
+  this.camera.lookAt(0, 0, 0);
 
-    this.renderer = new THREE.WebGLRenderer({ antialias: true });
-    this.renderer.setSize(width, height);
-    container.appendChild(this.renderer.domElement);
+  this.renderer = new THREE.WebGLRenderer({ antialias: true });
+  this.renderer.setSize(width, height);
+  container.appendChild(this.renderer.domElement);
 
-    const light = new THREE.DirectionalLight(0xffffff, 1);
-    light.position.set(10, 10, 10);
-    this.scene.add(light);
+  // Directional Light: 모델 위에서 빛을 비추도록 설정
+  const directionalLight = new THREE.DirectionalLight(0xffffff, 10);
+  directionalLight.position.set(5, 10, 5);
+  directionalLight.castShadow = true;
+  this.scene.add(directionalLight);
 
-    const ambientLight = new THREE.AmbientLight(0xffffff, 4.7);
-    this.scene.add(ambientLight);
+  // SpotLight: 모델에 스포트라이트처럼 집중되도록 설정
+  const spotLight = new THREE.SpotLight(0xffffff, 5);
+  spotLight.position.set(0, 5, 5);
+  spotLight.angle = Math.PI / 6;
+  spotLight.penumbra = 0.3;
+  spotLight.decay = 2;
+  spotLight.distance = 30;
+  spotLight.castShadow = true;
+  this.scene.add(spotLight);
 
-    this.controls = new OrbitControls(this.camera, this.renderer.domElement);
-    this.controls.enableDamping = true;
-    this.controls.dampingFactor = 0.1;
-    this.controls.rotateSpeed = 0.5;
-    this.controls.zoomSpeed = 0.5;
-    this.controls.minDistance = 0.5;
-    this.controls.maxDistance = 100;
+  // PointLight: 모델 중심에서 부드럽게 퍼지는 조명
+  const pointLight = new THREE.PointLight(0xffffff, 1.5, 10);
+  pointLight.position.set(0, 1, 0);
+  this.scene.add(pointLight);
 
-    this.animate();
-  }
+  // Ambient Light: 낮은 밝기로 배경만 살짝 보이게
+  const ambientLight = new THREE.AmbientLight(0xffffff, 0.2);
+  this.scene.add(ambientLight);
+
+  this.controls = new OrbitControls(this.camera, this.renderer.domElement);
+  this.controls.enableDamping = true;
+  this.controls.dampingFactor = 0.1;
+  this.controls.rotateSpeed = 0.5;
+  this.controls.zoomSpeed = 0.5;
+  this.controls.minDistance = 0.5;
+  this.controls.maxDistance = 100;
+
+  this.animate();
+}
+
+  
 
   loadModel(url: string) {
     const loader = new GLTFLoader();

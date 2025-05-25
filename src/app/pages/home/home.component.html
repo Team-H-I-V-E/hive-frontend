@@ -1,0 +1,23 @@
+<!-- Floating Chatbot Button -->
+<button 
+  type="button"
+  class="chatbot-fab"
+  (click)="toggleChatbotModal()"
+  aria-label="Open chatbot"
+>
+  <i class="bi bi-chat-dots"></i>
+</button>
+
+<!-- Chatbot Container (고정형, 데스크탑 최적화) -->
+<div 
+  class="chatbot-container" 
+  *ngIf="isChatbotModalOpen"
+>
+  <div class="chatbot-header">
+    <span>Chatbot</span>
+    <button type="button" class="btn-close" (click)="toggleChatbotModal()" aria-label="Close"></button>
+  </div>
+  <div class="chatbot-body">
+    <app-chatbot></app-chatbot>
+  </div>
+</div>

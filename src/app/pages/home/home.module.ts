@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { HomeComponent } from './home.component';
 import { HomeComponentRoutingModule } from './home-routing.module';
 import { LayoutModule } from 'src/app/layouts/layouts.module';
+import { ChatbotPage } from "../chatbot/chatbot.page";
 
 
 @NgModule({
@@ -15,7 +16,8 @@ import { LayoutModule } from 'src/app/layouts/layouts.module';
     FormsModule,
     HomeComponentRoutingModule,
     LayoutModule,
-  ],
+    ChatbotPage
+],
   exports: [HomeComponent],
 })
 export class HomeComponentModule {}

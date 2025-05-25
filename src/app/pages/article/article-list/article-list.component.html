@@ -1,25 +1,33 @@
-<div class="article-container" style="background-color: F7F6EC;">
-    <div class="container pt-5 pb-0" style="background-color: #F7F6EC;">
-        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-5" style="background-color: #F7F6EC;">
-            <div class="col" *ngFor="let article of articles">
-                <div class="card h-100 shadow-sm border-0" (click)="goToDetail(article.articleId)">
+<!-- 전체 배경 -->
+<div class="article-container" style="background-color: #F7F6EC; min-height: 100vh; position: relative;">
 
-                    <!-- 캐러셀 -->
+    <!-- 게시글 리스트 -->
+    <div class="container pt-5 pb-0">
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-5">
+            <div class="col" *ngFor="let article of articles">
+                <div class="card h-100 shadow-sm border-0" (click)="goToDetail(article.articleId)"
+                    style="cursor: pointer; background-color: #fff;">
+
+                    <!-- 이미지 캐러셀 -->
                     <div *ngIf="article.articleImages?.length" class="carousel slide"
                         [id]="'carousel-' + article.articleId">
+                        <!-- 인덱스 -->
                         <div class="position-absolute top-0 end-0 m-2 px-2 py-1 bg-dark text-white rounded small opacity-75"
                             style="z-index: 2;">
                             {{ article.currentImageIndex + 1 }} / {{ article.articleImages.length }}
                         </div>
+
                         <div class="carousel-inner">
                             <div class="carousel-item" *ngFor="let image of article.articleImages; let j = index"
                                 [class.active]="j === 0">
                                 <div class="ratio ratio-4x3 bg-secondary-subtle">
                                     <img [src]="image?.articleImage ? environment.apiBaseUrl + '/uploads/article/' + image.articleImage : ''"
-                                        class="w-100 h-100" style="object-fit: cover;" />
+                                        class="w-100 h-100 img-fluid" style="object-fit: cover;" />
                                 </div>
                             </div>
                         </div>
+
+                        <!-- 캐러셀 컨트롤 -->
                         <button class="carousel-control-prev" type="button" (click)="onCarouselClick($event)"
                             [attr.data-bs-target]="'#carousel-' + article.articleId" data-bs-slide="prev">
                             <span class="carousel-control-prev-icon"></span>
@@ -30,10 +38,18 @@
                         </button>
                     </div>
 
-                    <!-- 본문 -->
+                    <!-- 카드 본문 -->
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-center mb-2">
-                            <span class="fw-bold small">{{ article.nickname || '알 수 없음' }}</span>
+                            <div class="d-flex flex-column">
+                                <span class="fw-bold small">
+                                    {{ getAuthorProfileById(article.articleId)?.nickname || '알 수 없음' }}
+                                </span>
+                                <span class="small text-muted" *ngIf="getAuthorProfileById(article.articleId)">
+                                    {{ getAuthorProfileById(article.articleId)?.email }}
+                                </span>
+                            </div>
+
                             <span class="d-flex gap-2">
                                 <i class="bi"
                                     [ngClass]="article.liked ? 'bi-heart-fill text-danger' : 'bi-heart text-muted'"
@@ -43,6 +59,7 @@
                                     (click)="toggleBookmark(article, $event)"></i>
                             </span>
                         </div>
+
                         <p class="mb-2 fw-semibold">{{ article.articleTitle }}</p>
                         <div class="d-flex justify-content-between small text-muted">
                             <span>{{ article.articleCreatedAt | date: 'longDate' }}</span>
@@ -52,12 +69,12 @@
                 </div>
             </div>
         </div>
-
-        <!-- 작성 버튼 (고정 위치) -->
-        <button type="button" routerLink="/article/write"
-            class="btn btn-lg rounded-circle position-fixed bottom-0 end-0 m-4 shadow-lg d-flex justify-content-center align-items-center"
-            style="width: 72.8px; height: 72.8px; background-color: #5e4521; color: white;">
-            <i class="bi bi-pencil fs-3"></i>
-        </button>
     </div>
+
+    <!-- ✏️ 작성 버튼 (뷰포트 하단 고정) -->
+    <button type="button" routerLink="/article/write"
+        class="btn btn-lg rounded-circle position-fixed bottom-0 end-0 m-4 shadow-lg d-flex justify-content-center align-items-center"
+        style="width: 72.8px; height: 72.8px; background-color: #5e4521; color: white; z-index: 1050;">
+        <i class="bi bi-pencil fs-3"></i>
+    </button>
 </div>

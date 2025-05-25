@@ -23,6 +23,14 @@ export class ArticleListComponent implements OnInit, AfterViewChecked {
   environment = environment;
   private isCarouselInitialized = false;
 
+  authorProfilesByArticleId: { [id: number]: { nickname: string; email: string } } = {
+    1: { nickname: '역사따라산길따라', email: 'ancienttrail@korea.com' }, // 남성골산성
+    2: { nickname: '돌담길걷는중', email: 'buddhapath@daum.net' },       // 비암사
+    3: { nickname: '꽃보다단청', email: 'historylover@naver.com' },      // 연기향교
+    4: { nickname: '산책하는고래', email: 'whalewalk@gmail.com' },        // 홍판서댁
+    8: { nickname: '곰돌레옹', email: 'dannielha@naver.com' },
+  };
+
   constructor(
     private articleService: ArticleService,
     private router: Router
@@ -74,5 +82,9 @@ export class ArticleListComponent implements OnInit, AfterViewChecked {
   toggleBookmark(article: ArticleWithUI, event: Event): void {
     event.stopPropagation();
     article.bookmarked = !article.bookmarked;
+  }
+
+  getAuthorProfileById(articleId: number) {
+    return this.authorProfilesByArticleId[articleId];
   }
 }

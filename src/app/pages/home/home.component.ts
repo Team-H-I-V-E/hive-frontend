@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CulturalAsset } from 'src/app/models/home/home-response-data.interface';
@@ -8,7 +9,11 @@ import { CulturalAsset } from 'src/app/models/home/home-response-data.interface'
   styleUrls: ['home.component.scss'],
   standalone: false,
 })
+
 export class HomeComponent implements OnInit, OnDestroy {
+  // 챗봇 모달 열림/닫힘 상태
+  isChatbotModalOpen: boolean = false;
+
   assets: CulturalAsset[] = [];
   currentAsset: CulturalAsset | null = null;
   currentIndex: number = 0;
@@ -16,8 +21,8 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   private readonly API_URL = 'http://localhost:3000';
 
-  constructor(private http: HttpClient) {}
-
+  // 생성자에 Router와 HttpClient 둘 다 주입
+  constructor(private router: Router, private http: HttpClient) {}
   ngOnInit(): void {
     console.log('🏠 HomeComponent loaded!');
     this.loadCulturalAssets();
@@ -77,5 +82,20 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.currentAsset = this.assets[index];
       this.showAsset = true;
     }, 10);
+  }
+
+  // 챗봇 페이지로 이동
+  navigateToChatbotPage() {
+    this.router.navigate(['/chatbot']);
+  }
+
+  // 챗봇 모달 열기/닫기 토글
+  toggleChatbotModal() {
+    this.isChatbotModalOpen = !this.isChatbotModalOpen;
+  }
+
+  // 모달 닫기 처리
+  closeChatbotModal() {
+    this.isChatbotModalOpen = false;
   }
 }

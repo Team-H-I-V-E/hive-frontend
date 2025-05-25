@@ -43,7 +43,7 @@ html {
 .table-clean th,
 .table-clean td {
   padding: 12px 8px;
-  border-bottom: 1px solid #aaa; /* 얇은 줄 */
+  border-bottom: 2px solid #666; 
   vertical-align: top;
 }
 
@@ -53,7 +53,3 @@ html {
   font-weight: 500;
 }
 
-/* 마지막 tr의 td에만 두꺼운 줄 추가 */
-.table-clean tr:last-child td {
-  border-bottom: 2px solid #666;
-}

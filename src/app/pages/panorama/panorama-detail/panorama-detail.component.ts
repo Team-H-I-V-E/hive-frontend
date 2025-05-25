@@ -20,6 +20,7 @@ export class PanoramaDetailComponent implements OnChanges, AfterViewInit {
   currentImageUrl: string = '';
   selectedPointId: number | null = null;
   isFavorite = false;
+  isExpanded = false;
 
   constructor(private panoramaService: PanoramaService) { }
 
@@ -101,48 +102,28 @@ export class PanoramaDetailComponent implements OnChanges, AfterViewInit {
   }
 
   activateViewer(): void {
-    this.viewerActive = true;
+    this.viewerActive = true; // 뷰어 활성 상태로 변경
 
-    const image = this.panorama?.panoramaImages?.[0];
-    if (!image) return;
+    const image = this.panorama?.panoramaImages?.[0]; // 첫 번째 파노라마 이미지 가져오기
+    if (!image) return; // 이미지가 없으면 함수 종료
 
+    // 현재 이미지와 연결된 미니맵 포인트 찾기
     const initialPoint = this.panorama?.miniMapPoints?.find(
       (point: any) => point.targetPanoramaImage?.imageUrl === image.imageUrl
     );
 
-    this.selectedPointId = initialPoint?.id ?? null;
+    this.selectedPointId = initialPoint?.id ?? null; // 선택된 포인트 ID 설정
 
+    // 뷰어 초기화 (렌더링 이후 실행 보장)
     setTimeout(() => {
       const viewer = pannellum.viewer('pano_div_0', {
-        type: 'equirectangular',
-        panorama: 'http://localhost:3000/' + image.imageUrl,
-        autoLoad: true,
-        showZoomCtrl: true,
-        showFullscreenCtrl: true,
+        type: 'equirectangular', // 파노라마 타입
+        panorama: 'http://localhost:3000/' + image.imageUrl, // 이미지 경로 설정
+        autoLoad: true,           // 자동 로드
+        showZoomCtrl: true,       // 확대/축소 버튼 표시
+        showFullscreenCtrl: true, // 전체화면 버튼 표시
       });
-
-      viewer.on('fullscreentoggle', () => {
-        const miniMapEl = document.getElementById('minimap');
-        if (!miniMapEl) return;
-
-        const isFullscreen = document.fullscreenElement !== null;
-
-        if (isFullscreen) {
-          miniMapEl.style.position = 'fixed';
-          miniMapEl.style.bottom = '16px';
-          miniMapEl.style.right = '16px';
-          miniMapEl.style.zIndex = '9999';
-          document.body.appendChild(miniMapEl);
-        } else {
-          const container = document.querySelector('.position-relative.w-100.h-100');
-          if (container) container.appendChild(miniMapEl);
-          miniMapEl.style.position = 'absolute';
-          miniMapEl.style.bottom = '';
-          miniMapEl.style.right = '';
-          miniMapEl.style.zIndex = '';
-        }
-      });
-    }, 0);
+    });
   }
 
   moveToPanorama(point: any): void {
@@ -160,5 +141,9 @@ export class PanoramaDetailComponent implements OnChanges, AfterViewInit {
         autoLoad: true,
       });
     }
+  }
+
+  toggleDescription() {
+    this.isExpanded = !this.isExpanded;
   }
 }

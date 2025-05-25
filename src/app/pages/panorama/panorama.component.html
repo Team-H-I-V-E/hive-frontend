@@ -2,8 +2,15 @@
   @media (max-width: 768px) {
     .panorama-sidebar {
       width: 100vw !important;
-      /* 모바일에서는 전체 가로폭 사용 */
+      min-width: 100vw !important;
       flex: 0 0 100vw !important;
+      z-index: 1050 !important;
+      /* 모바일에서 필터보다 위에 표시 */
+    }
+
+    .era-filter-mobile {
+      z-index: 1000 !important;
+      /* 필터는 더 아래에 표시 */
     }
   }
 </style>
@@ -16,28 +23,23 @@
 
     <!-- 디테일 사이드바 -->
     <div *ngIf="selectedPanorama" class="d-flex flex-column bg-light border-end panorama-sidebar"
-      style="flex: 0 0 23vw; height: 100%;">
-      <!-- 
-        flex: 0 0 23vw; ➔ 가로폭 화면의 23% 사용
-        height: 100%; ➔ 부모 높이에 맞춰서
-      -->
-
+      style="width: 450px; height: 100%;">
       <div style="flex: 0 0 auto;">
-        <!-- 헤더 영역 (닫기 버튼 넣을 수 있음) -->
+        <!-- 헤더 영역 -->
       </div>
 
       <div class="overflow-auto" style="flex: 1 1 auto;">
         <app-panorama-detail [panorama]="selectedPanorama" (close)="closeSidebar()"></app-panorama-detail>
       </div>
-
     </div>
 
     <!-- 지도 영역 -->
     <div class="flex-grow-1 position-relative" style="height: 100%;">
       <div id="map" class="w-100 h-100"></div>
 
-      <!-- 시대 필터 버튼 -->
-      <div class="position-absolute top-50 end-0 translate-middle-y d-flex flex-column gap-2 me-3 z-3">
+      <!-- 📌 시대 필터 버튼 (모바일 포함) -->
+      <div class="position-absolute top-50 end-0 translate-middle-y d-flex flex-column gap-2 me-3 era-filter-mobile"
+        style="z-index: 1000;">
         <button *ngFor="let era of eras" (click)="selectEra(era)" class="btn btn-light rounded-pill py-2 px-3"
           [class.active]="selectedEra === era">
           {{ era }}
@@ -48,6 +50,5 @@
         </button>
       </div>
     </div>
-
   </div>
 </div>

@@ -1,24 +1,81 @@
-<!-- 전체 배경 -->
+<style>
+    @media (max-width: 768px) {
+        .detail-wrapper {
+            flex-direction: column !important;
+            min-height: auto !important;
+        }
+
+        .detail-image-section {
+            width: 100% !important;
+            border-right: none !important;
+            border-bottom: 2px solid #a48d5f !important;
+        }
+
+        .detail-text-section {
+            width: 100% !important;
+        }
+
+        .author-info,
+        .post-body,
+        .comment-box,
+        .comment-input {
+            padding: 1rem !important;
+        }
+
+        .comment-input {
+            display: flex;
+            flex-direction: row;
+            /* ➜ 가로 정렬 */
+            align-items: center;
+            /* ➜ 수직 정렬 */
+            gap: 0.5rem;
+            /* ➜ input과 버튼 사이 여백 */
+            margin-top: 0.5rem;
+        }
+
+        .comment-input input {
+            flex: 1 1 auto;
+            /* ➜ 가능한 너비 최대 확보 */
+            margin-bottom: 0;
+            /* ➜ 하단 여백 제거 */
+            padding: 4px 8px;
+            font-size: 0.85rem;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+
+        .comment-input button {
+            white-space: nowrap;
+            font-size: 0.85rem;
+            font-weight: 600;
+            padding: 4px 10px;
+            border: none;
+            background: transparent;
+            color: #0d6efd;
+            /* Bootstrap 기본 파랑 */
+        }
+    }
+</style>
+
 <div class="container-fluid d-flex justify-content-center align-items-center px-4 py-5"
     style="background-color: #F7F6EC; min-height: 100vh;">
 
-    <!-- 콘텐츠 카드 -->
-    <div class="d-flex border border-2 rounded shadow-sm overflow-hidden"
-        style="max-width: 1300px; width: 100%; min-height: 720px; border-color: #a48d5f; background-color: #F7F6EC;">
+    <div class="d-flex border border-2 rounded shadow-sm overflow-hidden detail-wrapper"
+        style="max-width: 1300px; width: 100%; min-height: 720px; border-color: #a48d5f; background-color: #F7F6EC; flex-direction: row;">
 
-        <!-- 📷 이미지 캐러셀 섹션 -->
-        <div class="d-flex justify-content-center align-items-center p-3 border-end border-2"
-            style="width: 60%; background-color: #F7F6EC; border-color: #a48d5f;">
+        <!-- 이미지 섹션 -->
+        <div class="d-flex justify-content-center align-items-center p-3 border-end border-2 detail-image-section"
+            style="width: 60%; border-color: #a48d5f;">
             <div *ngIf="article?.articleImages?.length" class="carousel slide position-relative w-100"
-                [id]="'detailCarousel-' + article.articleId" data-bs-ride="carousel" style="width: 100%;">
+                [id]="'detailCarousel-' + article.articleId" data-bs-ride="carousel">
 
-                <!-- 🔢 인덱스 표시 -->
+                <!-- 인덱스 -->
                 <div class="position-absolute top-0 end-0 m-2 px-2 py-1 bg-dark text-white rounded small opacity-75"
                     style="z-index: 2;">
                     {{ currentImageIndex + 1 }} / {{ article.articleImages.length }}
                 </div>
 
-                <!-- 캐러셀 아이템 -->
+                <!-- 캐러셀 -->
                 <div class="carousel-inner rounded shadow">
                     <div class="carousel-item" *ngFor="let image of article.articleImages; let i = index"
                         [class.active]="i === 0">
@@ -29,7 +86,7 @@
                     </div>
                 </div>
 
-                <!-- 좌우 버튼 -->
+                <!-- 컨트롤 -->
                 <button class="carousel-control-prev" type="button"
                     [attr.data-bs-target]="'#detailCarousel-' + article.articleId" data-bs-slide="prev"
                     style="filter: invert(1);">
@@ -43,28 +100,97 @@
             </div>
         </div>
 
-        <!-- 📝 텍스트 섹션 -->
-        <div class="d-flex flex-column justify-content-between border-2"
+        <!-- 텍스트 섹션 -->
+        <div class="d-flex flex-column border-2 detail-text-section"
             style="width: 40%; background-color: #F7F6EC; border-color: #a48d5f;">
 
-            <!-- 게시글 정보 -->
-            <div class="p-4 border-bottom border-2" style="border-color: #a48d5f;">
-                <h5 class="fw-bold mb-2">{{ article.articleTitle }}</h5>
-                <p class="text-muted mb-0" style="white-space: pre-line;">{{ article.articleContents }}</p>
-                <div class="text-muted small mt-3">{{ article.articleCreatedAt | date: 'longDate' }}</div>
+            <!-- 작성자 정보 -->
+            <div class="px-4 py-3 border-bottom border-2 d-flex align-items-center gap-3 author-info"
+                style="border-color: #a48d5f;">
+                <div style="width: 48px; height: 48px;">
+                    <img src="./assets/icon/profile.png" alt="프로필 이미지" class="img-fluid rounded-circle w-100 h-100" />
+                </div>
+                <div style="line-height: 1.2;">
+                    <h6 class="fw-bold mb-1" style="font-size: 1.05rem;">꽃보다단청</h6>
+                    <p class="mb-0 text-muted" style="font-size: 0.85rem;">historylover&#64;naver.com</p>
+                </div>
             </div>
 
-            <!-- 댓글 입력 (비활성) -->
-            <div class="p-2 border-top border-2 d-flex align-items-center justify-content-between"
-                style="border-color: #a48d5f;">
+            <!-- 게시글 내용 -->
+            <div class="p-4 border-bottom border-2 post-body" style="border-color: #a48d5f;">
+                <h5 class="fw-bold mb-3">{{ article.articleTitle }}</h5>
+                <p class="text-muted mb-3" style="white-space: pre-line;">{{ article.articleContents }}</p>
+                <div class="text-muted small">{{ article.articleCreatedAt | date: 'longDate' }}</div>
+            </div>
+
+            <!-- 댓글 목록 -->
+            <div class="px-3 py-3 flex-grow-1 overflow-auto comment-box" style="min-height: 0;">
+                <!-- 댓글들 렌더링 예정 -->
+                <div class="mb-4">
+                    <div class="d-flex align-items-start gap-3">
+                        <div style="width: 40px; height: 40px; flex-shrink: 0;">
+                            <img src="./assets/icon/profile.png" alt="프로필 이미지"
+                                class="img-fluid rounded-circle w-100 h-100" />
+                        </div>
+                        <div>
+                            <h6 class="fw-bold mb-1" style="font-size: 1rem;">급식이왜이래</h6>
+                            <p class="mb-0 text-muted" style="font-size: 0.8rem;">gktmddh71&#64;gmail.com</p>
+                        </div>
+                    </div>
+                    <div class="mt-2 ms-5" style="font-size: 0.9rem;">
+                        <p class="mb-0">너무 좋아 보여요. 저도 다음에 방문해야 겠어요</p>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <div class="d-flex align-items-start gap-3">
+                        <div style="width: 40px; height: 40px; flex-shrink: 0;">
+                            <img src="./assets/icon/profile.png" alt="프로필 이미지"
+                                class="img-fluid rounded-circle w-100 h-100" />
+                        </div>
+                        <div>
+                            <h6 class="fw-bold mb-1" style="font-size: 1rem;">조선왕족급식</h6>
+                            <p class="mb-0 text-muted" style="font-size: 0.8rem;">quddkfl41&#64;kakao.com</p>
+                        </div>
+                    </div>
+                    <div class="mt-2 ms-5" style="font-size: 0.9rem;">
+                        <p class="mb-0">
+                            저도 방문해 봤는데 너무 좋은 경험이었어요. 다른 분들도 한 번쯤은 방문해보시는 걸 추천합니다.
+                            후회하지 않으실 거예요.
+                        </p>
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <div class="d-flex align-items-start gap-3">
+                        <div style="width: 40px; height: 40px; flex-shrink: 0;">
+                            <img src="./assets/icon/profile.png" alt="프로필 이미지"
+                                class="img-fluid rounded-circle w-100 h-100" />
+                        </div>
+                        <div>
+                            <h6 class="fw-bold mb-1" style="font-size: 1rem;">곰돌레옹</h6>
+                            <p class="mb-0 text-muted" style="font-size: 0.8rem;">danniel&#64;naver.com</p>
+                        </div>
+                    </div>
+                    <div class="mt-2 ms-5" style="font-size: 0.9rem;">
+                        <p class="mb-0">
+                            비 오는 날 가면 더 좋을 것 같아요. 조용하고 분위기 미쳤다 진짜...
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 댓글 입력창 -->
+            <div class="px-3 border-top border-2 d-flex justify-content-between align-items-center comment-input"
+                style="border-color: #a48d5f; background-color: #F7F6EC; height: 40px;">
                 <input type="text" [(ngModel)]="commentInput" class="form-control border-0 me-2" placeholder="댓글 달기..."
-                    style="background-color: transparent;" disabled />
-                <button class="text-primary bg-transparent border-0"
-                    style="font-size: 10px; font-weight: 600; display: flex; align-items: center; justify-content: center; white-space: nowrap; padding: 4px 8px; line-height: 1;"
+                    style="background-color: transparent; font-size: 0.8rem; padding: 2px 6px; height: 28px;" />
+                <button class="text-primary bg-transparent border-0 align-self-center"
+                    style="font-size: 11px; font-weight: 600; padding: 2px 6px; line-height: 1; white-space: nowrap; height: 28px;"
                     disabled>
                     완료
                 </button>
             </div>
+
         </div>
     </div>
 </div>

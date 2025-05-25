@@ -3,17 +3,17 @@
     <!-- 상단: 이미지 + 정보 -->
     <div class="row g-4 mb-5">
       <!-- 좌측: 이미지 -->
-      <div class="col-md-5 text-center">
+      <div class="col-12 col-md-5 text-center">
         <img
-          [src]="'http://localhost:3000' + heritage.heritageImageUrl"
-          alt="heritage.heritageName"
-          class="img-fluid rounded shadow-sm"
-          style="max-height: 400px; object-fit: contain"
-        />
+      [src]="'http://localhost:3000' + heritage.heritageImageUrl"
+      alt="heritage.heritageName"
+      class="img-fluid rounded shadow-sm"
+      style="max-height: 400px; object-fit: contain"
+    />
       </div>
 
       <!-- 우측: 정보 -->
-      <div class="col-md-7">
+      <div class="col-12 col-md-7">
         <h4 class="fw-bold mb-2">{{ heritage.heritageName }}</h4>
         <p class="text-muted mb-4" style="font-style: italic; font-size: 15px">
           Buddhist Stele with Inscription of "Muin Year" and Pedestal at

@@ -4,10 +4,8 @@ import { FormsModule } from "@angular/forms";
 
 @Component({
     selector: 'app-create-account',
-    standalone: true,
-    imports: [CommonModule, FormsModule],
+    standalone: false,
     templateUrl: './create-account.component.html',
-    standalone:false
     styleUrls: ['./create-account.component.scss'],
 })
 export class CreateAccountComponent {

@@ -1,0 +1,41 @@
+<div 
+    class="d-flex flex-column justify-content-center align-items-center text-center"
+    style="height: 100vh; background-color: #231F1F; color: #F7F6EC; margin-top: -60px;"
+>
+
+  <div style="width: 130px;" class="d-flex flex-column align-items-center">
+    <img 
+        src="assets/icon/main_icon.png" 
+        alt="Main Icon" 
+        class="mb-4" 
+        style="width: 100%;"
+    >
+
+    <button 
+        #startButton
+        (click)="goToAR()"
+        class="mb-5"
+        style="
+            width: 94%;
+            background-color: #231F1F;
+            color: #918E7C;
+            border: 2px solid #918E7C;
+            padding: 0.8rem 1rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        "
+        onmouseover="this.style.backgroundColor='#918E7C'; this.style.color='#231F1F';"
+        onmouseout="this.style.backgroundColor='#231F1F'; this.style.color='#918E7C';"
+    >
+        S T A R T !
+    </button>
+  </div>
+
+  <p 
+    [innerText]="currentMessage" 
+    style="
+      font-size: 1.2rem; 
+      font-family: 'Nanum Myeongjo', serif; 
+    "
+  ></p>
+</div>

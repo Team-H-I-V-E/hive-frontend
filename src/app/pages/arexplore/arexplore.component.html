@@ -1,7 +1,8 @@
 <div class="custom-ar-page">
   <div class="row">
     <div class="col-12">
-      <div class="position-fixed bg-white bg-opacity-75 text-black p-3 rounded-2" style="bottom: 10px; left: 10px; max-width: 80%; max-height: 200px; border: 1px solid #ccc; overflow: auto; font-size: 0.8rem;">
+      <div class="position-fixed bg-white bg-opacity-75 text-black p-3 rounded-2"
+           style="bottom: 10px; left: 10px; max-width: 80%; max-height: 200px; border: 1px solid #ccc; overflow: auto; font-size: 0.8rem;">
         <p class="mb-2">📍유저 위치: {{ userLatitude }}, {{ userLongitude }}</p>
         <!-- 스탬프가 있는 경우 -->
         <div *ngIf="stamps.length > 0; else noStamps">
@@ -21,14 +22,19 @@
   <a-scene arjs="sourceType: webcam; debugUIEnabled: false;">
     <!-- 조명 추가 -->
     <a-light type="ambient" color="#fff" intensity="5"></a-light>
-    
+
     <!-- cursor 추가 -->
     <a-camera gps-camera rotation-reader>
-      <a-cursor fuse="true"></a-cursor>
+      <a-cursor 
+        fuse="false" 
+        raycaster="objects: .clickable; far: 1000" 
+        material="visible: false">
+      </a-cursor>
     </a-camera>
 
     <!-- GLB 모델을 각 스탬프 위치에 표시 -->
     <a-entity *ngFor="let stamp of stamps"
+              class="clickable"
               [attr.gps-entity-place]="'latitude: ' + stamp.stampLatitude + '; longitude: ' + stamp.stampLongitude"
               gltf-model="/assets/models/great_seal.glb"
               scale="0.5 0.5 0.5"

@@ -1,28 +1,73 @@
 <style>
+  html,
+  body {
+    overflow-x: clip !important;
+    max-width: 100vw !important;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    position: relative;
+  }
+
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  .panorama-detail-sidebar {
+    width: 450px;
+    background-color: #F7F6EC;
+    border-right: 1px solid #ccc;
+    overflow-x: hidden;
+  }
+
+  .panorama-detail-scroll {
+    flex: 1;
+    overflow-y: auto;
+    padding: 7rem 1rem 1.5rem;
+    width: 100%;
+  }
+
+  .overflow-auto {
+    flex: 1 1 auto;
+    width: 100vw !important;
+    max-width: 100vw !important;
+    overflow-x: clip !important;
+    box-sizing: border-box !important;
+  }
+
   @media (max-width: 768px) {
-    .panorama-detail-sidebar {
+
+    .panorama-detail-sidebar,
+    .panorama-detail-scroll,
+    .overflow-auto {
       width: 100vw !important;
-      min-width: 100vw !important;
-      z-index: 1050 !important;
+      max-width: 100vw !important;
+      overflow-x: clip !important;
+      margin: 0 auto;
     }
 
     .panorama-detail-scroll {
       padding-top: 1.5rem !important;
-      /* 모바일에서는 상단 여백 최소화 */
+    }
+
+    img,
+    .img-fluid,
+    .position-absolute,
+    .translate-middle {
+      max-width: 100% !important;
+      overflow-x: hidden !important;
+      box-sizing: border-box !important;
     }
   }
 </style>
 
-<!-- ✅ 전체 페이지 레이아웃 -->
-<div class="d-flex flex-row" style="position: fixed; inset: 0; overflow: hidden;">
-
-  <!-- 📦 디테일 사이드바 -->
-  <div class="d-flex flex-column panorama-detail-sidebar"
-    style="z-index: 2000; width: 450px; min-width: 450px; background-color: #F7F6EC; border-right: 1px solid #ccc;">
-
-    <!-- ✅ 스크롤 가능한 내부 콘텐츠 -->
-    <div class="panorama-detail-scroll" style="flex: 1; overflow-y: auto; padding: 7rem 1.5rem 1.5rem;">
-
+<!-- ⭐️ 전체 페이지 레이아웃 -->
+<div class="d-flex flex-row" style="position: fixed; inset: 0; overflow: hidden; box-sizing: border-box;">
+  <!-- 디테일 사이드바 -->
+  <div class="d-flex flex-column panorama-detail-sidebar" style="z-index: 2000;">
+    <div class="panorama-detail-scroll overflow-auto">
       <!-- 닫기/즐겨찾기/스탬프 -->
       <div class="d-flex justify-content-end align-items-center mb-3 gap-2">
         <i *ngIf="panorama?.isStamped" class="bi bi-search" title="스탬프 보유됨"></i>
@@ -37,7 +82,8 @@
 
       <!-- 대표 이미지 -->
       <div *ngIf="panorama.ruinsImage" class="mb-3">
-        <img [src]="panorama.ruinsImage" alt="대표 이미지" class="img-fluid rounded w-100" />
+        <img [src]="panorama.ruinsImage" alt="대표 이미지" class="img-fluid rounded w-100"
+          style="max-width: 100%; height: auto; box-shadow: none;" />
       </div>
 
       <!-- 유적 정보 -->
@@ -53,7 +99,7 @@
         <p><strong>수량/면적:</strong> {{ panorama.ruinsNumber }}</p>
         <p><strong>지정일:</strong> {{ panorama.ruinsDay }}</p>
         <p><strong>시대:</strong> {{ panorama.ruinsAge }}</p><br>
-        <p>
+        <p style="word-break: break-word;">
           <span [ngStyle]="!isExpanded ? {
             display: '-webkit-box',
             WebkitBoxOrient: 'vertical',
@@ -74,7 +120,7 @@
 
       <!-- 360 미리보기 -->
       <div *ngIf="panorama?.panoramaImages?.length" class="position-relative rounded overflow-hidden mt-4 mb-3"
-        style="height: 200px; cursor: pointer;" (click)="activateViewer()">
+        style="height: 200px; cursor: pointer; max-width: 100%; box-sizing: border-box;" (click)="activateViewer()">
         <div id="pano_preview" class="w-100 h-100"
           style="filter: brightness(60%); transition: filter 0.3s ease; border-radius: 0.5rem;"></div>
         <div class="position-absolute top-50 start-50 translate-middle text-white text-center"
@@ -83,27 +129,23 @@
           <div style="font-size: 1rem;"><i class="bi bi-arrow-repeat fs-4"></i></div>
         </div>
       </div>
-
     </div>
   </div>
 
-  <!-- 📍 지도 또는 메인 영역 -->
+  <!-- 지도 또는 메인 영역 -->
   <div class="flex-grow-1 position-relative" style="z-index: 1;">
     <div id="map" style="width: 100%; height: 100%;"></div>
   </div>
 </div>
 
-<!-- 🖼️ 파노라마 뷰어 오버레이 -->
+<!-- 파노라마 뷰어 오버레이 -->
 <div *ngIf="viewerActive" class="position-fixed top-0 start-0 w-100 h-100 bg-dark bg-opacity-75" style="z-index: 1050;">
-
-  <!-- 닫기 버튼 -->
   <div class="position-absolute top-0 end-0 p-3 z-2">
     <button class="btn btn-sm btn-light" (click)="viewerActive = false">
       <i class="bi bi-x-lg"></i> 닫기
     </button>
   </div>
 
-  <!-- pannellum 뷰어 -->
   <div class="position-relative w-100 h-100">
     <div id="pano_div_0" class="w-100 h-100"></div>
 

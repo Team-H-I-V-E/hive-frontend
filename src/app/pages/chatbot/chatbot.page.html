@@ -1,0 +1,71 @@
+<div class="chat-layout">
+  <!-- 사이드바 -->
+  <aside class="chat-sidebar">
+    <button class="new-chat" (click)="startNewChat()">+ New chat</button>
+    <ul class="chat-history-list">
+      <li 
+        *ngFor="let history of conversations" 
+        [class.active]="history.id === currentChatId"
+        (click)="loadChat(history.id)">
+    
+        <span class="arrow-icon">→</span>
+    
+        <label for="chat-title-{{history.id}}" class="sr-only">Chat title</label>
+<input
+  id="chat-title-{{history.id}}"
+  *ngIf="editChatId === history.id"
+  [(ngModel)]="history.title"
+  (blur)="saveTitle(history)"
+  (keydown.enter)="saveTitle(history)"
+  class="edit-chat-title"
+  (click)="$event.stopPropagation()"
+  aria-label="Edit chat title"
+/>
+    
+        <span *ngIf="editChatId !== history.id" (dblclick)="editTitle(history.id, $event)">
+          {{ history.title }}
+        </span>
+      </li>
+    </ul>
+    
+    
+  </aside>
+
+  <!-- 메인 챗봇 화면 -->
+  <section class="chat-main">
+    <div class="chat-messages" #chatMessages>
+      <div
+        *ngFor="let chat of chatHistory"
+        class="chat-message"
+        [ngClass]="{
+          'user': chat.sender === 'You',
+          'bot': chat.sender === 'Chatbot'
+        }"
+      >
+        <div class="chat-meta">
+          <strong>{{ chat.sender }}</strong>
+        </div>
+        <div class="chat-content">{{ chat.message }}</div>
+      </div>
+
+      <div *ngIf="isLoading" class="chat-loading">
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+      </div>
+    </div>
+
+    <form class="chat-input-form" (submit)="sendMessage(); $event.preventDefault()">
+      <input
+        type="text"
+        [(ngModel)]="userMessage"
+        name="userInput"
+        class="chat-input"
+        placeholder="궁금한 것을 무엇이든 물어보세요!"
+        autocomplete="off"
+        required
+      />
+      <button type="submit" class="send-button">➤</button>
+    </form>
+  </section>
+</div>
